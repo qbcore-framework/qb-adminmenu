@@ -106,7 +106,8 @@ end)
 
 RegisterNetEvent("qb-admin:server:inventory")
 AddEventHandler("qb-admin:server:inventory", function(player)
-	TriggerEvent("inventory:server:OpenInventory", "otherplayer", player.id)
+    local src = source
+    TriggerClientEvent('qb-admin:client:inventory', src, player.id)
 end)
 
 RegisterNetEvent("qb-admin:server:cloth")

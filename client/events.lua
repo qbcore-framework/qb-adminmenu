@@ -19,6 +19,11 @@ local blockedPeds = {
 
 -- Events
 
+RegisterNetEvent('qb-admin:client:inventory')
+AddEventHandler('qb-admin:client:inventory', function(targetPed)
+    TriggerServerEvent("inventory:server:OpenInventory", "otherplayer", targetPed)
+end)
+
 RegisterNetEvent('qb-admin:client:spectate')
 AddEventHandler('qb-admin:client:spectate', function(targetPed, coords)
     local myPed = PlayerPedId()
