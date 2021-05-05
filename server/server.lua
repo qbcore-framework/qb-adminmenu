@@ -61,7 +61,7 @@ end)
 RegisterNetEvent("qb-admin:server:ban")
 AddEventHandler("qb-admin:server:ban", function(player)
     local src = source
-    local bantime = 999
+    local banTime = 999
     local reason = 'Ask Staff Member'
     QBCore.Functions.ExecuteSql(false, "INSERT INTO `bans` (`name`, `steam`, `license`, `discord`,`ip`, `reason`, `expire`, `bannedby`) VALUES ('"..GetPlayerName(player.id).."', '"..GetPlayerIdentifiers(player.id)[1].."', '"..GetPlayerIdentifiers(player.id)[2].."', '"..GetPlayerIdentifiers(player.id)[3].."', '"..GetPlayerIdentifiers(player.id)[4].."', '"..reason.."', "..banTime..", '"..GetPlayerName(src).."')")
     DropPlayer(player.id, 'You Have Been Banned, Appeal In Discord')
@@ -69,18 +69,20 @@ end)
 
 RegisterNetEvent("qb-admin:server:spectate")
 AddEventHandler("qb-admin:server:spectate", function(player)
-    local targetPed = GetPlayerPed(player.id)
-    TriggerClientEvent('hospital:client:spectate', targetPed)
+    local src = source
+    local targetped = GetPlayerPed(player.id)
+    local coords = GetEntityCoords(targetped)
+    TriggerClientEvent('qb-admin:client:spectate', src, player.id, coords)
 end)
 
 RegisterNetEvent("qb-admin:server:freeze")
 AddEventHandler("qb-admin:server:freeze", function(player)
     local target = GetPlayerPed(player.id)
     if not frozen then
-        local frozen = true
+        frozen = true
         FreezeEntityPosition(target, true)
     else
-        local frozen = false
+        frozen = false
         FreezeEntityPosition(target, false)
     end
 end)

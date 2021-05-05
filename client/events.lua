@@ -20,34 +20,24 @@ local blockedPeds = {
 -- Events
 
 RegisterNetEvent('qb-admin:client:spectate')
-AddEventHandler('qb-admin:client:spectate', function(targetPed)
+AddEventHandler('qb-admin:client:spectate', function(targetPed, coords)
     local myPed = PlayerPedId()
-
+    local targetplayer = GetPlayerFromServerId(targetPed)
+    local target = GetPlayerPed(targetplayer)
     if not isSpectating then
         isSpectating = true
-        SetEntityVisible(myPed, false)
-        SetEntityInvincible(myPed, true)
-        lastSpectateCoord = GetEntityCoords(myPed)
-        DoScreenFadeOut(150)
-        SetTimeout(250, function()
-            SetEntityVisible(myPed, false)
-            SetEntityCoords(myPed, GetOffsetFromEntityInWorldCoords(targetPed, 0.0, 0.45, 0.0))
-            AttachEntityToEntity(myPed, targetPed, 11816, 0.0, -1.3, 1.0, 0.0, 0.0, 0.0, false, false, false, false, 2, true)
-            SetEntityVisible(myPed, false)
-            SetEntityInvincible(myPed, true)
-            DoScreenFadeIn(150)
-        end)
+        SetEntityVisible(myPed, false) -- Set invisible
+        SetEntityInvincible(myPed, true) -- set godmode
+        lastSpectateCoord = GetEntityCoords(myPed) -- save my last coords
+        SetEntityCoords(myPed, coords) -- Teleport To Player
+        NetworkSetInSpectatorMode(true, target) -- Enter Spectate Mode
     else
         isSpectating = false
-        DoScreenFadeOut(150)
-        DetachEntity(myPed, true, false)
-        SetTimeout(250, function()
-            SetEntityCoords(myPed, lastSpectateCoord)
-            SetEntityVisible(myPed, true)
-            SetEntityInvincible(myPed, false)
-            DoScreenFadeIn(150)
-            lastSpectateCoord = nil
-        end)
+        NetworkSetInSpectatorMode(false, target) -- Remove From Spectate Mode
+        SetEntityCoords(myPed, lastSpectateCoord) -- Return Me To My Coords
+        SetEntityVisible(myPed, true) -- Remove invisible
+        SetEntityInvincible(myPed, false) -- Remove godmode
+        lastSpectateCoord = nil -- Reset Last Saved Coords
     end
 end)
 
