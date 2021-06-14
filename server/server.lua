@@ -91,7 +91,7 @@ RegisterNetEvent('qb-admin:server:goto')
 AddEventHandler('qb-admin:server:goto', function(player)
     local src = source
     local admin = GetPlayerPed(src)
-    local coords = player.coords
+    local coords = GetEntityCoords(GetPlayerPed(player.id))
     SetEntityCoords(admin, coords)
 end)
 
