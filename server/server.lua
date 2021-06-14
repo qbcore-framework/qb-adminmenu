@@ -63,7 +63,20 @@ AddEventHandler("qb-admin:server:ban", function(player)
     local src = source
     local banTime = 999
     local reason = 'Ask Staff Member'
-    QBCore.Functions.ExecuteSql(false, "INSERT INTO `bans` (`name`, `steam`, `license`, `discord`,`ip`, `reason`, `expire`, `bannedby`) VALUES ('"..GetPlayerName(player.id).."', '"..GetPlayerIdentifiers(player.id)[1].."', '"..GetPlayerIdentifiers(player.id)[2].."', '"..GetPlayerIdentifiers(player.id)[3].."', '"..GetPlayerIdentifiers(player.id)[4].."', '"..reason.."', "..banTime..", '"..GetPlayerName(src).."')")
+    QBCore.Functions.ExecuteSql(
+        false,
+        {
+            ['a'] = GetPlayerName(player.id),
+            ['b'] = GetPlayerIdentifiers(player.id)[1],
+            ['c'] = GetPlayerIdentifiers(player.id)[2],
+            ['d'] = GetPlayerIdentifiers(player.id)[3],
+            ['e'] = GetPlayerIdentifiers(player.id)[4],
+            ['f'] = reason,
+            ['g'] = banTime,
+            ['h'] = GetPlayerName(src),
+        },
+        "INSERT INTO `bans` (`name`, `steam`, `license`, `discord`,`ip`, `reason`, `expire`, `bannedby`) VALUES (@a, @b, @c, @d, @e, @f, @g, @h)"
+    )
     DropPlayer(player.id, 'You Have Been Banned, Appeal In Discord')
 end)
 
@@ -149,9 +162,19 @@ RegisterServerEvent('qb-admin:server:SaveCar')
 AddEventHandler('qb-admin:server:SaveCar', function(mods, vehicle, hash, plate)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-    QBCore.Functions.ExecuteSql(false, "SELECT * FROM `player_vehicles` WHERE `plate` = '"..plate.."'", function(result)
+    QBCore.Functions.ExecuteSql(false, {['plate'] = plate}, "SELECT * FROM `player_vehicles` WHERE `plate` = '@plate'", function(result)
         if result[1] == nil then
-            QBCore.Functions.ExecuteSql(false, "INSERT INTO `player_vehicles` (`steam`, `citizenid`, `vehicle`, `hash`, `mods`, `plate`, `state`) VALUES ('"..Player.PlayerData.steam.."', '"..Player.PlayerData.citizenid.."', '"..vehicle.model.."', '"..vehicle.hash.."', '"..json.encode(mods).."', '"..plate.."', 0)")
+            QBCore.Functions.ExecuteSql(
+                false,
+                {
+                    ['a'] = Player.PlayerData.steam,
+                    ['b'] = Player.PlayerData.citizenid,
+                    ['c'] = vehicle.model,
+                    ['d'] = vehicle.hash,
+                    ['e'] = json.encode(mods),
+                    ['f'] = plate,
+                },
+                "INSERT INTO `player_vehicles` (`steam`, `citizenid`, `vehicle`, `hash`, `mods`, `plate`, `state`) VALUES (@a, @b, @c, @d, @e, @f, 0)")
             TriggerClientEvent('QBCore:Notify', src, 'The vehicle is now yours!', 'success', 5000)
         else
             TriggerClientEvent('QBCore:Notify', src, 'This vehicle is already yours..', 'error', 3000)
@@ -207,7 +230,15 @@ QBCore.Commands.Add("warn", "Warn A Player (Admin Only)", {{name="ID", help="Pla
     if targetPlayer ~= nil then
         TriggerClientEvent('chatMessage', targetPlayer.PlayerData.source, "SYSTEM", "error", "You have been warned by: "..GetPlayerName(source)..", Reason: "..msg)
         TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "You have warned "..GetPlayerName(targetPlayer.PlayerData.source).." for: "..msg)
-        QBCore.Functions.ExecuteSql(false, "INSERT INTO `player_warns` (`senderIdentifier`, `targetIdentifier`, `reason`, `warnId`) VALUES ('"..senderPlayer.PlayerData.steam.."', '"..targetPlayer.PlayerData.steam.."', '"..msg.."', '"..warnId.."')")
+        QBCore.Functions.ExecuteSql(
+            false,
+            {
+                ['a'] = senderPlayer.PlayerData.steam,
+                ['b'] = targetPlayer.PlayerData.steam,
+                ['c'] = msg,
+                ['d'] = warnId
+            },
+            "INSERT INTO `player_warns` (`senderIdentifier`, `targetIdentifier`, `reason`, `warnId`) VALUES (@a, @b, @c, @d)")
     else
         TriggerClientEvent('QBCore:Notify', source, 'This player is not online', 'error')
     end 
@@ -216,12 +247,12 @@ end, "admin")
 QBCore.Commands.Add("checkwarns", "Check Player Warnings (Admin Only)", {{name="ID", help="Player"}, {name="Warning", help="Number of warning, (1, 2 or 3 etc..)"}}, false, function(source, args)
     if args[2] == nil then
         local targetPlayer = QBCore.Functions.GetPlayer(tonumber(args[1]))
-        QBCore.Functions.ExecuteSql(false, "SELECT * FROM `player_warns` WHERE `targetIdentifier` = '"..targetPlayer.PlayerData.steam.."'", function(result)
+        QBCore.Functions.ExecuteSql(false, {['a']= targetPlayer.PlayerData.steam}, "SELECT * FROM `player_warns` WHERE `targetIdentifier` = @a", function(result)
             TriggerClientEvent('chatMessage', source, "SYSTEM", "warning", targetPlayer.PlayerData.name.." has "..tablelength(result).." warnings!")
         end)
     else
         local targetPlayer = QBCore.Functions.GetPlayer(tonumber(args[1]))
-        QBCore.Functions.ExecuteSql(false, "SELECT * FROM `player_warns` WHERE `targetIdentifier` = '"..targetPlayer.PlayerData.steam.."'", function(warnings)
+        QBCore.Functions.ExecuteSql(false, {['a']=targetPlayer.PlayerData.steam}, "SELECT * FROM `player_warns` WHERE `targetIdentifier` = @a", function(warnings)
             local selectedWarning = tonumber(args[2])
 
             if warnings[selectedWarning] ~= nil then
@@ -235,13 +266,13 @@ end, "admin")
 
 QBCore.Commands.Add("delwarn", "Delete Players Warnings (Admin Only)", {{name="ID", help="Player"}, {name="Warning", help="Number of warning, (1, 2 or 3 etc..)"}}, true, function(source, args)
     local targetPlayer = QBCore.Functions.GetPlayer(tonumber(args[1]))
-    QBCore.Functions.ExecuteSql(false, "SELECT * FROM `player_warns` WHERE `targetIdentifier` = '"..targetPlayer.PlayerData.steam.."'", function(warnings)
+    QBCore.Functions.ExecuteSql(false, {['a']=targetPlayer.PlayerData.steam}, "SELECT * FROM `player_warns` WHERE `targetIdentifier` = @a", function(warnings)
         local selectedWarning = tonumber(args[2])
         if warnings[selectedWarning] ~= nil then
             local sender = QBCore.Functions.GetPlayer(warnings[selectedWarning].senderIdentifier)
 
             TriggerClientEvent('chatMessage', source, "SYSTEM", "warning", "You have deleted warning ("..selectedWarning..") , Reason: "..warnings[selectedWarning].reason)
-            QBCore.Functions.ExecuteSql(false, "DELETE FROM `player_warns` WHERE `warnId` = '"..warnings[selectedWarning].warnId.."'")
+            QBCore.Functions.ExecuteSql(false, {['a']=warnings[selectedWarning].warnId}, "DELETE FROM `player_warns` WHERE `warnId` = @a")
         end
     end)
 end, "admin")
