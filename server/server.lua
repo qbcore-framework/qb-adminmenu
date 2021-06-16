@@ -32,6 +32,14 @@ QBCore.Functions.CreateCallback('test:getplayers', function(source, cb) -- WORKS
     cb(players)
 end)
 
+QBCore.Functions.CreateCallback('qb-admin:server:getrank', function(source, cb)
+    if QBCore.Functions.HasPermission(source, "god") then
+        cb(true)
+    else
+        cb(false)
+    end
+end)
+
 -- Functions
 
 function tablelength(table)
