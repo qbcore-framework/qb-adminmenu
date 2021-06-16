@@ -1,4 +1,7 @@
 QBCore = nil
+local banlength = nil
+local banreason = 'Unknown'
+local kickreason = 'Unknown'
 
 CreateThread(function()
     while QBCore == nil do
