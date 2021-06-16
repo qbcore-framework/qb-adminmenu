@@ -7,7 +7,8 @@ local permissions = {
     ["kill"] = "god",
     ["ban"] = "admin",
     ["noclip"] = "admin",
-    ["kickall"] = "admin"
+    ["kickall"] = "admin",
+    ["kick"] = "admin"
 }
 
 -- Get Players
@@ -29,6 +30,14 @@ QBCore.Functions.CreateCallback('test:getplayers', function(source, cb) -- WORKS
         })
     end
     cb(players)
+end)
+
+QBCore.Functions.CreateCallback('qb-admin:server:getrank', function(source, cb)
+    if QBCore.Functions.HasPermission(source, "god") then
+        cb(true)
+    else
+        cb(false)
+    end
 end)
 
 -- Functions
@@ -55,16 +64,33 @@ end)
 
 RegisterNetEvent("qb-admin:server:kick")
 AddEventHandler("qb-admin:server:kick", function(player)
-    DropPlayer(player.id, 'You Have Been Kicked, Contact Discord Staff')
+    local src = source
+    if QBCore.Functions.HasPermission(src, permissions["kick"]) then
+        DropPlayer(player.id, "You have been kicked from the server:\n" .. reason .. "\n\n🔸 Join the discord server for more information: https://discord.gg/example")
+    end
 end)
 
 RegisterNetEvent("qb-admin:server:ban")
 AddEventHandler("qb-admin:server:ban", function(player)
     local src = source
-    local banTime = 999
-    local reason = 'Ask Staff Member'
-    QBCore.Functions.ExecuteSql(false, "INSERT INTO `bans` (`name`, `steam`, `license`, `discord`,`ip`, `reason`, `expire`, `bannedby`) VALUES ('"..GetPlayerName(player.id).."', '"..GetPlayerIdentifiers(player.id)[1].."', '"..GetPlayerIdentifiers(player.id)[2].."', '"..GetPlayerIdentifiers(player.id)[3].."', '"..GetPlayerIdentifiers(player.id)[4].."', '"..reason.."', "..banTime..", '"..GetPlayerName(src).."')")
-    DropPlayer(player.id, 'You Have Been Banned, Appeal In Discord')
+    if QBCore.Functions.HasPermission(src, permissions["ban"]) then
+        local time = tonumber(time)
+        local banTime = tonumber(os.time() + time)
+        if banTime > 2147483647 then
+            banTime = 2147483647
+        end
+        local timeTable = os.date("*t", banTime)
+        QBCore.Functions.ExecuteSql(false, "INSERT INTO `bans` (`name`, `steam`, `license`, `discord`,`ip`, `reason`, `expire`, `bannedby`) VALUES ('"..GetPlayerName(player.id).."', '"..GetPlayerIdentifiers(player.id)[1].."', '"..GetPlayerIdentifiers(player.id)[2].."', '"..GetPlayerIdentifiers(player.id)[3].."', '"..GetPlayerIdentifiers(player.id)[4].."', '"..reason.."', "..banTime..", '"..GetPlayerName(src).."')")
+        TriggerClientEvent('chat:addMessage', -1, {
+            template = '<div class="chat-message server"><strong>ANNOUNCEMENT | {0} has been banned:</strong> {1}</div>',
+            args = {GetPlayerName(src), reason}
+        })
+        if banTime >= 2147483647 then
+            DropPlayer(src, "You have been banned:\n" .. reason .. "\n\nYour ban is permanent.\n🔸 Join the discord for more information: https://discord.gg/example")
+        else
+            DropPlayer(src, "You have been banned:\n" .. reason .. "\n\nBan expires: " .. timeTable["day"] .. "/" .. timeTable["month"] .. "/" .. timeTable["year"] .. " " .. timeTable["hour"] .. ":" .. timeTable["min"] .. "\n🔸 Join the discord for more information: https://discord.gg/example")
+        end
+    end
 end)
 
 RegisterNetEvent("qb-admin:server:spectate")
