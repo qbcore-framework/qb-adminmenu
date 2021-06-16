@@ -559,7 +559,7 @@ function OpenKickMenu(kickplayer)
 end
 
 function OpenPermsMenu(permsply)
-    QBCore.Functions.TriggerCallback('if-admin:server:getrank', function(rankk)
+    QBCore.Functions.TriggerCallback('qb-admin:server:getrank', function(rankk)
         if rankk then
             local selectedgroup = 'Unknown'
             MenuV:OpenMenu(menu10)
