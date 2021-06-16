@@ -16,6 +16,9 @@ local menu4 = MenuV:CreateMenu(false, 'Online Players', 'topright', 155, 0, 0, '
 local menu5 = MenuV:CreateMenu(false, 'Manage Server', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test4')
 local menu6 = MenuV:CreateMenu(false, 'Available Weather Options', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test5')
 local menu7 = MenuV:CreateMenu(false, 'Check Current/Add Dealers', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test6')
+local menu8 = MenuV:CreateMenu(false, 'Ban', 'topright', 155, 0, 0, 'size-150', 'none', 'menuv', 'test7', 'native')
+local menu9 = MenuV:CreateMenu(false, 'Kick', 'topright', 155, 0, 0, 'size-150', 'none', 'menuv', 'test8', 'native')
+local menu10 = MenuV:CreateMenu(false, 'Permissions', 'topright', 155, 0, 0, 'size-150', 'none', 'menuv', 'test9', 'native')
 
 RegisterNetEvent('qb-admin:client:openMenu')
 AddEventHandler('qb-admin:client:openMenu', function()
@@ -401,13 +404,13 @@ function OpenPlayerMenus(player)
             label = "Ban",
             value = "ban",
             description = "Ban " .. player.cid .. " you need to give a reason"
-        }
---[[         [11] = {
+        },
+        [11] = {
             icon = '🎟️',
             label = "Permissions",
             value = "perms",
             description = "Give " .. player.cid .. " Permissions"
-        } ]]
+        }
     }
     for k, v in ipairs(elements) do
         local menu_button10 = Players:AddButton({
@@ -417,10 +420,197 @@ function OpenPlayerMenus(player)
             description = v.description,
             select = function(btn)
                 local values = btn.Value
-                TriggerServerEvent('qb-admin:server:'..values, player)
+                if values ~= "ban" and values ~= "kick" and values ~= "perms" then
+                    TriggerServerEvent('qb-admin:server:'..values, player)
+                elseif values == "ban" then
+                    OpenBanMenu(player)
+                elseif values == "kick" then
+                    OpenKickMenu(player)
+                elseif values == "perms" then
+                    OpenPermsMenu(player)
+                end
             end
         })
     end
+end
+
+function OpenBanMenu(banspeler)
+    MenuV:OpenMenu(menu8)
+    menu8:ClearItems()
+    local menu_button15 = menu8:AddButton({
+        icon = '',
+        label = 'Reason',
+        value = "reason",
+        description = 'Ban reason',
+        select = function(btn)
+            banreason = LocalInput('Ban Reason', 255, 'Reason')
+        end
+    })
+
+    local menu_button16 = menu8:AddSlider({
+        icon = '⏲️',
+        label = 'Length',
+        value = '3600',
+        values = {{
+            label = '1 hour',
+            value = '3600',
+            description = 'Ban Length'
+        }, {
+            label = '6 hours',
+            value ='21600',
+            description = 'Ban Length'
+        }, {
+            label = '12 hours',
+            value = '43200',
+            description = 'Ban Length'
+        }, {
+            label = '1 day',
+            value = '86400',
+            description = 'Ban Length'
+        }, {
+            label = '3 days',
+            value = '259200',
+            description = 'Ban Length'
+        }, {
+            label = '1 week',
+            value = '604800',
+            description = 'Ban Length'
+        }, {
+            label = '1 month',
+            value = '2678400',
+            description = 'Ban Length'
+        }, {
+            label = '3 months',
+            value = '8035200',
+            description = 'Ban Length'
+        }, {
+            label = '6 months',
+            value = '16070400',
+            description = 'Ban Length'
+        }, {
+            label = '1 year',
+            value = '32140800',
+            description = 'Ban Length'
+        }, {
+            label = 'Permanent',
+            value = '99999999999',
+            description = 'Ban Length'
+        }, {
+            label = 'Self',
+            value = "self",
+            description = 'Ban Length'
+        }},
+        select = function(btn, newValue, oldValue)
+            if newValue == "self" then
+                banlength = LocalInputInt('Ban Length', 11, 'Seconds')
+            else
+                banlength = newValue
+            end
+        end
+    })
+
+    local menu_button17 = menu8:AddButton({
+        icon = '',
+        label = 'Confirm',
+        value = "ban",
+        description = 'Confirm the ban',
+        select = function(btn)
+            if banreason ~= 'Unknown' and banlength ~= nil then
+                TriggerServerEvent('qb-admin:server:ban', banspeler, banlength, banreason)
+                banreason = 'Unknown'
+                banlength = nil
+            else
+                QBCore.Functions.Notify('You must give a Reason and set a Length for the ban!', 'error')
+            end
+        end
+    })
+end
+
+function OpenKickMenu(kickplayer)
+    MenuV:OpenMenu(menu9)
+    menu9:ClearItems()
+    local menu_button19 = menu9:AddButton({
+        icon = '',
+        label = 'Reason',
+        value = "reason",
+        description = 'Kick reason',
+        select = function(btn)
+            kickreason = LocalInput('Kick Reason', 255, 'Reason')
+        end
+    })
+
+    local menu_button18 = menu9:AddButton({
+        icon = '',
+        label = 'Confirm',
+        value = "kick",
+        description = 'Confirm the kick',
+        select = function(btn)
+            if kickreason ~= 'Unknown' then
+                TriggerServerEvent('qb-admin:server:kick', kickplayer, kickreason)
+                kickreason = 'Unknown'
+            else
+                QBCore.Functions.Notify('You must give a reason!', 'error')
+            end
+        end
+    })
+end
+
+function OpenPermsMenu(permsply)
+    QBCore.Functions.TriggerCallback('if-admin:server:getrank', function(rankk)
+        if rankk then
+            local selectedgroup = 'Unknown'
+            MenuV:OpenMenu(menu10)
+            menu10:ClearItems()
+            local menu_button20 = menu10:AddSlider({
+                icon = '',
+                label = 'Group',
+                value = 'user',
+                values = {{
+                    label = 'User',
+                    value = 'user',
+                    description = 'Group'
+                }, {
+                    label = 'Admin',
+                    value = 'admin',
+                    description = 'Group'
+                }, {
+                    label = 'God',
+                    value = 'god',
+                    description = 'Group'
+                }},
+                select = function(btn)
+                    local vcal = btn.Value
+                    if vcal == 1 then
+                        selectedgroup = {}
+                        table.insert(selectedgroup, {rank = "user", label = "User"})
+                    elseif vcal == 2 then
+                        selectedgroup = {}
+                        table.insert(selectedgroup, {rank = "admin", label = "Admin"})
+                    elseif vcal == 3 then
+                        selectedgroup = {}
+                        table.insert(selectedgroup, {rank = "god", label = "God"})
+                    end
+                end
+            })
+
+            local menu_button21 = menu10:AddButton({
+                icon = '',
+                label = 'Confirm',
+                value = "giveperms",
+                description = 'Give the permission group',
+                select = function(btn)
+                    if selectedgroup ~= 'Unknown' then
+                        TriggerServerEvent('qb-admin:server:setPermissions', permsply.id, selectedgroup)
+                        selectedgroup = 'Unknown'
+                    else
+                        QBCore.Functions.Notify('Choose a group!', 'error')
+                    end
+                end
+            })
+        else
+            MenuV:CloseMenu(menu)
+        end
+    end)
 end
 
 -- Toggle NoClip
