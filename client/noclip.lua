@@ -1,9 +1,7 @@
 --[[
   * Created by MiiMii1205
   * license MIT
---]]
-
--- Constants --
+--]] -- Constants --
 MOVE_UP_KEY = 20
 MOVE_DOWN_KEY = 44
 CHANGE_SPEED_KEY = 21
@@ -19,12 +17,11 @@ local eps = 0.01
 local RESSOURCE_NAME = GetCurrentResourceName();
 
 STARTUP_STRING = ('%s v%s initialized'):format(RESSOURCE_NAME, GetResourceMetadata(RESSOURCE_NAME, 'version', 0))
-STARTUP_HTML_STRING = (':business_suit_levitating: %s <small>v%s</small> initialized'):format(RESSOURCE_NAME, GetResourceMetadata(RESSOURCE_NAME, 'version', 0))
+STARTUP_HTML_STRING = (':business_suit_levitating: %s <small>v%s</small> initialized'):format(RESSOURCE_NAME,
+    GetResourceMetadata(RESSOURCE_NAME, 'version', 0))
 
 -- Variables --
 local isNoClipping = false
-local playerPed = PlayerPedId()
-local playerId = PlayerId()
 local speed = NO_CLIP_NORMAL_SPEED
 local input = vector3(0, 0, 0)
 local previousVelocity = vector3(0, 0, 0)
@@ -37,11 +34,17 @@ function ToggleNoClipMode()
     return SetNoClip(not isNoClipping)
 end
 
-function IsControlAlwaysPressed(inputGroup, control) return IsControlPressed(inputGroup, control) or IsDisabledControlPressed(inputGroup, control) end
+function IsControlAlwaysPressed(inputGroup, control)
+    return IsControlPressed(inputGroup, control) or IsDisabledControlPressed(inputGroup, control)
+end
 
-function IsControlAlwaysJustPressed(inputGroup, control) return IsControlJustPressed(inputGroup, control) or IsDisabledControlJustPressed(inputGroup, control) end
+function IsControlAlwaysJustPressed(inputGroup, control)
+    return IsControlJustPressed(inputGroup, control) or IsDisabledControlJustPressed(inputGroup, control)
+end
 
-function Lerp (a, b, t) return a + (b - a) * t end
+function Lerp(a, b, t)
+    return a + (b - a) * t
+end
 
 function IsPedDrivingVehicle(ped, veh)
     return ped == GetPedInVehicleSeat(veh, -1);
@@ -55,7 +58,7 @@ end
 function SetNoClip(val)
 
     if (isNoClipping ~= val) then
-
+        local playerPed = PlayerPedId()
         noClippingEntity = playerPed;
 
         if IsPedInAnyVehicle(playerPed, false) then
@@ -79,14 +82,15 @@ function SetNoClip(val)
 
         end
 
-        TriggerEvent('msgprinter:addMessage', ((isNoClipping and ":airplane: No-clip enabled") or ":rock: No-clip disabled"), GetCurrentResourceName());
+        TriggerEvent('msgprinter:addMessage',
+            ((isNoClipping and ":airplane: No-clip enabled") or ":rock: No-clip disabled"), GetCurrentResourceName());
         SetUserRadioControlEnabled(not isNoClipping);
 
         if (isNoClipping) then
 
-            TriggerEvent('instructor:add-instruction', { MOVE_LEFT_RIGHT, MOVE_UP_DOWN }, "move", RESSOURCE_NAME);
-            TriggerEvent('instructor:add-instruction', { MOVE_UP_KEY, MOVE_DOWN_KEY }, "move up/down", RESSOURCE_NAME);
-            TriggerEvent('instructor:add-instruction', { 1, 2 }, "Turn", RESSOURCE_NAME);
+            TriggerEvent('instructor:add-instruction', {MOVE_LEFT_RIGHT, MOVE_UP_DOWN}, "move", RESSOURCE_NAME);
+            TriggerEvent('instructor:add-instruction', {MOVE_UP_KEY, MOVE_DOWN_KEY}, "move up/down", RESSOURCE_NAME);
+            TriggerEvent('instructor:add-instruction', {1, 2}, "Turn", RESSOURCE_NAME);
             TriggerEvent('instructor:add-instruction', CHANGE_SPEED_KEY, "(hold) fast mode", RESSOURCE_NAME);
             TriggerEvent('instructor:add-instruction', NOCLIP_TOGGLE_KEY, "Toggle No-clip", RESSOURCE_NAME);
             SetEntityAlpha(noClippingEntity, 51, 0)
@@ -118,8 +122,11 @@ function SetNoClip(val)
                     SetPoliceIgnorePlayer(pPed, true);
 
                     -- `(a and b) or c`, is basically `a ? b : c` --
-                    input = vector3(GetControlNormal(0, MOVE_LEFT_RIGHT), GetControlNormal(0, MOVE_UP_DOWN), (IsControlAlwaysPressed(1, MOVE_UP_KEY) and 1) or ((IsControlAlwaysPressed(1, MOVE_DOWN_KEY) and -1) or 0))
-                    speed = ((IsControlAlwaysPressed(1, CHANGE_SPEED_KEY) and NO_CLIP_FAST_SPEED) or NO_CLIP_NORMAL_SPEED) * ((isClippedVeh and 2.75) or 1)
+                    input = vector3(GetControlNormal(0, MOVE_LEFT_RIGHT), GetControlNormal(0, MOVE_UP_DOWN),
+                        (IsControlAlwaysPressed(1, MOVE_UP_KEY) and 1) or
+                            ((IsControlAlwaysPressed(1, MOVE_DOWN_KEY) and -1) or 0))
+                    speed = ((IsControlAlwaysPressed(1, CHANGE_SPEED_KEY) and NO_CLIP_FAST_SPEED) or
+                                NO_CLIP_NORMAL_SPEED) * ((isClippedVeh and 2.75) or 1)
 
                     MoveInNoClip();
 
@@ -196,38 +203,23 @@ function SetNoClip(val)
 end
 
 function MoveInNoClip()
-
     SetEntityRotation(noClippingEntity, GetGameplayCamRot(0), 0, false)
     local forward, right, up, c = GetEntityMatrix(noClippingEntity);
-    previousVelocity = Lerp(previousVelocity, (((right * input.x * speed) + (up * -input.z * speed) + (forward * -input.y * speed))), Timestep() * breakSpeed);
+    previousVelocity = Lerp(previousVelocity,
+        (((right * input.x * speed) + (up * -input.z * speed) + (forward * -input.y * speed))), Timestep() * breakSpeed);
     c = c + previousVelocity
     SetEntityCoords(noClippingEntity, c - offset, true, true, true, false)
 
 end
 
 function MoveCarInNoClip()
-
     SetEntityRotation(noClippingEntity, GetGameplayCamRot(0), 0, false)
     local forward, right, up, c = GetEntityMatrix(noClippingEntity);
-    previousVelocity = Lerp(previousVelocity, (((right * input.x * speed) + (up * input.z * speed) + (forward * -input.y * speed))), Timestep() * breakSpeed);
+    previousVelocity = Lerp(previousVelocity,
+        (((right * input.x * speed) + (up * input.z * speed) + (forward * -input.y * speed))), Timestep() * breakSpeed);
     c = c + previousVelocity
     SetEntityCoords(noClippingEntity, (c - offset) + (vec(0, 0, .3)), true, true, true, false)
-
 end
-
-AddEventHandler('playerSpawned', function()
-
-    playerPed = PlayerPedId()
-    playerId = PlayerId()
-
-end)
-
-AddEventHandler('RCC:newPed', function()
-
-    playerPed = PlayerPedId()
-    playerId = PlayerId()
-
-end)
 
 AddEventHandler('onResourceStop', function(resourceName)
     if resourceName == RESSOURCE_NAME then
@@ -245,30 +237,3 @@ AddEventHandler('onResourceStop', function(resourceName)
         SetInvincible(false, noClippingEntity);
     end
 end)
-
--- Citizen.CreateThread(function()
-
---     print(STARTUP_STRING)
---     TriggerEvent('msgprinter:addMessage', STARTUP_HTML_STRING, GetCurrentResourceName());
-
---     if ENABLE_TOGGLE_NO_CLIP then
-
---         RegisterCommand("noClip", function(source, args, rawCommand)
---             SetNoClip(tonumber(args[1]) == 1)
---         end)
-
---         RegisterCommand("+noClip", function(source, rawCommand)
---             SetNoClip(true)
---         end)
---         RegisterCommand("-noClip", function(source, rawCommand)
---             SetNoClip(false)
---         end)
-
---         RegisterCommand("toggleNoClip", function(source, rawCommand)
---             ToggleNoClipMode()
---         end)
-
---         RegisterKeyMapping("toggleNoClip", "Toggles no-clipping", "keyboard", "F2");
---     end
-
--- end)
