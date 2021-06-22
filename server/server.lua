@@ -143,8 +143,8 @@ end)
 
 RegisterServerEvent('qb-admin:server:setPermissions')
 AddEventHandler('qb-admin:server:setPermissions', function(targetId, group)
-    QBCore.Functions.AddPermission(targetId, group.rank)
-    TriggerClientEvent('QBCore:Notify', targetId, 'Your Permission Level Is Now '..group.label)
+    QBCore.Functions.AddPermission(targetId, group[1].rank)
+    TriggerClientEvent('QBCore:Notify', targetId, 'Your Permission Level Is Now '..group[1].label)
 end)
 
 RegisterServerEvent('qb-admin:server:SendReport')
