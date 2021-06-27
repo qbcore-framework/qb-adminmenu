@@ -63,7 +63,7 @@ AddEventHandler("qb-admin:server:revive", function(player)
 end)
 
 RegisterNetEvent("qb-admin:server:kick")
-AddEventHandler("qb-admin:server:kick", function(player)
+AddEventHandler("qb-admin:server:kick", function(player, reason)
     local src = source
     if QBCore.Functions.HasPermission(src, permissions["kick"]) then
         DropPlayer(player.id, "You have been kicked from the server:\n" .. reason .. "\n\n🔸 Join the discord server for more information: https://discord.gg/example")
