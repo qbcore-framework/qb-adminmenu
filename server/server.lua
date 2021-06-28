@@ -71,7 +71,7 @@ AddEventHandler("qb-admin:server:kick", function(player, reason)
 end)
 
 RegisterNetEvent("qb-admin:server:ban")
-AddEventHandler("qb-admin:server:ban", function(player)
+AddEventHandler("qb-admin:server:ban", function(player, time, reason)
     local src = source
     if QBCore.Functions.HasPermission(src, permissions["ban"]) then
         local time = tonumber(time)
