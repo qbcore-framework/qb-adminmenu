@@ -80,7 +80,16 @@ AddEventHandler("qb-admin:server:ban", function(player)
             banTime = 2147483647
         end
         local timeTable = os.date("*t", banTime)
-        QBCore.Functions.ExecuteSql(false, "INSERT INTO `bans` (`name`, `steam`, `license`, `discord`,`ip`, `reason`, `expire`, `bannedby`) VALUES ('"..GetPlayerName(player.id).."', '"..GetPlayerIdentifiers(player.id)[1].."', '"..GetPlayerIdentifiers(player.id)[2].."', '"..GetPlayerIdentifiers(player.id)[3].."', '"..GetPlayerIdentifiers(player.id)[4].."', '"..reason.."', "..banTime..", '"..GetPlayerName(src).."')")
+        exports.ghmattimysql:execute('INSERT INTO bans (name, steam, license, discord, ip, reason, expire. bannedby) VALUES (@name, @steam, @license, @discord, @ip, @reason, @expire, @bannedby)', {
+            ['@name'] = GetPlayerName(player.id),
+            ['@steam'] = GetPlayerIdentifiers(player.id)[1],
+            ['@license'] = GetPlayerIdentifiers(player.id)[2],
+            ['@discord'] = GetPlayerIdentifiers(player.id)[3],
+            ['@ip'] = GetPlayerIdentifiers(player.id)[4],
+            ['@reason'] = reason,
+            ['@expire'] = banTime,
+            ['@bannedby'] = GetPlayerName(src)
+        })
         TriggerClientEvent('chat:addMessage', -1, {
             template = '<div class="chat-message server"><strong>ANNOUNCEMENT | {0} has been banned:</strong> {1}</div>',
             args = {GetPlayerName(src), reason}
@@ -175,9 +184,17 @@ RegisterServerEvent('qb-admin:server:SaveCar')
 AddEventHandler('qb-admin:server:SaveCar', function(mods, vehicle, hash, plate)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-    QBCore.Functions.ExecuteSql(false, "SELECT * FROM `player_vehicles` WHERE `plate` = '"..plate.."'", function(result)
+    exports.ghmattimysql:execute('SELECT plate FROM player_vehicles WHERE plate=@plate', {['@plate'] = plate}, function(result)
         if result[1] == nil then
-            QBCore.Functions.ExecuteSql(false, "INSERT INTO `player_vehicles` (`steam`, `citizenid`, `vehicle`, `hash`, `mods`, `plate`, `state`) VALUES ('"..Player.PlayerData.steam.."', '"..Player.PlayerData.citizenid.."', '"..vehicle.model.."', '"..vehicle.hash.."', '"..json.encode(mods).."', '"..plate.."', 0)")
+            exports.ghmattimysql:execute('INSERT INTO player_vehicles (steam, citizenid, vehicle, hash, mods, plate, state) VALUES (@steam, @citizenid, @vehicle, @hash, @mods, @plate, @state)', {
+                ['@steam'] = Player.PlayerData.steam,
+                ['@citizenid'] = Player.PlayerData.citizenid,
+                ['@vehicle'] = vehicle.model,
+                ['@hash'] = vehicle.hash,
+                ['@mods'] = json.encode(mods),
+                ['@plate'] = plate,
+                ['@state'] = 0
+            })
             TriggerClientEvent('QBCore:Notify', src, 'The vehicle is now yours!', 'success', 5000)
         else
             TriggerClientEvent('QBCore:Notify', src, 'This vehicle is already yours..', 'error', 3000)
@@ -233,7 +250,12 @@ QBCore.Commands.Add("warn", "Warn A Player (Admin Only)", {{name="ID", help="Pla
     if targetPlayer ~= nil then
         TriggerClientEvent('chatMessage', targetPlayer.PlayerData.source, "SYSTEM", "error", "You have been warned by: "..GetPlayerName(source)..", Reason: "..msg)
         TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "You have warned "..GetPlayerName(targetPlayer.PlayerData.source).." for: "..msg)
-        QBCore.Functions.ExecuteSql(false, "INSERT INTO `player_warns` (`senderIdentifier`, `targetIdentifier`, `reason`, `warnId`) VALUES ('"..senderPlayer.PlayerData.steam.."', '"..targetPlayer.PlayerData.steam.."', '"..msg.."', '"..warnId.."')")
+        exports.ghmattimysql:execute('INSERT INTO player_warns (senderIdentifier, targetIdentifier, reason, warnId) VALUES (@senderIdentifier, @targetIdentifier, @reason, @warnId)', {
+            ['@senderIdentifier'] = senderPlayer.PlayerData.steam,
+            ['@targetIdentifier'] = targetPlayer.PlayerData.steam,
+            ['@reason'] = msg,
+            ['@warnId'] = warnId
+        })
     else
         TriggerClientEvent('QBCore:Notify', source, 'This player is not online', 'error')
     end 
@@ -242,12 +264,12 @@ end, "admin")
 QBCore.Commands.Add("checkwarns", "Check Player Warnings (Admin Only)", {{name="ID", help="Player"}, {name="Warning", help="Number of warning, (1, 2 or 3 etc..)"}}, false, function(source, args)
     if args[2] == nil then
         local targetPlayer = QBCore.Functions.GetPlayer(tonumber(args[1]))
-        QBCore.Functions.ExecuteSql(false, "SELECT * FROM `player_warns` WHERE `targetIdentifier` = '"..targetPlayer.PlayerData.steam.."'", function(result)
+        exports.ghmattimysql:execute('SELECT * FROM player_warns WHERE targetIdentifier=@targetIdentifier', {['@targetIdentifier'] = targetPlayer.PlayerData.steam}, function(result)
             TriggerClientEvent('chatMessage', source, "SYSTEM", "warning", targetPlayer.PlayerData.name.." has "..tablelength(result).." warnings!")
         end)
     else
         local targetPlayer = QBCore.Functions.GetPlayer(tonumber(args[1]))
-        QBCore.Functions.ExecuteSql(false, "SELECT * FROM `player_warns` WHERE `targetIdentifier` = '"..targetPlayer.PlayerData.steam.."'", function(warnings)
+        exports.ghmattimysql:execute('SELECT * FROM player_warns WHERE targetIdentifier=@targetIdentifier', {['@targetIdentifier'] = targetPlayer.PlayerData.steam}, function(warnings)
             local selectedWarning = tonumber(args[2])
 
             if warnings[selectedWarning] ~= nil then
@@ -261,13 +283,13 @@ end, "admin")
 
 QBCore.Commands.Add("delwarn", "Delete Players Warnings (Admin Only)", {{name="ID", help="Player"}, {name="Warning", help="Number of warning, (1, 2 or 3 etc..)"}}, true, function(source, args)
     local targetPlayer = QBCore.Functions.GetPlayer(tonumber(args[1]))
-    QBCore.Functions.ExecuteSql(false, "SELECT * FROM `player_warns` WHERE `targetIdentifier` = '"..targetPlayer.PlayerData.steam.."'", function(warnings)
+    exports.ghmattimysql:execute('SELECT * FROM player_warns WHERE targetIdentifier=@targetIdentifier', {['@targetIdentifier'] = targetPlayer.PlayerData.steam}, function(warnings)
         local selectedWarning = tonumber(args[2])
         if warnings[selectedWarning] ~= nil then
             local sender = QBCore.Functions.GetPlayer(warnings[selectedWarning].senderIdentifier)
 
             TriggerClientEvent('chatMessage', source, "SYSTEM", "warning", "You have deleted warning ("..selectedWarning..") , Reason: "..warnings[selectedWarning].reason)
-            QBCore.Functions.ExecuteSql(false, "DELETE FROM `player_warns` WHERE `warnId` = '"..warnings[selectedWarning].warnId.."'")
+            exports.ghmattimysql:execute('DELETE FROM player_warns WHERE warnId=@warnId', {['@warnId'] = warnings[selectedWarning].warnId})
         end
     end)
 end, "admin")
