@@ -19,9 +19,9 @@ local menu4 = MenuV:CreateMenu(false, 'Online Players', 'topright', 155, 0, 0, '
 local menu5 = MenuV:CreateMenu(false, 'Manage Server', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test4')
 local menu6 = MenuV:CreateMenu(false, 'Available Weather Options', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test5')
 local menu7 = MenuV:CreateMenu(false, 'Check Current/Add Dealers', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test6')
-local menu8 = MenuV:CreateMenu(false, 'Ban', 'topright', 155, 0, 0, 'size-150', 'none', 'menuv', 'test7', 'native')
-local menu9 = MenuV:CreateMenu(false, 'Kick', 'topright', 155, 0, 0, 'size-150', 'none', 'menuv', 'test8', 'native')
-local menu10 = MenuV:CreateMenu(false, 'Permissions', 'topright', 155, 0, 0, 'size-150', 'none', 'menuv', 'test9', 'native')
+local menu8 = MenuV:CreateMenu(false, 'Ban', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test7')
+local menu9 = MenuV:CreateMenu(false, 'Kick', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test8')
+local menu10 = MenuV:CreateMenu(false, 'Permissions', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test9')
 
 RegisterNetEvent('qb-admin:client:openMenu')
 AddEventHandler('qb-admin:client:openMenu', function()
