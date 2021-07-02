@@ -77,7 +77,7 @@ AddEventHandler("qb-admin:server:ban", function(player, time, reason)
             banTime = 2147483647
         end
         local timeTable = os.date("*t", banTime)
-        exports.ghmattimysql:execute('INSERT INTO bans (name, steam, license, discord, ip, reason, expire. bannedby) VALUES (@name, @steam, @license, @discord, @ip, @reason, @expire, @bannedby)', {
+        exports.ghmattimysql:execute('INSERT INTO bans (name, steam, license, discord, ip, reason, expire, bannedby) VALUES (@name, @steam, @license, @discord, @ip, @reason, @expire, @bannedby)', {
             ['@name'] = GetPlayerName(player.id),
             ['@steam'] = GetPlayerIdentifiers(player.id)[1],
             ['@license'] = GetPlayerIdentifiers(player.id)[2],
