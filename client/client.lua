@@ -1,17 +1,6 @@
-QBCore = nil
 local banlength = nil
 local banreason = 'Unknown'
 local kickreason = 'Unknown'
-
-CreateThread(function()
-    while QBCore == nil do
-        TriggerEvent('QBCore:GetObject', function(obj)
-            QBCore = obj
-        end)
-        Wait(200)
-    end
-end)
-
 local menu = MenuV:CreateMenu(false, 'Admin Menu', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test')
 local menu2 = MenuV:CreateMenu(false, 'Admin Options', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test1')
 local menu3 = MenuV:CreateMenu(false, 'Self Options', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test2')
