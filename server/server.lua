@@ -92,9 +92,9 @@ AddEventHandler("qb-admin:server:ban", function(player, time, reason)
             args = {GetPlayerName(src), reason}
         })
         if banTime >= 2147483647 then
-            DropPlayer(src, "You have been banned:\n" .. reason .. "\n\nYour ban is permanent.\n🔸 Join the discord for more information: https://discord.gg/example")
+            DropPlayer(player.id, "You have been banned:\n" .. reason .. "\n\nYour ban is permanent.\n🔸 Join the discord for more information: https://discord.gg/example")
         else
-            DropPlayer(src, "You have been banned:\n" .. reason .. "\n\nBan expires: " .. timeTable["day"] .. "/" .. timeTable["month"] .. "/" .. timeTable["year"] .. " " .. timeTable["hour"] .. ":" .. timeTable["min"] .. "\n🔸 Join the discord for more information: https://discord.gg/example")
+            DropPlayer(player.id, "You have been banned:\n" .. reason .. "\n\nBan expires: " .. timeTable["day"] .. "/" .. timeTable["month"] .. "/" .. timeTable["year"] .. " " .. timeTable["hour"] .. ":" .. timeTable["min"] .. "\n🔸 Join the discord for more information: https://discord.gg/example")
         end
     end
 end)
