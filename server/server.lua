@@ -89,7 +89,7 @@ AddEventHandler("qb-admin:server:ban", function(player, time, reason)
         })
         TriggerClientEvent('chat:addMessage', -1, {
             template = '<div class="chat-message server"><strong>ANNOUNCEMENT | {0} has been banned:</strong> {1}</div>',
-            args = {GetPlayerName(src), reason}
+            args = {GetPlayerName(player.id), reason}
         })
         if banTime >= 2147483647 then
             DropPlayer(player.id, "You have been banned:\n" .. reason .. "\n\nYour ban is permanent.\n🔸 Join the discord for more information: https://discord.gg/example")
