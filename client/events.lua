@@ -65,8 +65,9 @@ AddEventHandler('qb-admin:client:SaveCar', function()
         local plate = GetVehicleNumberPlateText(veh)
         local props = QBCore.Functions.GetVehicleProperties(veh)
         local hash = props.model
-        if QBCore.Shared.VehicleModels[hash] ~= nil and next(QBCore.Shared.VehicleModels[hash]) ~= nil then
-            TriggerServerEvent('qb-admin:server:SaveCar', props, QBCore.Shared.VehicleModels[hash], GetHashKey(veh), plate)
+        local vehname = GetDisplayNameFromVehicleModel(hash):lower()
+        if QBCore.Shared.Vehicles[vehname] ~= nil and next(QBCore.Shared.Vehicles[vehname]) ~= nil then
+            TriggerServerEvent('qb-admin:server:SaveCar', props, QBCore.Shared.Vehicles[vehname], `veh`, plate)
         else
             QBCore.Functions.Notify('You cant store this vehicle in your garage..', 'error')
         end
@@ -78,7 +79,7 @@ end)
 RegisterNetEvent('qb-admin:client:SetModel')
 AddEventHandler('qb-admin:client:SetModel', function(skin)
     local ped = PlayerPedId()
-    local model = GetHashKey(skin)
+    local model = `skin`
     SetEntityInvincible(ped, true)
 
     if IsModelInCdimage(model) and IsModelValid(model) then
