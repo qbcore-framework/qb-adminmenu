@@ -77,12 +77,11 @@ AddEventHandler("qb-admin:server:ban", function(player, time, reason)
             banTime = 2147483647
         end
         local timeTable = os.date("*t", banTime)
-        exports.ghmattimysql:execute('INSERT INTO bans (name, steam, license, discord, ip, reason, expire, bannedby) VALUES (@name, @steam, @license, @discord, @ip, @reason, @expire, @bannedby)', {
+        exports.ghmattimysql:execute('INSERT INTO bans (name, license, discord, ip, reason, expire, bannedby) VALUES (@name, @license, @discord, @ip, @reason, @expire, @bannedby)', {
             ['@name'] = GetPlayerName(player.id),
-            ['@steam'] = GetPlayerIdentifiers(player.id)[1],
-            ['@license'] = GetPlayerIdentifiers(player.id)[2],
-            ['@discord'] = GetPlayerIdentifiers(player.id)[3],
-            ['@ip'] = GetPlayerIdentifiers(player.id)[4],
+            ['@license'] = QBCore.Functions.GetIdentifier(player.id, 'license'),
+            ['@discord'] = QBCore.Functions.GetIdentifier(player.id, 'discord'),
+            ['@ip'] = QBCore.Functions.GetIdentifier(player.id, 'ip'),
             ['@reason'] = reason,
             ['@expire'] = banTime,
             ['@bannedby'] = GetPlayerName(src)
@@ -183,8 +182,8 @@ AddEventHandler('qb-admin:server:SaveCar', function(mods, vehicle, hash, plate)
     local Player = QBCore.Functions.GetPlayer(src)
     exports.ghmattimysql:execute('SELECT plate FROM player_vehicles WHERE plate=@plate', {['@plate'] = plate}, function(result)
         if result[1] == nil then
-            exports.ghmattimysql:execute('INSERT INTO player_vehicles (steam, citizenid, vehicle, hash, mods, plate, state) VALUES (@steam, @citizenid, @vehicle, @hash, @mods, @plate, @state)', {
-                ['@steam'] = Player.PlayerData.steam,
+            exports.ghmattimysql:execute('INSERT INTO player_vehicles (license, citizenid, vehicle, hash, mods, plate, state) VALUES (@license, @citizenid, @vehicle, @hash, @mods, @plate, @state)', {
+                ['@license'] = Player.PlayerData.license,
                 ['@citizenid'] = Player.PlayerData.citizenid,
                 ['@vehicle'] = vehicle.model,
                 ['@hash'] = vehicle.hash,
@@ -248,8 +247,8 @@ QBCore.Commands.Add("warn", "Warn A Player (Admin Only)", {{name="ID", help="Pla
         TriggerClientEvent('chatMessage', targetPlayer.PlayerData.source, "SYSTEM", "error", "You have been warned by: "..GetPlayerName(source)..", Reason: "..msg)
         TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "You have warned "..GetPlayerName(targetPlayer.PlayerData.source).." for: "..msg)
         exports.ghmattimysql:execute('INSERT INTO player_warns (senderIdentifier, targetIdentifier, reason, warnId) VALUES (@senderIdentifier, @targetIdentifier, @reason, @warnId)', {
-            ['@senderIdentifier'] = senderPlayer.PlayerData.steam,
-            ['@targetIdentifier'] = targetPlayer.PlayerData.steam,
+            ['@senderIdentifier'] = senderPlayer.PlayerData.license,
+            ['@targetIdentifier'] = targetPlayer.PlayerData.license,
             ['@reason'] = msg,
             ['@warnId'] = warnId
         })
@@ -261,12 +260,12 @@ end, "admin")
 QBCore.Commands.Add("checkwarns", "Check Player Warnings (Admin Only)", {{name="ID", help="Player"}, {name="Warning", help="Number of warning, (1, 2 or 3 etc..)"}}, false, function(source, args)
     if args[2] == nil then
         local targetPlayer = QBCore.Functions.GetPlayer(tonumber(args[1]))
-        exports.ghmattimysql:execute('SELECT * FROM player_warns WHERE targetIdentifier=@targetIdentifier', {['@targetIdentifier'] = targetPlayer.PlayerData.steam}, function(result)
+        exports.ghmattimysql:execute('SELECT * FROM player_warns WHERE targetIdentifier=@targetIdentifier', {['@targetIdentifier'] = targetPlayer.PlayerData.license}, function(result)
             TriggerClientEvent('chatMessage', source, "SYSTEM", "warning", targetPlayer.PlayerData.name.." has "..tablelength(result).." warnings!")
         end)
     else
         local targetPlayer = QBCore.Functions.GetPlayer(tonumber(args[1]))
-        exports.ghmattimysql:execute('SELECT * FROM player_warns WHERE targetIdentifier=@targetIdentifier', {['@targetIdentifier'] = targetPlayer.PlayerData.steam}, function(warnings)
+        exports.ghmattimysql:execute('SELECT * FROM player_warns WHERE targetIdentifier=@targetIdentifier', {['@targetIdentifier'] = targetPlayer.PlayerData.license}, function(warnings)
             local selectedWarning = tonumber(args[2])
 
             if warnings[selectedWarning] ~= nil then
@@ -280,7 +279,7 @@ end, "admin")
 
 QBCore.Commands.Add("delwarn", "Delete Players Warnings (Admin Only)", {{name="ID", help="Player"}, {name="Warning", help="Number of warning, (1, 2 or 3 etc..)"}}, true, function(source, args)
     local targetPlayer = QBCore.Functions.GetPlayer(tonumber(args[1]))
-    exports.ghmattimysql:execute('SELECT * FROM player_warns WHERE targetIdentifier=@targetIdentifier', {['@targetIdentifier'] = targetPlayer.PlayerData.steam}, function(warnings)
+    exports.ghmattimysql:execute('SELECT * FROM player_warns WHERE targetIdentifier=@targetIdentifier', {['@targetIdentifier'] = targetPlayer.PlayerData.license}, function(warnings)
         local selectedWarning = tonumber(args[2])
         if warnings[selectedWarning] ~= nil then
             local sender = QBCore.Functions.GetPlayer(warnings[selectedWarning].senderIdentifier)
