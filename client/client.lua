@@ -84,7 +84,7 @@ local menu_button11 = menu5:AddButton({
     value = menu7,
     description = 'Create/Delete Dealers'
 }) ]]
-local menu_buttom13 = menu5:AddSlider({
+local menu_button13 = menu5:AddSlider({
     icon = '⏲️',
     label = 'Server Time',
     value = GetClockHours(),
@@ -325,7 +325,7 @@ menu_button2:On('select', function(item)
     end)
 end)
 
-menu_buttom13:On("select", function(item, value)
+menu_button13:On("select", function(item, value)
     TriggerServerEvent("qb-weathersync:server:setTime", value, value)
     QBCore.Functions.Notify("Time changed to " .. value .. " hs 00 min")
 
