@@ -634,7 +634,7 @@ end)
 
 local godmode = false
 menu_button8:On('change', function(item, newValue, oldValue)
-    if not invisible then
+    if not godmode then
         godmode = true
         SetPlayerInvincible(PlayerPedId(), true)
     else
