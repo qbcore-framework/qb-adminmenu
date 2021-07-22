@@ -16,7 +16,7 @@ QBCore.Functions.CreateCallback('test:getplayers', function(source, cb) -- WORKS
         local targetped = GetPlayerPed(v)
         local ped = QBCore.Functions.GetPlayer(v)
         table.insert(players, {
-            name = name = ped.PlayerData.charinfo.firstname .. " " .. ped.PlayerData.charinfo.lastname .. " | (" .. GetPlayerName(v) .. ")",
+            name = ped.PlayerData.charinfo.firstname .. " " .. ped.PlayerData.charinfo.lastname .. " | (" .. GetPlayerName(v) .. ")",
             id = v,
             coords = GetEntityCoords(targetped),
             cid = ped.PlayerData.charinfo.firstname .. " " .. ped.PlayerData.charinfo.lastname,
