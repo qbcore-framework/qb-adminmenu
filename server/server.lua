@@ -180,22 +180,21 @@ RegisterServerEvent('qb-admin:server:SaveCar')
 AddEventHandler('qb-admin:server:SaveCar', function(mods, vehicle, hash, plate)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-    exports.ghmattimysql:execute('SELECT plate FROM player_vehicles WHERE plate=@plate', {['@plate'] = plate}, function(result)
-        if result[1] == nil then
-            exports.ghmattimysql:execute('INSERT INTO player_vehicles (license, citizenid, vehicle, hash, mods, plate, state) VALUES (@license, @citizenid, @vehicle, @hash, @mods, @plate, @state)', {
-                ['@license'] = Player.PlayerData.license,
-                ['@citizenid'] = Player.PlayerData.citizenid,
-                ['@vehicle'] = vehicle.model,
-                ['@hash'] = vehicle.hash,
-                ['@mods'] = json.encode(mods),
-                ['@plate'] = plate,
-                ['@state'] = 0
-            })
-            TriggerClientEvent('QBCore:Notify', src, 'The vehicle is now yours!', 'success', 5000)
-        else
-            TriggerClientEvent('QBCore:Notify', src, 'This vehicle is already yours..', 'error', 3000)
-        end
-    end)
+    local result = exports.ghmattimysql:executeSync('SELECT plate FROM player_vehicles WHERE plate=@plate', {['@plate'] = plate})
+    if result[1] == nil then
+        exports.ghmattimysql:execute('INSERT INTO player_vehicles (license, citizenid, vehicle, hash, mods, plate, state) VALUES (@license, @citizenid, @vehicle, @hash, @mods, @plate, @state)', {
+            ['@license'] = Player.PlayerData.license,
+            ['@citizenid'] = Player.PlayerData.citizenid,
+            ['@vehicle'] = vehicle.model,
+            ['@hash'] = vehicle.hash,
+            ['@mods'] = json.encode(mods),
+            ['@plate'] = plate,
+            ['@state'] = 0
+        })
+        TriggerClientEvent('QBCore:Notify', src, 'The vehicle is now yours!', 'success', 5000)
+    else
+        TriggerClientEvent('QBCore:Notify', src, 'This vehicle is already yours..', 'error', 3000)
+    end
 end)
 
 -- Commands
@@ -260,34 +259,28 @@ end, "admin")
 QBCore.Commands.Add("checkwarns", "Check Player Warnings (Admin Only)", {{name="ID", help="Player"}, {name="Warning", help="Number of warning, (1, 2 or 3 etc..)"}}, false, function(source, args)
     if args[2] == nil then
         local targetPlayer = QBCore.Functions.GetPlayer(tonumber(args[1]))
-        exports.ghmattimysql:execute('SELECT * FROM player_warns WHERE targetIdentifier=@targetIdentifier', {['@targetIdentifier'] = targetPlayer.PlayerData.license}, function(result)
-            TriggerClientEvent('chatMessage', source, "SYSTEM", "warning", targetPlayer.PlayerData.name.." has "..tablelength(result).." warnings!")
-        end)
+        local result = exports.ghmattimysql:executeSync('SELECT * FROM player_warns WHERE targetIdentifier=@targetIdentifier', {['@targetIdentifier'] = targetPlayer.PlayerData.license})
+        TriggerClientEvent('chatMessage', source, "SYSTEM", "warning", targetPlayer.PlayerData.name.." has "..tablelength(result).." warnings!")
     else
         local targetPlayer = QBCore.Functions.GetPlayer(tonumber(args[1]))
-        exports.ghmattimysql:execute('SELECT * FROM player_warns WHERE targetIdentifier=@targetIdentifier', {['@targetIdentifier'] = targetPlayer.PlayerData.license}, function(warnings)
-            local selectedWarning = tonumber(args[2])
-
-            if warnings[selectedWarning] ~= nil then
-                local sender = QBCore.Functions.GetPlayer(warnings[selectedWarning].senderIdentifier)
-
-                TriggerClientEvent('chatMessage', source, "SYSTEM", "warning", targetPlayer.PlayerData.name.." has been warned by "..sender.PlayerData.name..", Reason: "..warnings[selectedWarning].reason)
-            end
-        end)
+        local warnings = exports.ghmattimysql:executeSync('SELECT * FROM player_warns WHERE targetIdentifier=@targetIdentifier', {['@targetIdentifier'] = targetPlayer.PlayerData.license})
+        local selectedWarning = tonumber(args[2])
+        if warnings[selectedWarning] ~= nil then
+            local sender = QBCore.Functions.GetPlayer(warnings[selectedWarning].senderIdentifier)
+            TriggerClientEvent('chatMessage', source, "SYSTEM", "warning", targetPlayer.PlayerData.name.." has been warned by "..sender.PlayerData.name..", Reason: "..warnings[selectedWarning].reason)
+        end
     end
 end, "admin")
 
 QBCore.Commands.Add("delwarn", "Delete Players Warnings (Admin Only)", {{name="ID", help="Player"}, {name="Warning", help="Number of warning, (1, 2 or 3 etc..)"}}, true, function(source, args)
     local targetPlayer = QBCore.Functions.GetPlayer(tonumber(args[1]))
-    exports.ghmattimysql:execute('SELECT * FROM player_warns WHERE targetIdentifier=@targetIdentifier', {['@targetIdentifier'] = targetPlayer.PlayerData.license}, function(warnings)
-        local selectedWarning = tonumber(args[2])
-        if warnings[selectedWarning] ~= nil then
-            local sender = QBCore.Functions.GetPlayer(warnings[selectedWarning].senderIdentifier)
-
-            TriggerClientEvent('chatMessage', source, "SYSTEM", "warning", "You have deleted warning ("..selectedWarning..") , Reason: "..warnings[selectedWarning].reason)
-            exports.ghmattimysql:execute('DELETE FROM player_warns WHERE warnId=@warnId', {['@warnId'] = warnings[selectedWarning].warnId})
-        end
-    end)
+    local warnings = exports.ghmattimysql:executeSync('SELECT * FROM player_warns WHERE targetIdentifier=@targetIdentifier', {['@targetIdentifier'] = targetPlayer.PlayerData.license})
+    local selectedWarning = tonumber(args[2])
+    if warnings[selectedWarning] ~= nil then
+        local sender = QBCore.Functions.GetPlayer(warnings[selectedWarning].senderIdentifier)
+        TriggerClientEvent('chatMessage', source, "SYSTEM", "warning", "You have deleted warning ("..selectedWarning..") , Reason: "..warnings[selectedWarning].reason)
+        exports.ghmattimysql:execute('DELETE FROM player_warns WHERE warnId=@warnId', {['@warnId'] = warnings[selectedWarning].warnId})
+    end
 end, "admin")
 
 QBCore.Commands.Add("reportr", "Reply To A Report (Admin Only)", {}, false, function(source, args)
