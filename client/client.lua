@@ -593,6 +593,7 @@ function OpenPermsMenu(permsply)
                 select = function(btn)
                     if selectedgroup ~= 'Unknown' then
                         TriggerServerEvent('qb-admin:server:setPermissions', permsply.id, selectedgroup)
+			QBCore.Functions.Notify('Authority group changed!', 'success')
                         selectedgroup = 'Unknown'
                     else
                         QBCore.Functions.Notify('Choose a group!', 'error')
