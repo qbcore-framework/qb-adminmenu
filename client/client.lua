@@ -570,8 +570,8 @@ function OpenPermsMenu(permsply)
                     value = 'god',
                     description = 'Group'
                 }},
-                select = function(btn)
-                    local vcal = btn.Value
+                change = function(item, newValue, oldValue)
+                    local vcal = newValue
                     if vcal == 1 then
                         selectedgroup = {}
                         table.insert(selectedgroup, {rank = "user", label = "User"})
