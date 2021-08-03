@@ -49,7 +49,8 @@ function tprint (tbl, indent)
 end
 
 function LocalInput(text, number, windows)
-  DisplayOnscreenKeyboard(1, text or "FMMC_MPM_NA", "", windows or "", "", "", "", number or 30)
+    AddTextEntry("FMMC_MPM_NA", text)
+  DisplayOnscreenKeyboard(1, "FMMC_MPM_NA", "", windows or "", "", "", "", number or 30)
   while (UpdateOnscreenKeyboard() == 0) do
     DisableAllControlActions(0)
     Wait(0)
@@ -62,7 +63,8 @@ function LocalInput(text, number, windows)
 end
 
 function LocalInputInt(text, number, windows)
-    DisplayOnscreenKeyboard(1, text or "FMMC_MPM_NA", "", windows or "", "", "", "", number or 30)
+    AddTextEntry("FMMC_MPM_NA", text)
+    DisplayOnscreenKeyboard(1, "FMMC_MPM_NA", "", windows or "", "", "", "", number or 30)
     while (UpdateOnscreenKeyboard() == 0) do
       DisableAllControlActions(0)
       Wait(0)
