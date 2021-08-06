@@ -69,12 +69,6 @@ AddEventHandler('qb-admin:client:SetModel', function(skin)
     SetEntityInvincible(ped, true)
 
     if IsModelInCdimage(model) and IsModelValid(model) then
-        if not HasModelLoaded(model) then
-			RequestModel(model)
-			while not HasModelLoaded(model) do
-				Citizen.Wait(0)
-			end
-		end
         LoadPlayerModel(model)
         SetPlayerModel(PlayerId(), model)
 
