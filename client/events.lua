@@ -72,7 +72,7 @@ AddEventHandler('qb-admin:client:SetModel', function(skin)
         LoadPlayerModel(model)
         SetPlayerModel(PlayerId(), model)
 
-        if isPedAllowedRandom() then
+        if isPedAllowedRandom(skin) then
             SetPedRandomComponentVariation(ped, true)
         end
         
