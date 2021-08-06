@@ -337,6 +337,13 @@ local deletelazer_button = menu11:AddCheckbox({
     description = 'Enable/Disable Laser'
 })
 
+local noclip_button = menu11:AddCheckbox({
+    icon = '🎥',
+    label = 'NoClip',
+    value = menu11,
+    description = 'Enable/Disable NoClip'
+})
+
 local deleteLazer = false
 deletelazer_button:On('change', function(item, newValue, oldValue)
     deleteLazer = not deleteLazer
@@ -353,6 +360,10 @@ end)
 vehicledev_button:On("select", function()
     vehicleDevMode = not vehicleDevMode
     ToggleVehicleDeveloperMode()
+end)
+
+noclip_button:On('change', function(item, newValue, oldValue)
+    ToggleNoClipMode()
 end)
 
 -- Player List
