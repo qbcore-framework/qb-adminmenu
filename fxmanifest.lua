@@ -14,7 +14,7 @@ client_scripts {
     'client/events.lua'
 }
 
-shared_script '@ds-core/import.lua'
+shared_script '@qb-core/import.lua'
 
 server_script 'server/server.lua'
 
