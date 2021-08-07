@@ -41,8 +41,8 @@ end)
 
 function tablelength(table)
     local count = 0
-    for _ in pairs(table) do 
-        count = count + 1 
+    for _ in pairs(table) do
+        count = count + 1
     end
     return count
 end
@@ -199,6 +199,10 @@ end)
 
 -- Commands
 
+QBCore.Commands.Add("coords", "Enable coord display for development stuff (Admin Only)", {}, false, function(source, args)
+    TriggerClientEvent('qb-admin:client:ToggleCoords', source)
+end, "admin")
+
 QBCore.Commands.Add("admincar", "Save Vehicle To Your Garage (Admin Only)", {}, false, function(source, args)
     local ply = QBCore.Functions.GetPlayer(source)
     TriggerClientEvent('qb-admin:client:SaveCar', source)
@@ -253,7 +257,7 @@ QBCore.Commands.Add("warn", "Warn A Player (Admin Only)", {{name="ID", help="Pla
         })
     else
         TriggerClientEvent('QBCore:Notify', source, 'This player is not online', 'error')
-    end 
+    end
 end, "admin")
 
 QBCore.Commands.Add("checkwarns", "Check Player Warnings (Admin Only)", {{name="ID", help="Player"}, {name="Warning", help="Number of warning, (1, 2 or 3 etc..)"}}, false, function(source, args)
@@ -352,7 +356,7 @@ RegisterCommand("kickall", function(source, args, rawCommand)
             if args[1] ~= nil then
                 for k, v in pairs(QBCore.Functions.GetPlayers()) do
                     local Player = QBCore.Functions.GetPlayer(v)
-                    if Player ~= nil then 
+                    if Player ~= nil then
                         DropPlayer(Player.PlayerData.source, reason)
                     end
                 end
@@ -365,7 +369,7 @@ RegisterCommand("kickall", function(source, args, rawCommand)
     else
         for k, v in pairs(QBCore.Functions.GetPlayers()) do
             local Player = QBCore.Functions.GetPlayer(v)
-            if Player ~= nil then 
+            if Player ~= nil then
                 DropPlayer(Player.PlayerData.source, "Server restart, check our Discord for more information! (discord.gg/ChangeInqb-adminMainLua)")
             end
         end

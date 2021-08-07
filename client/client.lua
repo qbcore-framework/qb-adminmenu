@@ -239,7 +239,7 @@ menu_button11:On("select",function()
             value = "RAIN",
             description = 'Make It Rain!'
         },
-       
+
         [10] = {
             icon = '⛈️',
             label = 'Thunder',
@@ -278,8 +278,8 @@ menu_button11:On("select",function()
         }
     }
     MenuV:OpenMenu(menu6)
-    for k,v in ipairs(elements) do 
-        local menu_button14 = menu6:AddButton({icon = v.icon,label = v.label,value = v,description = v.description,select = function(btn) 
+    for k,v in ipairs(elements) do
+        local menu_button14 = menu6:AddButton({icon = v.icon,label = v.label,value = v,description = v.description,select = function(btn)
         local selection = btn.Value
         print(selection.value)
         TriggerServerEvent('qb-weathersync:server:setWeather', selection.value)
@@ -316,6 +316,13 @@ local coords_button = menu11:AddButton({
     description = 'vector3() CTRL+V 😸'
 })
 
+local togglecoords_button = menu11:AddButton({
+    icon = '🔎',
+    label = 'Co-ords Display',
+    value = 'WHATS',
+    description = 'View Coords'
+})
+
 local heading_button = menu11:AddButton({
     icon = '🧭',
     label = 'Copy Heading to Clipboard',
@@ -344,6 +351,7 @@ local noclip_button = menu11:AddCheckbox({
     description = 'Enable/Disable NoClip'
 })
 
+
 local deleteLazer = false
 deletelazer_button:On('change', function(item, newValue, oldValue)
     deleteLazer = not deleteLazer
@@ -366,6 +374,10 @@ noclip_button:On('change', function(item, newValue, oldValue)
     ToggleNoClipMode()
 end)
 
+togglecoords_button:On("select", function()
+    TriggerEvent('qb-admin:client:ToggleCoords')
+end)
+
 -- Player List
 menu_button2:On('select', function(item)
     menu4:ClearItems()
@@ -377,7 +389,7 @@ menu_button2:On('select', function(item)
                 description = 'Player Name',
                 select = function(btn)
                     local select = btn.Value -- get all the values from v!
-                    
+
                     OpenPlayerMenus(select) -- only pass what i select nothing else
 
                 end
@@ -696,26 +708,21 @@ end)
 
 local godmode = false
 menu_button8:On('change', function(item, newValue, oldValue)
-    if not godmode then
-        godmode = true
-        SetPlayerInvincible(PlayerPedId(), true)
-    else
-        godmode = false
-        SetPlayerInvincible(PlayerPedId(), false)
-    end
+    godmode = not godmode
+    SetPlayerInvincible(PlayerPedId(), godmode)
 end)
 
 function RotationToDirection(rotation)
-	local adjustedRotation = 
-	{ 
-		x = (math.pi / 180) * rotation.x, 
-		y = (math.pi / 180) * rotation.y, 
-		z = (math.pi / 180) * rotation.z 
-	}
-	local direction = 
+	local adjustedRotation =
 	{
-		x = -math.sin(adjustedRotation.z) * math.abs(math.cos(adjustedRotation.x)), 
-		y = math.cos(adjustedRotation.z) * math.abs(math.cos(adjustedRotation.x)), 
+		x = (math.pi / 180) * rotation.x,
+		y = (math.pi / 180) * rotation.y,
+		z = (math.pi / 180) * rotation.z
+	}
+	local direction =
+	{
+		x = -math.sin(adjustedRotation.z) * math.abs(math.cos(adjustedRotation.x)),
+		y = math.cos(adjustedRotation.z) * math.abs(math.cos(adjustedRotation.x)),
 		z = math.sin(adjustedRotation.x)
 	}
 	return direction
@@ -725,11 +732,11 @@ function RayCastGamePlayCamera(distance)
     local cameraRotation = GetGameplayCamRot()
 	local cameraCoord = GetGameplayCamCoord()
 	local direction = RotationToDirection(cameraRotation)
-	local destination = 
-	{ 
-		x = cameraCoord.x + direction.x * distance, 
-		y = cameraCoord.y + direction.y * distance, 
-		z = cameraCoord.z + direction.z * distance 
+	local destination =
+	{
+		x = cameraCoord.x + direction.x * distance,
+		y = cameraCoord.y + direction.y * distance,
+		z = cameraCoord.z + direction.z * distance
 	}
 	local a, b, c, d, e = GetShapeTestResult(StartShapeTestRay(cameraCoord.x, cameraCoord.y, cameraCoord.z, destination.x, destination.y, destination.z, -1, PlayerPedId(), 0))
 	return b, c, e
@@ -741,17 +748,17 @@ function DrawEntityBoundingBox(entity, color)
     local rightVector, forwardVector, upVector, position = GetEntityMatrix(entity)
 
     -- Calculate size
-    local dim = 
-	{ 
-		x = 0.5*(max.x - min.x), 
-		y = 0.5*(max.y - min.y), 
+    local dim =
+	{
+		x = 0.5*(max.x - min.x),
+		y = 0.5*(max.y - min.y),
 		z = 0.5*(max.z - min.z)
 	}
 
-    local FUR = 
+    local FUR =
     {
-		x = position.x + dim.y*rightVector.x + dim.x*forwardVector.x + dim.z*upVector.x, 
-		y = position.y + dim.y*rightVector.y + dim.x*forwardVector.y + dim.z*upVector.y, 
+		x = position.x + dim.y*rightVector.x + dim.x*forwardVector.x + dim.z*upVector.x,
+		y = position.y + dim.y*rightVector.y + dim.x*forwardVector.y + dim.z*upVector.y,
 		z = 0
     }
 
@@ -759,7 +766,7 @@ function DrawEntityBoundingBox(entity, color)
     FUR.z = FUR_z
     FUR.z = FUR.z + 2 * dim.z
 
-    local BLL = 
+    local BLL =
     {
         x = position.x - dim.y*rightVector.x - dim.x*forwardVector.x - dim.z*upVector.x,
         y = position.y - dim.y*rightVector.y - dim.x*forwardVector.y - dim.z*upVector.y,
@@ -772,42 +779,42 @@ function DrawEntityBoundingBox(entity, color)
     local edge1 = BLL
     local edge5 = FUR
 
-    local edge2 = 
+    local edge2 =
     {
         x = edge1.x + 2 * dim.y*rightVector.x,
         y = edge1.y + 2 * dim.y*rightVector.y,
         z = edge1.z + 2 * dim.y*rightVector.z
     }
 
-    local edge3 = 
+    local edge3 =
     {
         x = edge2.x + 2 * dim.z*upVector.x,
         y = edge2.y + 2 * dim.z*upVector.y,
         z = edge2.z + 2 * dim.z*upVector.z
     }
 
-    local edge4 = 
+    local edge4 =
     {
         x = edge1.x + 2 * dim.z*upVector.x,
         y = edge1.y + 2 * dim.z*upVector.y,
         z = edge1.z + 2 * dim.z*upVector.z
     }
 
-    local edge6 = 
+    local edge6 =
     {
         x = edge5.x - 2 * dim.y*rightVector.x,
         y = edge5.y - 2 * dim.y*rightVector.y,
         z = edge5.z - 2 * dim.y*rightVector.z
     }
 
-    local edge7 = 
+    local edge7 =
     {
         x = edge6.x - 2 * dim.z*upVector.x,
         y = edge6.y - 2 * dim.z*upVector.y,
         z = edge6.z - 2 * dim.z*upVector.z
     }
 
-    local edge8 = 
+    local edge8 =
     {
         x = edge5.x - 2 * dim.z*upVector.x,
         y = edge5.y - 2 * dim.z*upVector.y,
