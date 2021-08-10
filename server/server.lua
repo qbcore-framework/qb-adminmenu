@@ -63,6 +63,7 @@ RegisterNetEvent("qb-admin:server:kick")
 AddEventHandler("qb-admin:server:kick", function(player, reason)
     local src = source
     if QBCore.Functions.HasPermission(src, permissions["kick"]) then
+        TriggerEvent("qb-log:server:CreateLog", "bans", "Player Kicked", "red", string.format('%s was kicked by %s for %s', GetPlayerName(player.id), GetPlayerName(src), reason), true)
         DropPlayer(player.id, "You have been kicked from the server:\n" .. reason .. "\n\n🔸 Join the discord server for more information: https://discord.gg/example")
     end
 end)
@@ -90,6 +91,7 @@ AddEventHandler("qb-admin:server:ban", function(player, time, reason)
             template = '<div class="chat-message server"><strong>ANNOUNCEMENT | {0} has been banned:</strong> {1}</div>',
             args = {GetPlayerName(player.id), reason}
         })
+        TriggerEvent("qb-log:server:CreateLog", "bans", "Player Banned", "red", string.format('%s was banned by %s for %s', GetPlayerName(player.id), GetPlayerName(src), reason), true)
         if banTime >= 2147483647 then
             DropPlayer(player.id, "You have been banned:\n" .. reason .. "\n\nYour ban is permanent.\n🔸 Join the discord for more information: https://discord.gg/example")
         else
