@@ -3,7 +3,6 @@ local banreason = 'Unknown'
 local kickreason = 'Unknown'
 local menu = MenuV:CreateMenu(false, 'Admin Menu', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test')
 local menu2 = MenuV:CreateMenu(false, 'Admin Options', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test1')
---local menu3 = MenuV:CreateMenu(false, 'Self Options', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test2') Extra step for nothing
 local menu4 = MenuV:CreateMenu(false, 'Online Players', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test3')
 local menu5 = MenuV:CreateMenu(false, 'Manage Server', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test4')
 local menu6 = MenuV:CreateMenu(false, 'Available Weather Options', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test5')
@@ -36,13 +35,6 @@ local menu_button3 = menu:AddButton({
     value = menu5,
     description = 'Misc. Server Options'
 })
-
---[[local menu_button4 = menu2:AddButton({
-    icon = '😃',
-    label = 'Self Options',
-    value = menu3,
-    description = 'Misc. Self Options'
-})]]
 
 local menu_button5 = menu2:AddCheckbox({
     icon = '🎥',
@@ -300,57 +292,48 @@ local menu_button30 = menu7:AddButton({
     value = menu7,
     description = 'Make A New Dealer'
 })
-
 local menu_button69 = menu:AddButton({
     icon = '🔧',
     label = 'Developer Options',
     value = menu11,
     description = 'Misc. Dev Options'
 })
-
---Developer Options Buttons
 local coords_button = menu11:AddButton({
-    icon = '🔎',
-    label = 'Copy Coords to Clipboard',
+    icon = '📋',
+    label = 'Copy Coords',
     value = 'coords',
-    description = 'vector3() CTRL+V 😸'
+    description = 'Copy Coords To Clipboard'
 })
-
-local togglecoords_button = menu11:AddButton({
-    icon = '🔎',
-    label = 'Co-ords Display',
-    value = 'WHATS',
-    description = 'View Coords'
+local togglecoords_button = menu11:AddCheckbox({
+    icon = '📍',
+    label = 'Display Coords',
+    value = nil,
+    description = 'Show Coords On Screen'
 })
-
 local heading_button = menu11:AddButton({
-    icon = '🧭',
-    label = 'Copy Heading to Clipboard',
+    icon = '📋',
+    label = 'Copy Heading',
     value = 'heading',
-    description = 'int CTRL+V 🐵'
+    description = 'Copy Heading to Clipboard'
 })
-
-local vehicledev_button = menu11:AddButton({
+local vehicledev_button = menu11:AddCheckbox({
     icon = '🚘',
     label = 'Vehicle Dev Mode',
-    value = 'WHAT',
-    description = 'see vehicle specific information'
+    value = nil,
+    description = 'Display Vehicle Information'
 })
-
 local deletelazer_button = menu11:AddCheckbox({
     icon = '🔫',
     label = 'Delete Laser',
     value = menu11,
     description = 'Enable/Disable Laser'
 })
-
 local noclip_button = menu11:AddCheckbox({
     icon = '🎥',
     label = 'NoClip',
     value = menu11,
     description = 'Enable/Disable NoClip'
 })
-
 
 local deleteLazer = false
 deletelazer_button:On('change', function(item, newValue, oldValue)
@@ -365,7 +348,7 @@ heading_button:On("select", function()
     CopyToClipboard('heading')
 end)
 
-vehicledev_button:On("select", function()
+vehicledev_button:On('change', function()
     vehicleDevMode = not vehicleDevMode
     ToggleVehicleDeveloperMode()
 end)
@@ -374,7 +357,7 @@ noclip_button:On('change', function(item, newValue, oldValue)
     ToggleNoClipMode()
 end)
 
-togglecoords_button:On("select", function()
+togglecoords_button:On('change', function()
     TriggerEvent('qb-admin:client:ToggleCoords')
 end)
 
@@ -666,7 +649,7 @@ function OpenPermsMenu(permsply)
                 select = function(btn)
                     if selectedgroup ~= 'Unknown' then
                         TriggerServerEvent('qb-admin:server:setPermissions', permsply.id, selectedgroup)
-			QBCore.Functions.Notify('Authority group changed!', 'success')
+			            QBCore.Functions.Notify('Authority group changed!', 'success')
                         selectedgroup = 'Unknown'
                     else
                         QBCore.Functions.Notify('Choose a group!', 'error')

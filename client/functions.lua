@@ -105,11 +105,6 @@ end
 function ToggleVehicleDeveloperMode()
   local x = 0.4
   local y = 0.888
-  if vehicleDevMode then
-      QBCore.Functions.Notify("Vehicle dev mode ACTIVATED!", "success")
-  else
-      QBCore.Functions.Notify("Vehicle dev mode DEACTIVATED!", "success")
-  end
   Citizen.CreateThread(function()
       while vehicleDevMode do
           local ped = PlayerPedId()
