@@ -358,7 +358,7 @@ noclip_button:On('change', function(item, newValue, oldValue)
 end)
 
 togglecoords_button:On('change', function()
-    TriggerEvent('qb-admin:client:ToggleCoords')
+    ToggleShowCoordinates()
 end)
 
 -- Player List

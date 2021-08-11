@@ -14,6 +14,8 @@ local blockedPeds = {
   "ig_car3guy1_m",
 }
 
+local showCoords = false
+
 -- Functions
 
 function ShowNotification(text)
@@ -100,6 +102,23 @@ function CopyToClipboard(dataType)
       })
       QBCore.Functions.Notify("Heading copied to clipboard!", "success")
   end
+end
+
+function ToggleShowCoordinates()
+    local x = 0.4
+    local y = 0.025
+    showCoords = not showCoords
+    Citizen.CreateThread(function()
+        while showCoords do
+            local coords = GetEntityCoords(PlayerPedId())
+            local c = {}
+            c.x = math.round(coords.x, 2)
+            c.y = math.round(coords.y, 2)
+            c.z = math.round(coords.z, 2)
+            Citizen.Wait(0)
+            Draw2DText(string.format('~w~Ped Coordinates:~b~ vector3(~w~%s~b~, ~w~%s~b~, ~w~%s~b~)', c.x, c.y, c.z), 4, {66, 182, 245}, 0.4, x + 0.0, y + 0.0)
+        end
+    end)
 end
 
 function ToggleVehicleDeveloperMode()
