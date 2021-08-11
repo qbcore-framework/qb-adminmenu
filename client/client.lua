@@ -3,7 +3,7 @@ local banreason = 'Unknown'
 local kickreason = 'Unknown'
 local menu = MenuV:CreateMenu(false, 'Admin Menu', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test')
 local menu2 = MenuV:CreateMenu(false, 'Admin Options', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test1')
-local menu3 = MenuV:CreateMenu(false, 'Self Options', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test2')
+--local menu3 = MenuV:CreateMenu(false, 'Self Options', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test2') Extra step for nothing
 local menu4 = MenuV:CreateMenu(false, 'Online Players', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test3')
 local menu5 = MenuV:CreateMenu(false, 'Manage Server', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test4')
 local menu6 = MenuV:CreateMenu(false, 'Available Weather Options', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test5')
@@ -11,6 +11,7 @@ local menu7 = MenuV:CreateMenu(false, 'Check Current/Add Dealers', 'topright', 1
 local menu8 = MenuV:CreateMenu(false, 'Ban', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test7')
 local menu9 = MenuV:CreateMenu(false, 'Kick', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test8')
 local menu10 = MenuV:CreateMenu(false, 'Permissions', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test9')
+local menu11 = MenuV:CreateMenu(false, 'Developer Options', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test10')
 
 RegisterNetEvent('qb-admin:client:openMenu')
 AddEventHandler('qb-admin:client:openMenu', function()
@@ -24,53 +25,48 @@ local menu_button = menu:AddButton({
     description = 'Misc. Admin Options'
 })
 local menu_button2 = menu:AddButton({
-    icon = '😃',
+    icon = '🙍‍♂️',
     label = 'Player Management',
     value = menu4,
     description = 'View List Of Players'
 })
 local menu_button3 = menu:AddButton({
-    icon = '😃',
+    icon = '🎮',
     label = 'Server Management',
     value = menu5,
     description = 'Misc. Server Options'
 })
 
-local menu_button4 = menu2:AddButton({
+--[[local menu_button4 = menu2:AddButton({
     icon = '😃',
     label = 'Self Options',
     value = menu3,
     description = 'Misc. Self Options'
-})
-local menu_button5 = menu3:AddCheckbox({
+})]]
+
+local menu_button5 = menu2:AddCheckbox({
     icon = '🎥',
     label = 'NoClip',
-    value = menu3,
+    value = menu2,
     description = 'Enable/Disable NoClip'
 })
-local menu_button6 = menu3:AddButton({
+local menu_button6 = menu2:AddButton({
     icon = '🏥',
     label = 'Revive',
-    value = menu3,
+    value = menu2,
     description = 'Revive Yourself'
 })
-local menu_button7 = menu3:AddCheckbox({
+local menu_button7 = menu2:AddCheckbox({
     icon = '👻',
     label = 'Invisible',
-    value = menu3,
+    value = menu2,
     description = 'Enable/Disable Invisibility'
 })
-local menu_button8 = menu3:AddCheckbox({
+local menu_button8 = menu2:AddCheckbox({
     icon = '⚡',
     label = 'Godmode',
-    value = menu3,
+    value = menu2,
     description = 'Enable/Disable God Mode'
-})
-local menu_button9 = menu3:AddCheckbox({
-    icon = '🔫',
-    label = 'Delete Laser',
-    value = menu3,
-    description = 'Enable/Disable Laser'
 })
 local menu_button11 = menu5:AddButton({
     icon = '🌡️',
@@ -243,7 +239,7 @@ menu_button11:On("select",function()
             value = "RAIN",
             description = 'Make It Rain!'
         },
-       
+
         [10] = {
             icon = '⛈️',
             label = 'Thunder',
@@ -282,8 +278,8 @@ menu_button11:On("select",function()
         }
     }
     MenuV:OpenMenu(menu6)
-    for k,v in ipairs(elements) do 
-        local menu_button14 = menu6:AddButton({icon = v.icon,label = v.label,value = v,description = v.description,select = function(btn) 
+    for k,v in ipairs(elements) do
+        local menu_button14 = menu6:AddButton({icon = v.icon,label = v.label,value = v,description = v.description,select = function(btn)
         local selection = btn.Value
         print(selection.value)
         TriggerServerEvent('qb-weathersync:server:setWeather', selection.value)
@@ -305,6 +301,83 @@ local menu_button30 = menu7:AddButton({
     description = 'Make A New Dealer'
 })
 
+local menu_button69 = menu:AddButton({
+    icon = '🔧',
+    label = 'Developer Options',
+    value = menu11,
+    description = 'Misc. Dev Options'
+})
+
+--Developer Options Buttons
+local coords_button = menu11:AddButton({
+    icon = '🔎',
+    label = 'Copy Coords to Clipboard',
+    value = 'coords',
+    description = 'vector3() CTRL+V 😸'
+})
+
+local togglecoords_button = menu11:AddButton({
+    icon = '🔎',
+    label = 'Co-ords Display',
+    value = 'WHATS',
+    description = 'View Coords'
+})
+
+local heading_button = menu11:AddButton({
+    icon = '🧭',
+    label = 'Copy Heading to Clipboard',
+    value = 'heading',
+    description = 'int CTRL+V 🐵'
+})
+
+local vehicledev_button = menu11:AddButton({
+    icon = '🚘',
+    label = 'Vehicle Dev Mode',
+    value = 'WHAT',
+    description = 'see vehicle specific information'
+})
+
+local deletelazer_button = menu11:AddCheckbox({
+    icon = '🔫',
+    label = 'Delete Laser',
+    value = menu11,
+    description = 'Enable/Disable Laser'
+})
+
+local noclip_button = menu11:AddCheckbox({
+    icon = '🎥',
+    label = 'NoClip',
+    value = menu11,
+    description = 'Enable/Disable NoClip'
+})
+
+
+local deleteLazer = false
+deletelazer_button:On('change', function(item, newValue, oldValue)
+    deleteLazer = not deleteLazer
+end)
+
+coords_button:On("select", function()
+    CopyToClipboard('coords')
+end)
+
+heading_button:On("select", function()
+    CopyToClipboard('heading')
+end)
+
+vehicledev_button:On("select", function()
+    vehicleDevMode = not vehicleDevMode
+    ToggleVehicleDeveloperMode()
+end)
+
+noclip_button:On('change', function(item, newValue, oldValue)
+    ToggleNoClipMode()
+end)
+
+togglecoords_button:On("select", function()
+    TriggerEvent('qb-admin:client:ToggleCoords')
+end)
+
 -- Player List
 menu_button2:On('select', function(item)
     menu4:ClearItems()
@@ -316,7 +389,7 @@ menu_button2:On('select', function(item)
                 description = 'Player Name',
                 select = function(btn)
                     local select = btn.Value -- get all the values from v!
-                    
+
                     OpenPlayerMenus(select) -- only pass what i select nothing else
 
                 end
@@ -635,37 +708,27 @@ end)
 
 local godmode = false
 menu_button8:On('change', function(item, newValue, oldValue)
-    if not godmode then
-        godmode = true
-        SetPlayerInvincible(PlayerPedId(), true)
-    else
-        godmode = false
-        SetPlayerInvincible(PlayerPedId(), false)
-    end
-end)
+    godmode = not godmode
 
--- Delete Laser
-
-local deleteLazer = false
-menu_button9:On('change', function(item, newValue, oldValue)
-    if not deleteLazer then
-        deleteLazer = true
-    else
-        deleteLazer = false
-    end
+    Citizen.CreateThread(function()
+        while godmode do
+            Citizen.Wait(0)
+            SetPlayerInvincible(PlayerId(), true)
+        end
+    end)
 end)
 
 function RotationToDirection(rotation)
-	local adjustedRotation = 
-	{ 
-		x = (math.pi / 180) * rotation.x, 
-		y = (math.pi / 180) * rotation.y, 
-		z = (math.pi / 180) * rotation.z 
-	}
-	local direction = 
+	local adjustedRotation =
 	{
-		x = -math.sin(adjustedRotation.z) * math.abs(math.cos(adjustedRotation.x)), 
-		y = math.cos(adjustedRotation.z) * math.abs(math.cos(adjustedRotation.x)), 
+		x = (math.pi / 180) * rotation.x,
+		y = (math.pi / 180) * rotation.y,
+		z = (math.pi / 180) * rotation.z
+	}
+	local direction =
+	{
+		x = -math.sin(adjustedRotation.z) * math.abs(math.cos(adjustedRotation.x)),
+		y = math.cos(adjustedRotation.z) * math.abs(math.cos(adjustedRotation.x)),
 		z = math.sin(adjustedRotation.x)
 	}
 	return direction
@@ -675,11 +738,11 @@ function RayCastGamePlayCamera(distance)
     local cameraRotation = GetGameplayCamRot()
 	local cameraCoord = GetGameplayCamCoord()
 	local direction = RotationToDirection(cameraRotation)
-	local destination = 
-	{ 
-		x = cameraCoord.x + direction.x * distance, 
-		y = cameraCoord.y + direction.y * distance, 
-		z = cameraCoord.z + direction.z * distance 
+	local destination =
+	{
+		x = cameraCoord.x + direction.x * distance,
+		y = cameraCoord.y + direction.y * distance,
+		z = cameraCoord.z + direction.z * distance
 	}
 	local a, b, c, d, e = GetShapeTestResult(StartShapeTestRay(cameraCoord.x, cameraCoord.y, cameraCoord.z, destination.x, destination.y, destination.z, -1, PlayerPedId(), 0))
 	return b, c, e
@@ -691,17 +754,17 @@ function DrawEntityBoundingBox(entity, color)
     local rightVector, forwardVector, upVector, position = GetEntityMatrix(entity)
 
     -- Calculate size
-    local dim = 
-	{ 
-		x = 0.5*(max.x - min.x), 
-		y = 0.5*(max.y - min.y), 
+    local dim =
+	{
+		x = 0.5*(max.x - min.x),
+		y = 0.5*(max.y - min.y),
 		z = 0.5*(max.z - min.z)
 	}
 
-    local FUR = 
+    local FUR =
     {
-		x = position.x + dim.y*rightVector.x + dim.x*forwardVector.x + dim.z*upVector.x, 
-		y = position.y + dim.y*rightVector.y + dim.x*forwardVector.y + dim.z*upVector.y, 
+		x = position.x + dim.y*rightVector.x + dim.x*forwardVector.x + dim.z*upVector.x,
+		y = position.y + dim.y*rightVector.y + dim.x*forwardVector.y + dim.z*upVector.y,
 		z = 0
     }
 
@@ -709,7 +772,7 @@ function DrawEntityBoundingBox(entity, color)
     FUR.z = FUR_z
     FUR.z = FUR.z + 2 * dim.z
 
-    local BLL = 
+    local BLL =
     {
         x = position.x - dim.y*rightVector.x - dim.x*forwardVector.x - dim.z*upVector.x,
         y = position.y - dim.y*rightVector.y - dim.x*forwardVector.y - dim.z*upVector.y,
@@ -722,42 +785,42 @@ function DrawEntityBoundingBox(entity, color)
     local edge1 = BLL
     local edge5 = FUR
 
-    local edge2 = 
+    local edge2 =
     {
         x = edge1.x + 2 * dim.y*rightVector.x,
         y = edge1.y + 2 * dim.y*rightVector.y,
         z = edge1.z + 2 * dim.y*rightVector.z
     }
 
-    local edge3 = 
+    local edge3 =
     {
         x = edge2.x + 2 * dim.z*upVector.x,
         y = edge2.y + 2 * dim.z*upVector.y,
         z = edge2.z + 2 * dim.z*upVector.z
     }
 
-    local edge4 = 
+    local edge4 =
     {
         x = edge1.x + 2 * dim.z*upVector.x,
         y = edge1.y + 2 * dim.z*upVector.y,
         z = edge1.z + 2 * dim.z*upVector.z
     }
 
-    local edge6 = 
+    local edge6 =
     {
         x = edge5.x - 2 * dim.y*rightVector.x,
         y = edge5.y - 2 * dim.y*rightVector.y,
         z = edge5.z - 2 * dim.y*rightVector.z
     }
 
-    local edge7 = 
+    local edge7 =
     {
         x = edge6.x - 2 * dim.z*upVector.x,
         y = edge6.y - 2 * dim.z*upVector.y,
         z = edge6.z - 2 * dim.z*upVector.z
     }
 
-    local edge8 = 
+    local edge8 =
     {
         x = edge5.x - 2 * dim.z*upVector.x,
         y = edge5.y - 2 * dim.z*upVector.y,
@@ -778,9 +841,9 @@ function DrawEntityBoundingBox(entity, color)
     DrawLine(edge4.x, edge4.y, edge4.z, edge6.x, edge6.y, edge6.z, color.r, color.g, color.b, color.a)
 end
 
-Citizen.CreateThread(function()	
+Citizen.CreateThread(function()	-- While loop needed for delete lazer
 	while true do
-		Citizen.Wait(0)
+        local Wait = 7
         if deleteLazer then
             local color = {r = 255, g = 255, b = 255, a = 200}
             local position = GetEntityCoords(PlayerPedId())
@@ -791,7 +854,8 @@ Citizen.CreateThread(function()
                 local minimum, maximum = GetModelDimensions(GetEntityModel(entity))
                 DrawEntityBoundingBox(entity, color)
                 DrawLine(position.x, position.y, position.z, coords.x, coords.y, coords.z, color.r, color.g, color.b, color.a)
-                QBCore.Functions.DrawText3D(entityCoord.x, entityCoord.y, entityCoord.z, "Obj: " .. entity .. " Model: " .. GetEntityModel(entity).. " \nPress [~g~E~s~] to delete the object!", 2)
+                Draw2DText('Obj: ~b~' .. entity .. '~w~ Model: ~b~' .. GetEntityModel(entity), 4, {255, 255, 255}, 0.4, 0.55, 0.888)
+                Draw2DText('If you want to delete the object click on ~g~E', 4, {255, 255, 255}, 0.4, 0.55, 0.888 + 0.025)
                 -- When E pressed then remove targeted entity
                 if IsControlJustReleased(0, 38) then
                     -- Set as missionEntity so the object can be remove (Even map objects)
@@ -807,7 +871,8 @@ Citizen.CreateThread(function()
                 DrawMarker(28, coords.x, coords.y, coords.z, 0.0, 0.0, 0.0, 0.0, 180.0, 0.0, 0.1, 0.1, 0.1, color.r, color.g, color.b, color.a, false, true, 2, nil, nil, false)
             end
         else
-            Citizen.Wait(1000)
+            local Wait = 500
         end
+        Citizen.Wait(Wait)
 	end
 end)
