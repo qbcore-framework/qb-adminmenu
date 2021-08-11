@@ -23,16 +23,6 @@ function isPedAllowedRandom(skin)
   return retval
 end
 
-function isPedAllowedRandom(skin)
-  local retval = false
-  for k, v in pairs(blockedPeds) do
-      if v ~= skin then
-          retval = true
-      end
-  end
-  return retval
-end
-
 function tprint (tbl, indent)
     if not indent then indent = 0 end
     for k, v in pairs(tbl) do
@@ -99,11 +89,6 @@ end
 function ToggleVehicleDeveloperMode()
   local x = 0.4
   local y = 0.888
-  if vehicleDevMode then
-      QBCore.Functions.Notify("Vehicle dev mode ACTIVATED!", "success")
-  else
-      QBCore.Functions.Notify("Vehicle dev mode DEACTIVATED!", "success")
-  end
   Citizen.CreateThread(function()
       while vehicleDevMode do
           local ped = PlayerPedId()

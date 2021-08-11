@@ -23,15 +23,17 @@ end
 RegisterNetEvent('qb-admin:client:ToggleCoords')
 AddEventHandler('qb-admin:client:ToggleCoords', function()
     coordsVisible = not coordsVisible
-
 	Citizen.CreateThread(function()
-		while coordsVisible do
-			local playerPed = PlayerPedId()
-			local playerX, playerY, playerZ = table.unpack(GetEntityCoords(playerPed))
-			local playerH = GetEntityHeading(playerPed)
-
-			DrawGenericText(("~g~X~w~: %s ~g~Y~w~: %s ~g~Z~w~: %s ~g~H~w~: %s"):format(FormatCoord(playerX), FormatCoord(playerY), FormatCoord(playerZ), FormatCoord(playerH)))
-			Citizen.Wait(5)
+		while true do
+			local sleepThread = 250
+			if coordsVisible then
+				sleepThread = 5
+				local playerPed = PlayerPedId()
+				local playerX, playerY, playerZ = table.unpack(GetEntityCoords(playerPed))
+				local playerH = GetEntityHeading(playerPed)
+				DrawGenericText(("~g~X~w~: %s ~g~Y~w~: %s ~g~Z~w~: %s ~g~H~w~: %s"):format(FormatCoord(playerX), FormatCoord(playerY), FormatCoord(playerZ), FormatCoord(playerH)))
+			end
+			Citizen.Wait(sleepThread)
 		end
 	end)
 end)
