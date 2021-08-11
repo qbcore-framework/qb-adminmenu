@@ -312,28 +312,24 @@ local menu_button69 = menu:AddButton({
 local coords_button = menu11:AddButton({
     icon = '🔎',
     label = 'Copy Coords to Clipboard',
-    value = 'coords',
     description = 'vector3() CTRL+V 😸'
 })
 
 local togglecoords_button = menu11:AddButton({
     icon = '🔎',
-    label = 'Co-ords Display',
-    value = 'WHATS',
+    label = 'Coords Display',
     description = 'View Coords'
 })
 
 local heading_button = menu11:AddButton({
     icon = '🧭',
     label = 'Copy Heading to Clipboard',
-    value = 'heading',
     description = 'int CTRL+V 🐵'
 })
 
 local vehicledev_button = menu11:AddButton({
     icon = '🚘',
     label = 'Vehicle Dev Mode',
-    value = 'WHAT',
     description = 'see vehicle specific information'
 })
 
@@ -375,7 +371,7 @@ noclip_button:On('change', function(item, newValue, oldValue)
 end)
 
 togglecoords_button:On("select", function()
-    TriggerEvent('qb-admin:client:ToggleCoords')
+    ToggleCoordinates()
 end)
 
 -- Player List
