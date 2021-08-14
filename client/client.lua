@@ -693,12 +693,13 @@ local godmode = false
 menu_button8:On('change', function(item, newValue, oldValue)
     godmode = not godmode
 
-    Citizen.CreateThread(function()
+    if godmode then
         while godmode do
             Citizen.Wait(0)
             SetPlayerInvincible(PlayerId(), true)
         end
-    end)
+        SetPlayerInvincible(PlayerId(), false)
+    end
 end)
 
 function RotationToDirection(rotation)
