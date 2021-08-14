@@ -35,7 +35,6 @@ local menu_button3 = menu:AddButton({
     value = menu5,
     description = 'Misc. Server Options'
 })
-
 local menu_button5 = menu2:AddCheckbox({
     icon = '🎥',
     label = 'NoClip',
@@ -66,12 +65,6 @@ local menu_button11 = menu5:AddButton({
     value = menu6,
     description = 'Change The Weather'
 })
---[[ local menu_button12 = menu5:AddButton({
-    icon = '😃',
-    label = 'Manage Dealers',
-    value = menu7,
-    description = 'Create/Delete Dealers'
-}) ]]
 local menu_button13 = menu5:AddSlider({
     icon = '⏲️',
     label = 'Server Time',
@@ -176,6 +169,7 @@ local menu_button13 = menu5:AddSlider({
 })
 
 menu_button11:On("select",function()
+    menu6:ClearItems()
     local elements = {
         [1] = {
             icon = '☀️',
@@ -231,7 +225,7 @@ menu_button11:On("select",function()
             value = "RAIN",
             description = 'Make It Rain!'
         },
-
+       
         [10] = {
             icon = '⛈️',
             label = 'Thunder',
@@ -269,12 +263,10 @@ menu_button11:On("select",function()
             description = 'What Was That Noise?!'
         }
     }
-    menu6:ClearItems()
-    MenuV:OpenMenu(menu6)
     for k,v in ipairs(elements) do
         local menu_button14 = menu6:AddButton({icon = v.icon,label = v.label,value = v,description = v.description,select = function(btn)
-        local selection = btn.Value
-        TriggerServerEvent('qb-weathersync:server:setWeather', selection.value)
+            local selection = btn.Value
+            TriggerServerEvent('qb-weathersync:server:setWeather', selection.value)
             QBCore.Functions.Notify('Weather Changed To: '..selection.label)
         end})
     end
@@ -292,6 +284,7 @@ local menu_button30 = menu7:AddButton({
     value = menu7,
     description = 'Make A New Dealer'
 })
+
 local menu_button69 = menu:AddButton({
     icon = '🔧',
     label = 'Developer Options',
@@ -310,13 +303,15 @@ local togglecoords_button = menu11:AddCheckbox({
     value = nil,
     description = 'Show Coords On Screen'
 })
+
 local heading_button = menu11:AddButton({
     icon = '📋',
     label = 'Copy Heading',
     value = 'heading',
     description = 'Copy Heading to Clipboard'
 })
-local vehicledev_button = menu11:AddCheckbox({
+
+local vehicledev_button = menu11:AddButton({
     icon = '🚘',
     label = 'Vehicle Dev Mode',
     value = nil,
@@ -374,7 +369,6 @@ menu_button2:On('select', function(item)
                     local select = btn.Value -- get all the values from v!
 
                     OpenPlayerMenus(select) -- only pass what i select nothing else
-
                 end
             }) -- WORKS
         end
@@ -392,7 +386,7 @@ function OpenPlayerMenus(player)
     local Players = MenuV:CreateMenu(false, player.cid .. ' Options', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv') -- Players Sub Menu
     Players:ClearItems()
     MenuV:OpenMenu(Players)
-    elements = {
+    local elements = {
         [1] = {
             icon = '💀',
             label = "Kill",
@@ -482,7 +476,7 @@ function OpenPlayerMenus(player)
     end
 end
 
-function OpenBanMenu(banspeler)
+function OpenBanMenu(banplayer)
     MenuV:OpenMenu(menu8)
     menu8:ClearItems()
     local menu_button15 = menu8:AddButton({
@@ -564,7 +558,7 @@ function OpenBanMenu(banspeler)
         description = 'Confirm the ban',
         select = function(btn)
             if banreason ~= 'Unknown' and banlength ~= nil then
-                TriggerServerEvent('qb-admin:server:ban', banspeler, banlength, banreason)
+                TriggerServerEvent('qb-admin:server:ban', banplayer, banlength, banreason)
                 banreason = 'Unknown'
                 banlength = nil
             else
@@ -649,7 +643,7 @@ function OpenPermsMenu(permsply)
                 select = function(btn)
                     if selectedgroup ~= 'Unknown' then
                         TriggerServerEvent('qb-admin:server:setPermissions', permsply.id, selectedgroup)
-			            QBCore.Functions.Notify('Authority group changed!', 'success')
+			QBCore.Functions.Notify('Authority group changed!', 'success')
                         selectedgroup = 'Unknown'
                     else
                         QBCore.Functions.Notify('Choose a group!', 'error')
