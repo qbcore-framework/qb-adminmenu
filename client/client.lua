@@ -269,6 +269,7 @@ menu_button11:On("select",function()
             description = 'What Was That Noise?!'
         }
     }
+    menu6:ClearItems()
     MenuV:OpenMenu(menu6)
     for k,v in ipairs(elements) do
         local menu_button14 = menu6:AddButton({icon = v.icon,label = v.label,value = v,description = v.description,select = function(btn)
