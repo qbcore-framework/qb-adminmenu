@@ -25,5 +25,6 @@ files { -- Credits to https://github.com/LVRP-BEN/bl_coords for clipboard copy m
 }
 
 dependencies {
-    'menuv'
+    'menuv',
+    'qb-drugs'
 }
