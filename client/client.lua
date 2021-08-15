@@ -6,7 +6,7 @@ local menu2 = MenuV:CreateMenu(false, 'Admin Options', 'topright', 155, 0, 0, 's
 local menu4 = MenuV:CreateMenu(false, 'Online Players', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test3')
 local menu5 = MenuV:CreateMenu(false, 'Manage Server', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test4')
 local menu6 = MenuV:CreateMenu(false, 'Available Weather Options', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test5')
-local menu7 = MenuV:CreateMenu(false, 'Check Current/Add Dealers', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test6')
+local menu7 = MenuV:CreateMenu(false, 'Dealer List', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test6')
 local menu8 = MenuV:CreateMenu(false, 'Ban', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test7')
 local menu9 = MenuV:CreateMenu(false, 'Kick', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test8')
 local menu10 = MenuV:CreateMenu(false, 'Permissions', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test9')
@@ -34,6 +34,12 @@ local menu_button3 = menu:AddButton({
     label = 'Server Management',
     value = menu5,
     description = 'Misc. Server Options'
+})
+local menu_button4 = menu:AddButton({
+    icon = '💊',
+    label = 'Dealer List',
+    value = menu7,
+    description = 'List of Existing Dealers'
 })
 local menu_button5 = menu2:AddCheckbox({
     icon = '🎥',
@@ -272,19 +278,6 @@ menu_button11:On("select",function()
     end
 end)
 
-local menu_button29 = menu7:AddButton({
-    icon = '🔌',
-    label = 'Existing Dealers',
-    value = menu7,
-    description = 'Created Dealers'
-})
-local menu_button30 = menu7:AddButton({
-    icon = '➕',
-    label = 'Create Dealer',
-    value = menu7,
-    description = 'Make A New Dealer'
-})
-
 local menu_button69 = menu:AddButton({
     icon = '🔧',
     label = 'Developer Options',
@@ -356,6 +349,25 @@ togglecoords_button:On('change', function()
     ToggleShowCoordinates()
 end)
 
+-- Dealer List
+menu_button4:On('Select', function(item)
+    menu7:ClearItems()
+    QBCore.Functions.TriggerCallback('test:getdealers', function(dealers)
+        for k, v in pairs(dealers) do
+            print(k)
+            local menu_button10 = menu7:AddButton({
+                label = v["name"], --.. ' | ' .. v[time.min] .. ' | ' .. v[time.max]
+                value = v,
+                description = 'Dealer Name',
+                select = function(btn)
+                    local select = btn.Value
+                    OpenDealerMenu(select)
+                end
+            })
+        end
+    end)
+end)
+
 -- Player List
 menu_button2:On('select', function(item)
     menu4:ClearItems()
@@ -380,6 +392,44 @@ menu_button13:On("select", function(item, value)
     QBCore.Functions.Notify("Time changed to " .. value .. " hs 00 min")
 
 end)
+
+function OpenDealerMenu(dealer)
+    local EditDealer = MenuV:CreateMenu(false, 'Edit Dealer ' .. dealer["name"], 'topright', 155, 0, 0, 'size-125', 'none', 'menuv')
+    EditDealer:ClearItems()
+    MenuV:OpenMenu(EditDealer)
+    local elements = {
+        [1] = {
+            icon = '➡️',
+            label = "Go to " .. dealer["name"],
+            value = "goto",
+            description = "Goto dealer " .. dealer["name"]
+        },
+        [2] = {
+            icon = "☠",
+            label = "Remove " .. dealer["name"],
+            value = "remove",
+            description = "Remove dealer " .. dealer["name"]
+        }
+    }
+    for k, v in ipairs(elements) do
+        local menu_button10 = EditDealer:AddButton({
+            icon = v.icon,
+            label = ' ' .. v.label,
+            value = v.value,
+            description = v.description,
+            select = function(btn)
+                local values = btn.Value
+                if values == "goto" then
+                    TriggerServerEvent('QBCore:CallCommand', "dealergoto", { dealer["name"] })
+                elseif values == "remove" then
+                    TriggerServerEvent('QBCore:CallCommand', "deletedealer", { dealer["name"] })
+                    EditDealer:Close()
+                    menu7:Close()
+                end
+            end
+        })
+    end
+end
 
 function OpenPlayerMenus(player)
 
