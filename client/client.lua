@@ -354,7 +354,6 @@ menu_button4:On('Select', function(item)
     menu7:ClearItems()
     QBCore.Functions.TriggerCallback('test:getdealers', function(dealers)
         for k, v in pairs(dealers) do
-            print(k)
             local menu_button10 = menu7:AddButton({
                 label = v["name"], --.. ' | ' .. v[time.min] .. ' | ' .. v[time.max]
                 value = v,
