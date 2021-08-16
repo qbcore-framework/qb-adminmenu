@@ -8,6 +8,12 @@ local permissions = {
     ["kick"] = "admin"
 }
 
+-- Get Dealers
+
+QBCore.Functions.CreateCallback('test:getdealers', function(source, cb)
+    cb(exports['qb-drugs']:GetDealers())
+end)
+
 -- Get Players
 
 QBCore.Functions.CreateCallback('test:getplayers', function(source, cb) -- WORKS
