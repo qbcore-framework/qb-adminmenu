@@ -1,6 +1,8 @@
 local banlength = nil
 local banreason = 'Unknown'
 local kickreason = 'Unknown'
+vehicleDevMode = false
+
 local menu = MenuV:CreateMenu(false, 'Admin Menu', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test')
 local menu2 = MenuV:CreateMenu(false, 'Admin Options', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test1')
 local menu4 = MenuV:CreateMenu(false, 'Online Players', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test3')
@@ -44,7 +46,7 @@ local menu_button5 = menu2:AddCheckbox({
 local menu_button6 = menu2:AddButton({
     icon = '🏥',
     label = 'Revive',
-    value = menu2,
+    value = 'revive',
     description = 'Revive Yourself'
 })
 local menu_button7 = menu2:AddCheckbox({
@@ -343,7 +345,7 @@ heading_button:On("select", function()
     CopyToClipboard('heading')
 end)
 
-vehicledev_button:On('change', function()
+vehicledev_button:On('select', function()
     vehicleDevMode = not vehicleDevMode
     ToggleVehicleDeveloperMode()
 end)
