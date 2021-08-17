@@ -8,14 +8,17 @@ local permissions = {
     ["kick"] = "admin"
 }
 
--- Get Dealers
+-- Get Cars
+QBCore.Functions.CreateCallback('test:getvehicles', function(source, cb)
+    cb(QBCore.Shared.Vehicles)
+end)
 
+-- Get Dealers
 QBCore.Functions.CreateCallback('test:getdealers', function(source, cb)
     cb(exports['qb-drugs']:GetDealers())
 end)
 
 -- Get Players
-
 QBCore.Functions.CreateCallback('test:getplayers', function(source, cb) -- WORKS
     local players = {}
     for k, v in pairs(QBCore.Functions.GetPlayers()) do

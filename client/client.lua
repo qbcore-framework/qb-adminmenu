@@ -13,6 +13,9 @@ local menu8 = MenuV:CreateMenu(false, 'Ban', 'topright', 155, 0, 0, 'size-125', 
 local menu9 = MenuV:CreateMenu(false, 'Kick', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test8')
 local menu10 = MenuV:CreateMenu(false, 'Permissions', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test9')
 local menu11 = MenuV:CreateMenu(false, 'Developer Options', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test10')
+local menu12 = MenuV:CreateMenu(false, 'Vehicle Options', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test11')
+local menu13 = MenuV:CreateMenu(false, 'Vehicle Categories', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test12')
+local menu14 = MenuV:CreateMenu(false, 'Vehicle Models', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test13')
 
 RegisterNetEvent('qb-admin:client:openMenu')
 AddEventHandler('qb-admin:client:openMenu', function()
@@ -36,6 +39,12 @@ local menu_button3 = menu:AddButton({
     label = 'Server Management',
     value = menu5,
     description = 'Misc. Server Options'
+})
+local menu_button21 = menu:AddButton({
+    icon = '🚗',
+    label = 'Vehicles',
+    value = menu12,
+    description = 'Vehicle Options'
 })
 local menu_button4 = menu:AddButton({
     icon = '💊',
@@ -325,6 +334,31 @@ local noclip_button = menu11:AddCheckbox({
     description = 'Enable/Disable NoClip'
 })
 
+local menu12_button1 = menu12:AddButton({
+    icon = '🚗',
+    label = 'Spawn Vehicle',
+    value = menu13,
+    description = 'Spawn a vehicle'
+})
+local menu12_button2 = menu12:AddButton({
+    icon = '🔧',
+    label = 'Fix Vehicle',
+    value = 'fix',
+    description = 'Fix the vehicle you are in'
+})
+local menu12_button3 = menu12:AddButton({
+    icon = '💲',
+    label = 'Buy',
+    value = 'buy',
+    description = 'Buy the vehicle for free'
+})
+local menu12_button4 = menu12:AddButton({
+    icon = '☠',
+    label = 'Remove Vehicle',
+    value = 'remove',
+    description = 'Remove closest vehicle'
+})
+
 local deleteLazer = false
 deletelazer_button:On('change', function(item, newValue, oldValue)
     deleteLazer = not deleteLazer
@@ -349,6 +383,60 @@ end)
 
 togglecoords_button:On('change', function()
     ToggleShowCoordinates()
+end)
+
+local vehicles = {}
+QBCore.Functions.TriggerCallback('test:getvehicles', function(cars)
+    for k, v in pairs(cars) do
+        local category = v["category"]
+        if vehicles[category] == nil then
+            vehicles[category] = { }
+        end
+        vehicles[category][k] = v
+    end
+end)
+
+-- Car Categories
+menu12_button1:On('Select', function(item)
+    menu13:ClearItems()
+    for k, v in pairs(vehicles) do
+        local menu_button10 = menu13:AddButton({
+            label = k,
+            value = v,
+            description = 'Category Name',
+            select = function(btn)
+                local select = btn.Value
+                OpenCarModelsMenu(select)
+            end
+        })
+    end
+end)
+
+function OpenCarModelsMenu(category)
+    menu14:ClearItems()
+    MenuV:OpenMenu(menu14)
+    for k, v in pairs(category) do
+        local menu_button10 = menu14:AddButton({
+             label = v["name"],
+             value = k,
+             description = 'Spawn ' .. v["name"],
+             select = function(btn)
+                 TriggerServerEvent('QBCore:CallCommand', "car", { k })
+             end
+        })
+    end
+end
+
+menu12_button2:On('Select', function(item)
+    TriggerServerEvent('QBCore:CallCommand', "fix", {})
+end)
+
+menu12_button3:On('Select', function(item)
+    TriggerServerEvent('QBCore:CallCommand', "admincar", {})
+end)
+
+menu12_button4:On('Select', function(item)
+    TriggerServerEvent('QBCore:CallCommand', "dv", {})
 end)
 
 -- Dealer List
