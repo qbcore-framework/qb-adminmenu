@@ -15,6 +15,7 @@ local blockedPeds = {
 }
 
 local showCoords = false
+local vehicleDevMode = false
 
 -- Functions
 
@@ -49,7 +50,7 @@ function tprint (tbl, indent)
         print(formatting)
         tprint(v, indent+1)
       elseif type(v) == 'boolean' then
-        print(formatting .. tostring(v))      
+        print(formatting .. tostring(v))
       else
         print(formatting .. v)
       end
@@ -111,12 +112,14 @@ function ToggleShowCoordinates()
     Citizen.CreateThread(function()
         while showCoords do
             local coords = GetEntityCoords(PlayerPedId())
+            local heading = GetEntityHeading(PlayerPedId())
             local c = {}
             c.x = math.round(coords.x, 2)
             c.y = math.round(coords.y, 2)
             c.z = math.round(coords.z, 2)
+            heading = math.round(heading, 2)
             Citizen.Wait(0)
-            Draw2DText(string.format('~w~Ped Coordinates:~b~ vector3(~w~%s~b~, ~w~%s~b~, ~w~%s~b~)', c.x, c.y, c.z), 4, {66, 182, 245}, 0.4, x + 0.0, y + 0.0)
+            Draw2DText(string.format('~w~Ped Coordinates:~b~ vector4(~w~%s~b~, ~w~%s~b~, ~w~%s~b~, ~w~%s~b~)', c.x, c.y, c.z, heading), 4, {66, 182, 245}, 0.4, x + 0.0, y + 0.0)
         end
     end)
 end
@@ -124,6 +127,7 @@ end
 function ToggleVehicleDeveloperMode()
   local x = 0.4
   local y = 0.888
+  vehicleDevMode = not vehicleDevMode
   Citizen.CreateThread(function()
       while vehicleDevMode do
           local ped = PlayerPedId()
