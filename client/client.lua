@@ -324,6 +324,18 @@ local noclip_button = menu11:AddCheckbox({
     value = menu11,
     description = 'Enable/Disable NoClip'
 })
+local names_button = menu11:AddCheckbox({               
+    icon = '📋',                                        
+    label = 'Names',                                    
+    value = menu11,                               
+    description = 'Enable/Disable Names overhead'   
+})                                               
+local blips_button = menu11:AddCheckbox({     
+    icon = '📍',                             
+    label = 'Blips',                                    
+    value = menu11,                                     
+    description = 'Enable/Disable Blips for players'    
+})                                                      
 
 local deleteLazer = false
 deletelazer_button:On('change', function(item, newValue, oldValue)
@@ -350,6 +362,13 @@ end)
 togglecoords_button:On('change', function()
     ToggleShowCoordinates()
 end)
+
+names_button:On('change', function()           
+    TriggerEvent('qb-admin:client:toggleNames')
+end)                                           
+blips_button:On('change', function()           
+    TriggerEvent('qb-admin:client:toggleBlips')
+end)                                           
 
 -- Dealer List
 menu_button4:On('Select', function(item)

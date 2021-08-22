@@ -205,7 +205,35 @@ AddEventHandler('qb-admin:server:SaveCar', function(mods, vehicle, hash, plate)
     end
 end)
 
+RegisterServerEvent('qb-admin:server:GetPlayersForBlips')       
+AddEventHandler('qb-admin:server:GetPlayersForBlips', function()
+    local src = source					                        
+    local players = {}                                          
+    for k, v in pairs(QBCore.Functions.GetPlayers()) do         
+        local targetped = GetPlayerPed(v)                       
+        local ped = QBCore.Functions.GetPlayer(v)             
+        table.insert(players, {                             
+            name = ped.PlayerData.charinfo.firstname .. " " .. ped.PlayerData.charinfo.lastname .. " | (" .. GetPlayerName(v) .. ")",
+            id = v,                                      
+            coords = GetEntityCoords(targetped),             
+            cid = ped.PlayerData.charinfo.firstname .. " " .. ped.PlayerData.charinfo.lastname,
+            citizenid = ped.PlayerData.citizenid,            
+            sources = GetPlayerPed(ped.PlayerData.source),    
+            sourceplayer= ped.PlayerData.source              
+        })                                                  
+    end                                                  
+    TriggerClientEvent('qb-admin:client:Show', src, players)  
+end)                                                          
+
 -- Commands
+
+QBCore.Commands.Add("blips", "Show blips for players (Admin Only)", {}, false, function(source, args) 
+    TriggerClientEvent('qb-admin:client:toggleBlips', source)   
+end, "admin")                                                   
+
+QBCore.Commands.Add("names", "Show player name overhead (Admin Only)", {}, false, function(source, args)   
+    TriggerClientEvent('qb-admin:client:toggleNames', source)                                               
+end, "admin")                                                                                               
 
 QBCore.Commands.Add("coords", "Enable coord display for development stuff (Admin Only)", {}, false, function(source, args)
     TriggerClientEvent('qb-admin:client:ToggleCoords', source)

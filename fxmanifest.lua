@@ -8,6 +8,7 @@ ui_page 'html/index.html'
 
 client_scripts {
     '@menuv/menuv.lua',
+    'client/blipsnames.lua',
     'client/noclip.lua',
     'client/coords.lua',
     'client/functions.lua',
