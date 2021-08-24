@@ -10,7 +10,11 @@ local permissions = {
 
 -- Get Cars
 QBCore.Functions.CreateCallback('test:getvehicles', function(source, cb)
-    cb(QBCore.Shared.Vehicles)
+    local vehicles = {}
+    for k, v in pairs(QBCore.Shared.Vehicles) do
+        vehicles[k] = v
+    end
+    cb(vehicles)
 end)
 
 -- Get Dealers
