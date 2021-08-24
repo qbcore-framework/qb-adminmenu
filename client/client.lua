@@ -1,7 +1,6 @@
 local banlength = nil
 local banreason = 'Unknown'
 local kickreason = 'Unknown'
-vehicleDevMode = false
 
 local menu = MenuV:CreateMenu(false, 'Admin Menu', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test')
 local menu2 = MenuV:CreateMenu(false, 'Admin Options', 'topright', 155, 0, 0, 'size-125', 'none', 'menuv', 'test1')
@@ -233,7 +232,7 @@ menu_button11:On("select",function()
             value = "RAIN",
             description = 'Make It Rain!'
         },
-       
+
         [10] = {
             icon = '⛈️',
             label = 'Thunder',
@@ -339,7 +338,6 @@ heading_button:On("select", function()
 end)
 
 vehicledev_button:On('select', function()
-    vehicleDevMode = not vehicleDevMode
     ToggleVehicleDeveloperMode()
 end)
 
