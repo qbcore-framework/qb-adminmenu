@@ -128,7 +128,7 @@ AddEventHandler('qb-admin:client:Show', function(players)
                 if IsPauseMenuActive() then
                     SetBlipAlpha(blip, 255)
                 else
-                    x1, y1 = table.unpack(GetEntityCoords(GetPlayerPed(-1), true))
+                    x1, y1 = table.unpack(GetEntityCoords(PlayerPedId(), true))
                     x2, y2 = table.unpack(GetEntityCoords(GetPlayerPed(playeridx), true))
                     distance = (math.floor(math.abs(math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2))) / -1)) + 900
                     if distance < 0 then
