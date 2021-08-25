@@ -332,6 +332,18 @@ local noclip_button = menu11:AddCheckbox({
     value = menu11,
     description = 'Enable/Disable NoClip'
 })
+local names_button = menu11:AddCheckbox({               
+    icon = '📋',                                        
+    label = 'Names',                                    
+    value = menu11,                               
+    description = 'Enable/Disable Names overhead'   
+})                                               
+local blips_button = menu11:AddCheckbox({     
+    icon = '📍',                             
+    label = 'Blips',                                    
+    value = menu11,                                     
+    description = 'Enable/Disable Blips for players'    
+}) 
 
 local menu12_button1 = menu12:AddButton({
     icon = '🚗',
@@ -433,6 +445,13 @@ end)
 
 menu12_button4:On('Select', function(item)
     TriggerServerEvent('QBCore:CallCommand', "dv", {})
+end)
+
+names_button:On('change', function()           
+    TriggerEvent('qb-admin:client:toggleNames')
+end)                                           
+blips_button:On('change', function()           
+    TriggerEvent('qb-admin:client:toggleBlips')
 end)
 
 -- Dealer List
