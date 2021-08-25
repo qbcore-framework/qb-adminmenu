@@ -149,10 +149,15 @@ AddEventHandler('qb-admin:server:intovehicle', function(player)
                 break
             end
         end
-        print(seat)
-        SetPedIntoVehicle(admin,vehicle,seat)
+        if seat ~= -1 then
+            SetPedIntoVehicle(admin,vehicle,seat)
+            TriggerClientEvent('QBCore:Notify', src, 'Entered vehicle', 'success', 5000)
+        else
+            TriggerClientEvent('QBCore:Notify', src, 'The vehicle has no free seats!', 'danger', 5000)
+        end
     end
 end)
+
 
 RegisterNetEvent('qb-admin:server:bring')
 AddEventHandler('qb-admin:server:bring', function(player)
