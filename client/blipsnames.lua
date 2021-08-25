@@ -36,7 +36,7 @@ AddEventHandler('qb-admin:client:Show', function(players)
 
         if ShowNames then
             Citizen.InvokeNative(0x63BB75ABEDC1F6A0, idTesta, 0, true)
-            if NetworkIsPlayerTalking(i) then
+            if NetworkIsPlayerTalking(playeridx) then
                 Citizen.InvokeNative(0x63BB75ABEDC1F6A0, idTesta, 9, true)
             else
                 Citizen.InvokeNative(0x63BB75ABEDC1F6A0, idTesta, 9, false)
@@ -53,25 +53,23 @@ AddEventHandler('qb-admin:client:Show', function(players)
                 SetBlipSprite(blip, 1)
                 Citizen.InvokeNative(0x5FBCA48327B914DF, blip, true)
             else -- Blip exist, update it
-                veh = GetVehiclePedIsIn(ped, false)
-                blipSprite = GetBlipSprite(blip)
+                local veh = GetVehiclePedIsIn(ped, false)
+                local blipSprite = GetBlipSprite(blip)
                 if not GetEntityHealth(ped) then -- Check if ped is death
                     if blipSprite ~= 274 then
                         SetBlipSprite(blip, 274)
                         Citizen.InvokeNative(0x5FBCA48327B914DF, blip, false)
                     end
                 elseif veh ~= 0 then -- Check if ped is in vehicle
-                    classveh = GetVehicleClass(veh)
-                    modelveh = GetEntityModel(veh)
-                    if classveh == 15 then     -- Vehicle type 15 Helicopters
+                    local classveh = GetVehicleClass(veh)
+                    local modelveh = GetEntityModel(veh)
+                    if classveh == 15 then -- Vehicle type 15 Helicopters
                         if blipSprite ~= 422 then
                             SetBlipSprite(blip, 422)
                             Citizen.InvokeNative(0x5FBCA48327B914DF, blip, false)
                         end
                     elseif classveh == 16 then -- Vehicle type 16 Planes
-                        if modelveh == GetHashKey("besra") or 
-                           modelveh == GetHashKey("hydra") or 
-                           modelveh == GetHashKey("lazer") then   --Check if vehicle is military jet
+                        if modelveh == `besra` or modelveh == `hydra` or modelveh == `lazer` then   --Check if vehicle is military jet
                             if blipSprite ~= 424 then
                                 SetBlipSprite(blip, 424)
                                 Citizen.InvokeNative(0x5FBCA48327B914DF, blip, false)
@@ -85,14 +83,12 @@ AddEventHandler('qb-admin:client:Show', function(players)
                             SetBlipSprite(blip, 427)
                             Citizen.InvokeNative(0x5FBCA48327B914DF, blip, false)
                         end
-                    elseif modelveh == GetHashKey("insurgent") or 
-                           modelveh == GetHashKey("insurgent2") or 
-                           modelveh == GetHashKey("limo2") then   -- Vehicle is armed car
+                    elseif modelveh == `insurgent` or modelveh == `insurgent2` or modelveh == `limo2` then   -- Vehicle is armed car
                         if blipSprite ~= 426 then
                             SetBlipSprite(blip, 426)
                             Citizen.InvokeNative(0x5FBCA48327B914DF, blip, false)
                         end
-                    elseif modelveh == GetHashKey("rhino") then -- Vehicle is Rhino
+                    elseif modelveh == `rhino` then -- Vehicle is Rhino
                         if blipSprite ~= 421 then
                             SetBlipSprite(blip, 421)
                             Citizen.InvokeNative(0x5FBCA48327B914DF, blip, false)
@@ -119,8 +115,6 @@ AddEventHandler('qb-admin:client:Show', function(players)
                     end
                 end
 
-
-
                 SetBlipRotation(blip, math.ceil(GetEntityHeading(veh)))
                 SetBlipNameToPlayerName(blip, playeridx)
                 SetBlipScale(blip, 0.85)
@@ -128,9 +122,9 @@ AddEventHandler('qb-admin:client:Show', function(players)
                 if IsPauseMenuActive() then
                     SetBlipAlpha(blip, 255)
                 else
-                    x1, y1 = table.unpack(GetEntityCoords(PlayerPedId(), true))
-                    x2, y2 = table.unpack(GetEntityCoords(GetPlayerPed(playeridx), true))
-                    distance = (math.floor(math.abs(math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2))) / -1)) + 900
+                    local x1, y1 = table.unpack(GetEntityCoords(PlayerPedId(), true))
+                    local x2, y2 = table.unpack(GetEntityCoords(GetPlayerPed(playeridx), true))
+                    local distance = (math.floor(math.abs(math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2))) / -1)) + 900
                     if distance < 0 then
                         distance = 0
                     elseif distance > 255 then
