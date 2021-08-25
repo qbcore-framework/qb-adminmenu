@@ -386,15 +386,13 @@ togglecoords_button:On('change', function()
 end)
 
 local vehicles = {}
-QBCore.Functions.TriggerCallback('test:getvehicles', function(cars)
-    for k, v in pairs(cars) do
-        local category = v["category"]
-        if vehicles[category] == nil then
-            vehicles[category] = { }
-        end
-        vehicles[category][k] = v
+for k, v in pairs(QBCore.Shared.Vehicles) do
+    local category = v["category"]
+    if vehicles[category] == nil then
+        vehicles[category] = { }
     end
-end)
+    vehicles[category][k] = v
+end
 
 -- Car Categories
 menu12_button1:On('Select', function(item)
