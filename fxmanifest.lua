@@ -11,6 +11,7 @@ client_scripts {
     'client/noclip.lua',
     'client/coords.lua',
     'client/functions.lua',
+    'client/blipsnames.lua',
     'client/client.lua',
     'client/events.lua'
 }
