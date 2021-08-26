@@ -467,16 +467,16 @@ function OpenPlayerMenus(player)
             description = "Go to " .. player.cid .. " Position"
         },
         [6] = {
-            icon = '🚗',
-            label = "Sit in vehicle",
-            value = "intovehicle",
-            description = "Sit in " .. player.cid .. "'s vehicle"
-        },
-        [7] = {
             icon = '⬅️',
             label = "Bring",
             value = "bring",
             description = "Bring " .. player.cid .. " to your position"
+        },
+        [7] = {
+            icon = '🚗',
+            label = "Sit in vehicle",
+            value = "intovehicle",
+            description = "Sit in " .. player.cid .. "'s vehicle"
         },
         [8] = {
             icon = '🎒',
