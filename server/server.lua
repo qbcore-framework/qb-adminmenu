@@ -88,7 +88,7 @@ AddEventHandler("qb-admin:server:kick", function(player, reason)
     local src = source
     if QBCore.Functions.HasPermission(src, permissions["kick"]) then
         TriggerEvent("qb-log:server:CreateLog", "bans", "Player Kicked", "red", string.format('%s was kicked by %s for %s', GetPlayerName(player.id), GetPlayerName(src), reason), true)
-        DropPlayer(player.id, "You have been kicked from the server:\n" .. reason .. "\n\n🔸 Join the discord server for more information: https://discord.gg/example")
+        DropPlayer(player.id, "You have been kicked from the server:\n" .. reason .. "\n\n🔸 Check our Discord for more information: " .. QBCore.Config.Server.discord)
     end
 end)
 
@@ -117,9 +117,9 @@ AddEventHandler("qb-admin:server:ban", function(player, time, reason)
         })
         TriggerEvent("qb-log:server:CreateLog", "bans", "Player Banned", "red", string.format('%s was banned by %s for %s', GetPlayerName(player.id), GetPlayerName(src), reason), true)
         if banTime >= 2147483647 then
-            DropPlayer(player.id, "You have been banned:\n" .. reason .. "\n\nYour ban is permanent.\n🔸 Join the discord for more information: https://discord.gg/example")
+            DropPlayer(player.id, "You have been banned:\n" .. reason .. "\n\nYour ban is permanent.\n🔸 Check our Discord for more information: " .. QBCore.Config.Server.discord)
         else
-            DropPlayer(player.id, "You have been banned:\n" .. reason .. "\n\nBan expires: " .. timeTable["day"] .. "/" .. timeTable["month"] .. "/" .. timeTable["year"] .. " " .. timeTable["hour"] .. ":" .. timeTable["min"] .. "\n🔸 Join the discord for more information: https://discord.gg/example")
+            DropPlayer(player.id, "You have been banned:\n" .. reason .. "\n\nBan expires: " .. timeTable["day"] .. "/" .. timeTable["month"] .. "/" .. timeTable["year"] .. " " .. timeTable["hour"] .. ":" .. timeTable["min"] .. "\n🔸 Check our Discord for more information: " .. QBCore.Config.Server.discord)
         end
     end
 end)
@@ -169,7 +169,7 @@ end)
 
 RegisterNetEvent("qb-admin:server:cloth")
 AddEventHandler("qb-admin:server:cloth", function(player)
-	TriggerClientEvent("qb-clothing:client:openMenu", player.id)
+    TriggerClientEvent("qb-clothing:client:openMenu", player.id)
 end)
 
 RegisterServerEvent('qb-admin:server:setPermissions')
@@ -225,12 +225,12 @@ end)
 
 -- Commands
 
-QBCore.Commands.Add("blips", "Show blips for players (Admin Only)", {}, false, function(source, args) 
-    TriggerClientEvent('qb-admin:client:toggleBlips', source)   
-end, "admin")                                                   
+QBCore.Commands.Add("blips", "Show blips for players (Admin Only)", {}, false, function(source, args)
+    TriggerClientEvent('qb-admin:client:toggleBlips', source)
+end, "admin")
 
-QBCore.Commands.Add("names", "Show player name overhead (Admin Only)", {}, false, function(source, args)   
-    TriggerClientEvent('qb-admin:client:toggleNames', source)                                               
+QBCore.Commands.Add("names", "Show player name overhead (Admin Only)", {}, false, function(source, args)
+    TriggerClientEvent('qb-admin:client:toggleNames', source)
 end, "admin")
 
 QBCore.Commands.Add("coords", "Enable coord display for development stuff (Admin Only)", {}, false, function(source, args)
@@ -333,7 +333,7 @@ QBCore.Commands.Add("reportr", "Reply To A Report (Admin Only)", {}, false, func
         for k, v in pairs(QBCore.Functions.GetPlayers()) do
             if QBCore.Functions.HasPermission(v, "admin") then
                 if QBCore.Functions.IsOptin(v) then
-                    TriggerClientEvent('chatMessage', v, "ReportReply("..source..") - "..GetPlayerName(source), "warning", msg)
+                    TriggerClientEvent('chatMessage', v, "REPORT REPLY ("..source..") - "..GetPlayerName(source), "warning", msg)
                     TriggerEvent("qb-log:server:CreateLog", "report", "Report Reply", "red", "**"..GetPlayerName(source).."** replied on: **"..OtherPlayer.PlayerData.name.. " **(ID: "..OtherPlayer.PlayerData.source..") **Message:** " ..msg, false)
                 end
             end
@@ -404,7 +404,7 @@ RegisterCommand("kickall", function(source, args, rawCommand)
         for k, v in pairs(QBCore.Functions.GetPlayers()) do
             local Player = QBCore.Functions.GetPlayer(v)
             if Player ~= nil then
-                DropPlayer(Player.PlayerData.source, "Server restart, check our Discord for more information! (discord.gg/ChangeInqb-adminMainLua)")
+                DropPlayer(Player.PlayerData.source, "Server restart, check our Discord for more information: " .. QBCore.Config.Server.discord)
             end
         end
     end
