@@ -142,6 +142,8 @@ end)
 Citizen.CreateThread(function()
     while true do
         Wait(1000)
-        TriggerServerEvent('qb-admin:server:GetPlayersForBlips')
+        if ShowBlips then
+            TriggerServerEvent('qb-admin:server:GetPlayersForBlips')
+        end
     end
 end)
