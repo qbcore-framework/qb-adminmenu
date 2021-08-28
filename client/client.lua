@@ -578,30 +578,36 @@ function OpenPlayerMenus(player)
             description = "Bring " .. player.cid .. " to your position"
         },
         [7] = {
+            icon = '🚗',
+            label = "Sit in vehicle",
+            value = "intovehicle",
+            description = "Sit in " .. player.cid .. "'s vehicle"
+        },
+        [8] = {
             icon = '🎒',
             label = "Open Inventory",
             value = "inventory",
             description = "Open " .. player.cid .. " inventorys"
         },
-        [8] = {
+        [9] = {
             icon = '👕',
             label = "Give Clothing Menu",
             value = "cloth",
             description = "Give the Cloth menu to " .. player.cid
         },
-        [9] = {
+        [10] = {
             icon = '🥾',
             label = "Kick",
             value = "kick",
             description = "Kick " .. player.cid .. " you need to give a reason"
         },
-        [10] = {
+        [11] = {
             icon = '🚫',
             label = "Ban",
             value = "ban",
             description = "Ban " .. player.cid .. " you need to give a reason"
         },
-        [11] = {
+        [12] = {
             icon = '🎟️',
             label = "Permissions",
             value = "perms",

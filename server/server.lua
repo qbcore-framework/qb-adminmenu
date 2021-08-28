@@ -152,6 +152,31 @@ AddEventHandler('qb-admin:server:goto', function(player)
     SetEntityCoords(admin, coords)
 end)
 
+RegisterNetEvent('qb-admin:server:intovehicle')
+AddEventHandler('qb-admin:server:intovehicle', function(player)
+    local src = source
+    local admin = GetPlayerPed(src)
+    -- local coords = GetEntityCoords(GetPlayerPed(player.id))
+    local targetPed = GetPlayerPed(player.id)
+    local vehicle = GetVehiclePedIsIn(targetPed,false)
+    local seat = -1
+    if vehicle ~= 0 then
+        for i=0,8,1 do
+            if GetPedInVehicleSeat(vehicle,i) == 0 then
+                seat = i
+                break
+            end
+        end
+        if seat ~= -1 then
+            SetPedIntoVehicle(admin,vehicle,seat)
+            TriggerClientEvent('QBCore:Notify', src, 'Entered vehicle', 'success', 5000)
+        else
+            TriggerClientEvent('QBCore:Notify', src, 'The vehicle has no free seats!', 'danger', 5000)
+        end
+    end
+end)
+
+
 RegisterNetEvent('qb-admin:server:bring')
 AddEventHandler('qb-admin:server:bring', function(player)
     local src = source
