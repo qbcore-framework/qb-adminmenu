@@ -200,7 +200,7 @@ end)
 RegisterServerEvent('qb-admin:server:setPermissions')
 AddEventHandler('qb-admin:server:setPermissions', function(targetId, group)
     local src = source
-    if QBCore.Functions.HasPermission(src, "admin") then
+    if QBCore.Functions.HasPermission(src, "god") then
         QBCore.Functions.AddPermission(targetId, group[1].rank)
         TriggerClientEvent('QBCore:Notify', targetId, 'Your Permission Level Is Now '..group[1].label)
     end
