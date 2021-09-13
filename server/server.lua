@@ -102,7 +102,7 @@ AddEventHandler("qb-admin:server:ban", function(player, time, reason)
             banTime = 2147483647
         end
         local timeTable = os.date("*t", banTime)
-        exports.oxmysql:insert('INSERT INTO bans (name, license, discord, ip, reason, expire, bannedby) VALUES (?)', {
+        exports.oxmysql:insert('INSERT INTO bans (name, license, discord, ip, reason, expire, bannedby) VALUES (?, ?, ?, ?, ?, ?, ?)', {
             GetPlayerName(player.id),
             QBCore.Functions.GetIdentifier(player.id, 'license'),
             QBCore.Functions.GetIdentifier(player.id, 'discord'),
@@ -236,7 +236,7 @@ AddEventHandler('qb-admin:server:SaveCar', function(mods, vehicle, hash, plate)
     local Player = QBCore.Functions.GetPlayer(src)
     local result = exports.oxmysql:fetchSync('SELECT plate FROM player_vehicles WHERE plate = ?', { plate })
     if result[1] == nil then
-        exports.oxmysql:insert('INSERT INTO player_vehicles (license, citizenid, vehicle, hash, mods, plate, state) VALUES (?)', {
+        exports.oxmysql:insert('INSERT INTO player_vehicles (license, citizenid, vehicle, hash, mods, plate, state) VALUES (?, ?, ?, ?, ?, ?, ?)', {
             Player.PlayerData.license,
             Player.PlayerData.citizenid,
             vehicle.model,
@@ -311,7 +311,7 @@ QBCore.Commands.Add("warn", "Warn A Player (Admin Only)", {{name="ID", help="Pla
     if targetPlayer ~= nil then
         TriggerClientEvent('chatMessage', targetPlayer.PlayerData.source, "SYSTEM", "error", "You have been warned by: "..GetPlayerName(source)..", Reason: "..msg)
         TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "You have warned "..GetPlayerName(targetPlayer.PlayerData.source).." for: "..msg)
-        exports.oxmysql:insert('INSERT INTO player_warns (senderIdentifier, targetIdentifier, reason, warnId) VALUES (?)', {
+        exports.oxmysql:insert('INSERT INTO player_warns (senderIdentifier, targetIdentifier, reason, warnId) VALUES (?, ?, ?, ?)', {
             senderPlayer.PlayerData.license,
             targetPlayer.PlayerData.license,
             msg,
