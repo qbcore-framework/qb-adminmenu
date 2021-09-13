@@ -102,14 +102,14 @@ AddEventHandler("qb-admin:server:ban", function(player, time, reason)
             banTime = 2147483647
         end
         local timeTable = os.date("*t", banTime)
-        exports.oxmysql:insert('INSERT INTO bans (name, license, discord, ip, reason, expire, bannedby) VALUES (@name, @license, @discord, @ip, @reason, @expire, @bannedby)', {
-            ['@name'] = GetPlayerName(player.id),
-            ['@license'] = QBCore.Functions.GetIdentifier(player.id, 'license'),
-            ['@discord'] = QBCore.Functions.GetIdentifier(player.id, 'discord'),
-            ['@ip'] = QBCore.Functions.GetIdentifier(player.id, 'ip'),
-            ['@reason'] = reason,
-            ['@expire'] = banTime,
-            ['@bannedby'] = GetPlayerName(src)
+        exports.oxmysql:insert('INSERT INTO bans (name, license, discord, ip, reason, expire, bannedby) VALUES (?)', {
+            GetPlayerName(player.id),
+            QBCore.Functions.GetIdentifier(player.id, 'license'),
+            QBCore.Functions.GetIdentifier(player.id, 'discord'),
+            QBCore.Functions.GetIdentifier(player.id, 'ip'),
+            reason,
+            banTime,
+            GetPlayerName(src)
         })
         TriggerClientEvent('chat:addMessage', -1, {
             template = '<div class="chat-message server"><strong>ANNOUNCEMENT | {0} has been banned:</strong> {1}</div>',
@@ -234,16 +234,16 @@ RegisterServerEvent('qb-admin:server:SaveCar')
 AddEventHandler('qb-admin:server:SaveCar', function(mods, vehicle, hash, plate)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-    local result = exports.oxmysql:fetchSync('SELECT plate FROM player_vehicles WHERE plate=@plate', {['@plate'] = plate})
+    local result = exports.oxmysql:fetchSync('SELECT plate FROM player_vehicles WHERE plate = ?', { plate })
     if result[1] == nil then
-        exports.oxmysql:insert('INSERT INTO player_vehicles (license, citizenid, vehicle, hash, mods, plate, state) VALUES (@license, @citizenid, @vehicle, @hash, @mods, @plate, @state)', {
-            ['@license'] = Player.PlayerData.license,
-            ['@citizenid'] = Player.PlayerData.citizenid,
-            ['@vehicle'] = vehicle.model,
-            ['@hash'] = vehicle.hash,
-            ['@mods'] = json.encode(mods),
-            ['@plate'] = plate,
-            ['@state'] = 0
+        exports.oxmysql:insert('INSERT INTO player_vehicles (license, citizenid, vehicle, hash, mods, plate, state) VALUES (?)', {
+            Player.PlayerData.license,
+            Player.PlayerData.citizenid,
+            vehicle.model,
+            vehicle.hash,
+            json.encode(mods),
+            plate,
+            0
         })
         TriggerClientEvent('QBCore:Notify', src, 'The vehicle is now yours!', 'success', 5000)
     else
@@ -311,11 +311,11 @@ QBCore.Commands.Add("warn", "Warn A Player (Admin Only)", {{name="ID", help="Pla
     if targetPlayer ~= nil then
         TriggerClientEvent('chatMessage', targetPlayer.PlayerData.source, "SYSTEM", "error", "You have been warned by: "..GetPlayerName(source)..", Reason: "..msg)
         TriggerClientEvent('chatMessage', source, "SYSTEM", "error", "You have warned "..GetPlayerName(targetPlayer.PlayerData.source).." for: "..msg)
-        exports.oxmysql:insert('INSERT INTO player_warns (senderIdentifier, targetIdentifier, reason, warnId) VALUES (@senderIdentifier, @targetIdentifier, @reason, @warnId)', {
-            ['@senderIdentifier'] = senderPlayer.PlayerData.license,
-            ['@targetIdentifier'] = targetPlayer.PlayerData.license,
-            ['@reason'] = msg,
-            ['@warnId'] = warnId
+        exports.oxmysql:insert('INSERT INTO player_warns (senderIdentifier, targetIdentifier, reason, warnId) VALUES (?)', {
+            senderPlayer.PlayerData.license,
+            targetPlayer.PlayerData.license,
+            msg,
+            warnId
         })
     else
         TriggerClientEvent('QBCore:Notify', source, 'This player is not online', 'error')
@@ -325,11 +325,11 @@ end, "admin")
 QBCore.Commands.Add("checkwarns", "Check Player Warnings (Admin Only)", {{name="ID", help="Player"}, {name="Warning", help="Number of warning, (1, 2 or 3 etc..)"}}, false, function(source, args)
     if args[2] == nil then
         local targetPlayer = QBCore.Functions.GetPlayer(tonumber(args[1]))
-        local result = exports.oxmysql:fetchSync('SELECT * FROM player_warns WHERE targetIdentifier=@targetIdentifier', {['@targetIdentifier'] = targetPlayer.PlayerData.license})
+        local result = exports.oxmysql:fetchSync('SELECT * FROM player_warns WHERE targetIdentifier = ?', { targetPlayer.PlayerData.license })
         TriggerClientEvent('chatMessage', source, "SYSTEM", "warning", targetPlayer.PlayerData.name.." has "..tablelength(result).." warnings!")
     else
         local targetPlayer = QBCore.Functions.GetPlayer(tonumber(args[1]))
-        local warnings = exports.oxmysql:fetchSync('SELECT * FROM player_warns WHERE targetIdentifier=@targetIdentifier', {['@targetIdentifier'] = targetPlayer.PlayerData.license})
+        local warnings = exports.oxmysql:fetchSync('SELECT * FROM player_warns WHERE targetIdentifier = ?', { targetPlayer.PlayerData.license })
         local selectedWarning = tonumber(args[2])
         if warnings[selectedWarning] ~= nil then
             local sender = QBCore.Functions.GetPlayer(warnings[selectedWarning].senderIdentifier)
@@ -340,12 +340,12 @@ end, "admin")
 
 QBCore.Commands.Add("delwarn", "Delete Players Warnings (Admin Only)", {{name="ID", help="Player"}, {name="Warning", help="Number of warning, (1, 2 or 3 etc..)"}}, true, function(source, args)
     local targetPlayer = QBCore.Functions.GetPlayer(tonumber(args[1]))
-    local warnings = exports.oxmysql:fetchSync('SELECT * FROM player_warns WHERE targetIdentifier=@targetIdentifier', {['@targetIdentifier'] = targetPlayer.PlayerData.license})
+    local warnings = exports.oxmysql:fetchSync('SELECT * FROM player_warns WHERE targetIdentifier = ?', { targetPlayer.PlayerData.license })
     local selectedWarning = tonumber(args[2])
     if warnings[selectedWarning] ~= nil then
         local sender = QBCore.Functions.GetPlayer(warnings[selectedWarning].senderIdentifier)
         TriggerClientEvent('chatMessage', source, "SYSTEM", "warning", "You have deleted warning ("..selectedWarning..") , Reason: "..warnings[selectedWarning].reason)
-        exports.oxmysql:execute('DELETE FROM player_warns WHERE warnId=@warnId', {['@warnId'] = warnings[selectedWarning].warnId})
+        exports.oxmysql:execute('DELETE FROM player_warns WHERE warnId = ?', { warnings[selectedWarning].warnId })
     end
 end, "admin")
 
