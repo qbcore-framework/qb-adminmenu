@@ -1009,7 +1009,7 @@ Citizen.CreateThread(function()	-- While loop needed for delete lazer
                 DrawMarker(28, coords.x, coords.y, coords.z, 0.0, 0.0, 0.0, 0.0, 180.0, 0.0, 0.1, 0.1, 0.1, color.r, color.g, color.b, color.a, false, true, 2, nil, nil, false)
             end
         else
-            local Wait = 500
+            Wait = 500
         end
         Citizen.Wait(Wait)
 	end
