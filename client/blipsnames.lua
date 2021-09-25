@@ -1,8 +1,18 @@
+-- This shit doesn't even really work
+QBCore = exports['qb-core']:GetCoreObject()
 local ShowBlips = false
 local ShowNames = false
 
-RegisterNetEvent('qb-admin:client:toggleBlips')
-AddEventHandler('qb-admin:client:toggleBlips', function()
+Citizen.CreateThread(function()
+    while true do
+        Wait(1000)
+        if ShowBlips then
+            TriggerServerEvent('qb-admin:server:GetPlayersForBlips')
+        end
+    end
+end)
+
+RegisterNetEvent('qb-admin:client:toggleBlips', function()
     if not ShowBlips then
         ShowBlips = true
         QBCore.Functions.Notify("Blips activated", "success")
@@ -12,8 +22,7 @@ AddEventHandler('qb-admin:client:toggleBlips', function()
     end
 end)
 
-RegisterNetEvent('qb-admin:client:toggleNames')
-AddEventHandler('qb-admin:client:toggleNames', function()
+RegisterNetEvent('qb-admin:client:toggleNames', function()
     if not ShowNames then
         ShowNames = true
         QBCore.Functions.Notify("Names activated", "success")
@@ -23,8 +32,7 @@ AddEventHandler('qb-admin:client:toggleNames', function()
     end
 end)
 
-RegisterNetEvent('qb-admin:client:Show')
-AddEventHandler('qb-admin:client:Show', function(players)
+RegisterNetEvent('qb-admin:client:Show', function(players)
     for k, player in pairs(players) do
         local playeridx = GetPlayerFromServerId(player.id)
         local ped = GetPlayerPed(playeridx)
@@ -135,15 +143,6 @@ AddEventHandler('qb-admin:client:Show', function(players)
             end
         else
             RemoveBlip(blip)
-        end
-    end
-end)
-
-Citizen.CreateThread(function()
-    while true do
-        Wait(1000)
-        if ShowBlips then
-            TriggerServerEvent('qb-admin:server:GetPlayersForBlips')
         end
     end
 end)

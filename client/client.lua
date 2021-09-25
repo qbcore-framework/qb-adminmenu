@@ -1,4 +1,6 @@
 local banlength = nil
+local showCoords = false
+local vehicleDevMode = false
 local banreason = 'Unknown'
 local kickreason = 'Unknown'
 
@@ -16,8 +18,7 @@ local menu12 = MenuV:CreateMenu(false, 'Vehicle Options', 'topright', 220, 20, 6
 local menu13 = MenuV:CreateMenu(false, 'Vehicle Categories', 'topright', 220, 20, 60, 'size-125', 'none', 'menuv', 'test12')
 local menu14 = MenuV:CreateMenu(false, 'Vehicle Models', 'topright', 220, 20, 60, 'size-125', 'none', 'menuv', 'test13')
 
-RegisterNetEvent('qb-admin:client:openMenu')
-AddEventHandler('qb-admin:client:openMenu', function()
+RegisterNetEvent('qb-admin:client:openMenu', function()
     MenuV:OpenMenu(menu)
 end)
 
@@ -375,6 +376,87 @@ deletelazer_button:On('change', function(item, newValue, oldValue)
     deleteLazer = not deleteLazer
 end)
 
+local function round(input, decimalPlaces)
+    return tonumber(string.format("%." .. (decimalPlaces or 0) .. "f", input))
+end
+
+local function CopyToClipboard(dataType)
+    local ped = PlayerPedId()
+    if dataType == 'coords' then
+        local coords = GetEntityCoords(ped)
+        local x = round(coords.x, 2)
+        local y = round(coords.y, 2)
+        local z = round(coords.z, 2)
+        SendNUIMessage({
+            string = string.format('vector3(%s, %s, %s)', x, y, z)
+        })
+        QBCore.Functions.Notify("Coordinates copied to clipboard!", "success")
+    elseif dataType == 'heading' then
+        local heading = GetEntityHeading(ped)
+        local h = round(heading, 2)
+        SendNUIMessage({
+            string = h
+        })
+        QBCore.Functions.Notify("Heading copied to clipboard!", "success")
+    end
+end
+
+local function Draw2DText(content, font, colour, scale, x, y)
+    SetTextFont(font)
+    SetTextScale(scale, scale)
+    SetTextColour(colour[1],colour[2],colour[3], 255)
+    SetTextEntry("STRING")
+    SetTextDropShadow(0, 0, 0, 0,255)
+    SetTextDropShadow()
+    SetTextEdge(4, 0, 0, 0, 255)
+    SetTextOutline()
+    AddTextComponentString(content)
+    DrawText(x, y)
+end
+
+local function ToggleShowCoordinates()
+    local x = 0.4
+    local y = 0.025
+    showCoords = not showCoords
+    Citizen.CreateThread(function()
+        while showCoords do
+            local coords = GetEntityCoords(PlayerPedId())
+            local heading = GetEntityHeading(PlayerPedId())
+            local c = {}
+            c.x = round(coords.x, 2)
+            c.y = round(coords.y, 2)
+            c.z = round(coords.z, 2)
+            heading = round(heading, 2)
+            Citizen.Wait(0)
+            Draw2DText(string.format('~w~Ped Coordinates:~b~ vector4(~w~%s~b~, ~w~%s~b~, ~w~%s~b~, ~w~%s~b~)', c.x, c.y, c.z, heading), 4, {66, 182, 245}, 0.4, x + 0.0, y + 0.0)
+        end
+    end)
+end
+
+local function ToggleVehicleDeveloperMode()
+    local x = 0.4
+    local y = 0.888
+    vehicleDevMode = not vehicleDevMode
+    Citizen.CreateThread(function()
+        while vehicleDevMode do
+            local ped = PlayerPedId()
+            Citizen.Wait(0)
+            if IsPedInAnyVehicle(ped, false) then
+                local vehicle = GetVehiclePedIsIn(ped, false)
+                local netID = VehToNet(vehicle)
+                local hash = GetEntityModel(vehicle)
+                local modelName = GetLabelText(GetDisplayNameFromVehicleModel(hash))
+                local eHealth = GetVehicleEngineHealth(vehicle)
+                local bHealth = GetVehicleBodyHealth(vehicle)
+                Draw2DText('Vehicle Developer Data:', 4, {66, 182, 245}, 0.4, x + 0.0, y + 0.0)
+                Draw2DText(string.format('Entity ID: ~b~%s~s~ | Net ID: ~b~%s~s~', vehicle, netID), 4, {255, 255, 255}, 0.4, x + 0.0, y + 0.025)
+                Draw2DText(string.format('Model: ~b~%s~s~ | Hash: ~b~%s~s~', modelName, hash), 4, {255, 255, 255}, 0.4, x + 0.0, y + 0.050)
+                Draw2DText(string.format('Engine Health: ~b~%s~s~ | Body Health: ~b~%s~s~', round(eHealth, 2), round(bHealth, 2)), 4, {255, 255, 255}, 0.4, x + 0.0, y + 0.075)
+            end
+        end
+    end)
+end
+
 coords_button:On("select", function()
     CopyToClipboard('coords')
 end)
@@ -405,6 +487,22 @@ for k, v in pairs(QBCore.Shared.Vehicles) do
 end
 
 -- Car Categories
+
+local function OpenCarModelsMenu(category)
+    menu14:ClearItems()
+    MenuV:OpenMenu(menu14)
+    for k, v in pairs(category) do
+        local menu_button10 = menu14:AddButton({
+             label = v["name"],
+             value = k,
+             description = 'Spawn ' .. v["name"],
+             select = function(btn)
+                 TriggerServerEvent('QBCore:CallCommand', "car", { k })
+             end
+        })
+    end
+end
+
 menu12_button1:On('Select', function(item)
     menu13:ClearItems()
     for k, v in pairs(vehicles) do
@@ -419,21 +517,6 @@ menu12_button1:On('Select', function(item)
         })
     end
 end)
-
-function OpenCarModelsMenu(category)
-    menu14:ClearItems()
-    MenuV:OpenMenu(menu14)
-    for k, v in pairs(category) do
-        local menu_button10 = menu14:AddButton({
-             label = v["name"],
-             value = k,
-             description = 'Spawn ' .. v["name"],
-             select = function(btn)
-                 TriggerServerEvent('QBCore:CallCommand', "car", { k })
-             end
-        })
-    end
-end
 
 menu12_button2:On('Select', function(item)
     TriggerServerEvent('QBCore:CallCommand', "fix", {})
@@ -455,49 +538,8 @@ blips_button:On('change', function()
 end)
 
 -- Dealer List
-menu_button4:On('Select', function(item)
-    menu7:ClearItems()
-    QBCore.Functions.TriggerCallback('test:getdealers', function(dealers)
-        for k, v in pairs(dealers) do
-            local menu_button10 = menu7:AddButton({
-                label = v["name"], --.. ' | ' .. v[time.min] .. ' | ' .. v[time.max]
-                value = v,
-                description = 'Dealer Name',
-                select = function(btn)
-                    local select = btn.Value
-                    OpenDealerMenu(select)
-                end
-            })
-        end
-    end)
-end)
 
--- Player List
-menu_button2:On('select', function(item)
-    menu4:ClearItems()
-    QBCore.Functions.TriggerCallback('test:getplayers', function(players)
-        for k, v in pairs(players) do
-            local menu_button10 = menu4:AddButton({
-                label = 'ID:' .. v["id"] .. ' | ' .. v["name"],
-                value = v,
-                description = 'Player Name',
-                select = function(btn)
-                    local select = btn.Value -- get all the values from v!
-
-                    OpenPlayerMenus(select) -- only pass what i select nothing else
-                end
-            }) -- WORKS
-        end
-    end)
-end)
-
-menu_button13:On("select", function(item, value)
-    TriggerServerEvent("qb-weathersync:server:setTime", value, value)
-    QBCore.Functions.Notify("Time changed to " .. value .. " hs 00 min")
-
-end)
-
-function OpenDealerMenu(dealer)
+local function OpenDealerMenu(dealer)
     local EditDealer = MenuV:CreateMenu(false, 'Edit Dealer ' .. dealer["name"], 'topright', 220, 20, 60, 'size-125', 'none', 'menuv')
     EditDealer:ClearItems()
     MenuV:OpenMenu(EditDealer)
@@ -535,8 +577,233 @@ function OpenDealerMenu(dealer)
     end
 end
 
-function OpenPlayerMenus(player)
+menu_button4:On('Select', function(item)
+    menu7:ClearItems()
+    QBCore.Functions.TriggerCallback('test:getdealers', function(dealers)
+        for k, v in pairs(dealers) do
+            local menu_button10 = menu7:AddButton({
+                label = v["name"], --.. ' | ' .. v[time.min] .. ' | ' .. v[time.max]
+                value = v,
+                description = 'Dealer Name',
+                select = function(btn)
+                    local select = btn.Value
+                    OpenDealerMenu(select)
+                end
+            })
+        end
+    end)
+end)
 
+-- Player List
+
+local function OpenPermsMenu(permsply)
+    QBCore.Functions.TriggerCallback('qb-admin:server:getrank', function(rank)
+        if rank then
+            local selectedgroup = 'Unknown'
+            MenuV:OpenMenu(menu10)
+            menu10:ClearItems()
+            local menu_button20 = menu10:AddSlider({
+                icon = '',
+                label = 'Group',
+                value = 'user',
+                values = {{
+                    label = 'User',
+                    value = 'user',
+                    description = 'Group'
+                }, {
+                    label = 'Admin',
+                    value = 'admin',
+                    description = 'Group'
+                }, {
+                    label = 'God',
+                    value = 'god',
+                    description = 'Group'
+                }},
+                change = function(item, newValue, oldValue)
+                    local vcal = newValue
+                    if vcal == 1 then
+                        selectedgroup = {}
+                        table.insert(selectedgroup, {rank = "user", label = "User"})
+                    elseif vcal == 2 then
+                        selectedgroup = {}
+                        table.insert(selectedgroup, {rank = "admin", label = "Admin"})
+                    elseif vcal == 3 then
+                        selectedgroup = {}
+                        table.insert(selectedgroup, {rank = "god", label = "God"})
+                    end
+                end
+            })
+
+            local menu_button21 = menu10:AddButton({
+                icon = '',
+                label = 'Confirm',
+                value = "giveperms",
+                description = 'Give the permission group',
+                select = function(btn)
+                    if selectedgroup ~= 'Unknown' then
+                        TriggerServerEvent('qb-admin:server:setPermissions', permsply.id, selectedgroup)
+			            QBCore.Functions.Notify('Authority group changed!', 'success')
+                        selectedgroup = 'Unknown'
+                    else
+                        QBCore.Functions.Notify('Choose a group!', 'error')
+                    end
+                end
+            })
+        else
+            MenuV:CloseMenu(menu)
+        end
+    end)
+end
+
+local function LocalInput(text, number, windows)
+    AddTextEntry("FMMC_MPM_NA", text)
+  DisplayOnscreenKeyboard(1, "FMMC_MPM_NA", "", windows or "", "", "", "", number or 30)
+  while (UpdateOnscreenKeyboard() == 0) do
+    DisableAllControlActions(0)
+    Wait(0)
+  end
+
+  if (GetOnscreenKeyboardResult()) then
+    local result = GetOnscreenKeyboardResult()
+      return result
+  end
+end
+
+local function LocalInputInt(text, number, windows)
+    AddTextEntry("FMMC_MPM_NA", text)
+    DisplayOnscreenKeyboard(1, "FMMC_MPM_NA", "", windows or "", "", "", "", number or 30)
+    while (UpdateOnscreenKeyboard() == 0) do
+      DisableAllControlActions(0)
+      Wait(0)
+    end
+    if (GetOnscreenKeyboardResult()) then
+      local result = GetOnscreenKeyboardResult()
+      return tonumber(result)
+    end
+end
+
+local function OpenKickMenu(kickplayer)
+    MenuV:OpenMenu(menu9)
+    menu9:ClearItems()
+    local menu_button19 = menu9:AddButton({
+        icon = '',
+        label = 'Reason',
+        value = "reason",
+        description = 'Kick reason',
+        select = function(btn)
+            kickreason = LocalInput('Kick Reason', 255, 'Reason')
+        end
+    })
+
+    local menu_button18 = menu9:AddButton({
+        icon = '',
+        label = 'Confirm',
+        value = "kick",
+        description = 'Confirm the kick',
+        select = function(btn)
+            if kickreason ~= 'Unknown' then
+                TriggerServerEvent('qb-admin:server:kick', kickplayer, kickreason)
+                kickreason = 'Unknown'
+            else
+                QBCore.Functions.Notify('You must give a reason!', 'error')
+            end
+        end
+    })
+end
+
+local function OpenBanMenu(banplayer)
+    MenuV:OpenMenu(menu8)
+    menu8:ClearItems()
+    local menu_button15 = menu8:AddButton({
+        icon = '',
+        label = 'Reason',
+        value = "reason",
+        description = 'Ban reason',
+        select = function(btn)
+            banreason = LocalInput('Ban Reason', 255, 'Reason')
+        end
+    })
+
+    local menu_button16 = menu8:AddSlider({
+        icon = '⏲️',
+        label = 'Length',
+        value = '3600',
+        values = {{
+            label = '1 hour',
+            value = '3600',
+            description = 'Ban Length'
+        }, {
+            label = '6 hours',
+            value ='21600',
+            description = 'Ban Length'
+        }, {
+            label = '12 hours',
+            value = '43200',
+            description = 'Ban Length'
+        }, {
+            label = '1 day',
+            value = '86400',
+            description = 'Ban Length'
+        }, {
+            label = '3 days',
+            value = '259200',
+            description = 'Ban Length'
+        }, {
+            label = '1 week',
+            value = '604800',
+            description = 'Ban Length'
+        }, {
+            label = '1 month',
+            value = '2678400',
+            description = 'Ban Length'
+        }, {
+            label = '3 months',
+            value = '8035200',
+            description = 'Ban Length'
+        }, {
+            label = '6 months',
+            value = '16070400',
+            description = 'Ban Length'
+        }, {
+            label = '1 year',
+            value = '32140800',
+            description = 'Ban Length'
+        }, {
+            label = 'Permanent',
+            value = '99999999999',
+            description = 'Ban Length'
+        }, {
+            label = 'Self',
+            value = "self",
+            description = 'Ban Length'
+        }},
+        select = function(btn, newValue, oldValue)
+            if newValue == "self" then
+                banlength = LocalInputInt('Ban Length', 11, 'Seconds')
+            else
+                banlength = newValue
+            end
+        end
+    })
+
+    local menu_button17 = menu8:AddButton({
+        icon = '',
+        label = 'Confirm',
+        value = "ban",
+        description = 'Confirm the ban',
+        select = function(btn)
+            if banreason ~= 'Unknown' and banlength ~= nil then
+                TriggerServerEvent('qb-admin:server:ban', banplayer, banlength, banreason)
+                banreason = 'Unknown'
+                banlength = nil
+            else
+                QBCore.Functions.Notify('You must give a Reason and set a Length for the ban!', 'error')
+            end
+        end
+    })
+end
+
+local function OpenPlayerMenus(player)
     local Players = MenuV:CreateMenu(false, player.cid .. ' Options', 'topright', 220, 20, 60, 'size-125', 'none', 'menuv') -- Players Sub Menu
     Players:ClearItems()
     MenuV:OpenMenu(Players)
@@ -636,185 +903,28 @@ function OpenPlayerMenus(player)
     end
 end
 
-function OpenBanMenu(banplayer)
-    MenuV:OpenMenu(menu8)
-    menu8:ClearItems()
-    local menu_button15 = menu8:AddButton({
-        icon = '',
-        label = 'Reason',
-        value = "reason",
-        description = 'Ban reason',
-        select = function(btn)
-            banreason = LocalInput('Ban Reason', 255, 'Reason')
-        end
-    })
-
-    local menu_button16 = menu8:AddSlider({
-        icon = '⏲️',
-        label = 'Length',
-        value = '3600',
-        values = {{
-            label = '1 hour',
-            value = '3600',
-            description = 'Ban Length'
-        }, {
-            label = '6 hours',
-            value ='21600',
-            description = 'Ban Length'
-        }, {
-            label = '12 hours',
-            value = '43200',
-            description = 'Ban Length'
-        }, {
-            label = '1 day',
-            value = '86400',
-            description = 'Ban Length'
-        }, {
-            label = '3 days',
-            value = '259200',
-            description = 'Ban Length'
-        }, {
-            label = '1 week',
-            value = '604800',
-            description = 'Ban Length'
-        }, {
-            label = '1 month',
-            value = '2678400',
-            description = 'Ban Length'
-        }, {
-            label = '3 months',
-            value = '8035200',
-            description = 'Ban Length'
-        }, {
-            label = '6 months',
-            value = '16070400',
-            description = 'Ban Length'
-        }, {
-            label = '1 year',
-            value = '32140800',
-            description = 'Ban Length'
-        }, {
-            label = 'Permanent',
-            value = '99999999999',
-            description = 'Ban Length'
-        }, {
-            label = 'Self',
-            value = "self",
-            description = 'Ban Length'
-        }},
-        select = function(btn, newValue, oldValue)
-            if newValue == "self" then
-                banlength = LocalInputInt('Ban Length', 11, 'Seconds')
-            else
-                banlength = newValue
-            end
-        end
-    })
-
-    local menu_button17 = menu8:AddButton({
-        icon = '',
-        label = 'Confirm',
-        value = "ban",
-        description = 'Confirm the ban',
-        select = function(btn)
-            if banreason ~= 'Unknown' and banlength ~= nil then
-                TriggerServerEvent('qb-admin:server:ban', banplayer, banlength, banreason)
-                banreason = 'Unknown'
-                banlength = nil
-            else
-                QBCore.Functions.Notify('You must give a Reason and set a Length for the ban!', 'error')
-            end
-        end
-    })
-end
-
-function OpenKickMenu(kickplayer)
-    MenuV:OpenMenu(menu9)
-    menu9:ClearItems()
-    local menu_button19 = menu9:AddButton({
-        icon = '',
-        label = 'Reason',
-        value = "reason",
-        description = 'Kick reason',
-        select = function(btn)
-            kickreason = LocalInput('Kick Reason', 255, 'Reason')
-        end
-    })
-
-    local menu_button18 = menu9:AddButton({
-        icon = '',
-        label = 'Confirm',
-        value = "kick",
-        description = 'Confirm the kick',
-        select = function(btn)
-            if kickreason ~= 'Unknown' then
-                TriggerServerEvent('qb-admin:server:kick', kickplayer, kickreason)
-                kickreason = 'Unknown'
-            else
-                QBCore.Functions.Notify('You must give a reason!', 'error')
-            end
-        end
-    })
-end
-
-function OpenPermsMenu(permsply)
-    QBCore.Functions.TriggerCallback('qb-admin:server:getrank', function(rank)
-        if rank then
-            local selectedgroup = 'Unknown'
-            MenuV:OpenMenu(menu10)
-            menu10:ClearItems()
-            local menu_button20 = menu10:AddSlider({
-                icon = '',
-                label = 'Group',
-                value = 'user',
-                values = {{
-                    label = 'User',
-                    value = 'user',
-                    description = 'Group'
-                }, {
-                    label = 'Admin',
-                    value = 'admin',
-                    description = 'Group'
-                }, {
-                    label = 'God',
-                    value = 'god',
-                    description = 'Group'
-                }},
-                change = function(item, newValue, oldValue)
-                    local vcal = newValue
-                    if vcal == 1 then
-                        selectedgroup = {}
-                        table.insert(selectedgroup, {rank = "user", label = "User"})
-                    elseif vcal == 2 then
-                        selectedgroup = {}
-                        table.insert(selectedgroup, {rank = "admin", label = "Admin"})
-                    elseif vcal == 3 then
-                        selectedgroup = {}
-                        table.insert(selectedgroup, {rank = "god", label = "God"})
-                    end
-                end
-            })
-
-            local menu_button21 = menu10:AddButton({
-                icon = '',
-                label = 'Confirm',
-                value = "giveperms",
-                description = 'Give the permission group',
+menu_button2:On('select', function(item)
+    menu4:ClearItems()
+    QBCore.Functions.TriggerCallback('test:getplayers', function(players)
+        for k, v in pairs(players) do
+            local menu_button10 = menu4:AddButton({
+                label = 'ID:' .. v["id"] .. ' | ' .. v["name"],
+                value = v,
+                description = 'Player Name',
                 select = function(btn)
-                    if selectedgroup ~= 'Unknown' then
-                        TriggerServerEvent('qb-admin:server:setPermissions', permsply.id, selectedgroup)
-			QBCore.Functions.Notify('Authority group changed!', 'success')
-                        selectedgroup = 'Unknown'
-                    else
-                        QBCore.Functions.Notify('Choose a group!', 'error')
-                    end
+                    local select = btn.Value -- get all the values from v!
+                    OpenPlayerMenus(select) -- only pass what i select nothing else
                 end
-            })
-        else
-            MenuV:CloseMenu(menu)
+            }) -- WORKS
         end
     end)
-end
+end)
+
+menu_button13:On("select", function(item, value)
+    TriggerServerEvent("qb-weathersync:server:setTime", value, value)
+    QBCore.Functions.Notify("Time changed to " .. value .. " hs 00 min")
+
+end)
 
 -- Toggle NoClip
 
@@ -849,14 +959,14 @@ menu_button8:On('change', function(item, newValue, oldValue)
 
     if godmode then
         while godmode do
-            Citizen.Wait(0)
+            Wait(0)
             SetPlayerInvincible(PlayerId(), true)
         end
         SetPlayerInvincible(PlayerId(), false)
     end
 end)
 
-function RotationToDirection(rotation)
+local function RotationToDirection(rotation)
 	local adjustedRotation =
 	{
 		x = (math.pi / 180) * rotation.x,
@@ -872,7 +982,7 @@ function RotationToDirection(rotation)
 	return direction
 end
 
-function RayCastGamePlayCamera(distance)
+local function RayCastGamePlayCamera(distance)
     local cameraRotation = GetGameplayCamRot()
 	local cameraCoord = GetGameplayCamCoord()
 	local direction = RotationToDirection(cameraRotation)
@@ -886,7 +996,7 @@ function RayCastGamePlayCamera(distance)
 	return b, c, e
 end
 
-function DrawEntityBoundingBox(entity, color)
+local function DrawEntityBoundingBox(entity, color)
     local model = GetEntityModel(entity)
     local min, max = GetModelDimensions(model)
     local rightVector, forwardVector, upVector, position = GetEntityMatrix(entity)
@@ -979,10 +1089,11 @@ function DrawEntityBoundingBox(entity, color)
     DrawLine(edge4.x, edge4.y, edge4.z, edge6.x, edge6.y, edge6.z, color.r, color.g, color.b, color.a)
 end
 
-Citizen.CreateThread(function()	-- While loop needed for delete lazer
+CreateThread(function()	-- While loop needed for delete lazer
 	while true do
-        local Wait = 7
+        sleep = 1000
         if deleteLazer then
+            sleep = 7
             local color = {r = 255, g = 255, b = 255, a = 200}
             local position = GetEntityCoords(PlayerPedId())
             local hit, coords, entity = RayCastGamePlayCamera(1000.0)
@@ -1008,9 +1119,7 @@ Citizen.CreateThread(function()	-- While loop needed for delete lazer
                 DrawLine(position.x, position.y, position.z, coords.x, coords.y, coords.z, color.r, color.g, color.b, color.a)
                 DrawMarker(28, coords.x, coords.y, coords.z, 0.0, 0.0, 0.0, 0.0, 180.0, 0.0, 0.1, 0.1, 0.1, color.r, color.g, color.b, color.a, false, true, 2, nil, nil, false)
             end
-        else
-            local Wait = 500
         end
-        Citizen.Wait(Wait)
+        Wait(sleep)
 	end
 end)

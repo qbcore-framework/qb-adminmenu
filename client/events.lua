@@ -1,17 +1,29 @@
 -- Variables
 
+local blockedPeds = {
+    "mp_m_freemode_01",
+    "mp_f_freemode_01",
+    "tony",
+    "g_m_m_chigoon_02_m",
+    "u_m_m_jesus_01",
+    "a_m_y_stbla_m",
+    "ig_terry_m",
+    "a_m_m_ktown_m",
+    "a_m_y_skater_m",
+    "u_m_y_coop",
+    "ig_car3guy1_m",
+}
+
 local lastSpectateCoord = nil
 local isSpectating = false
 
 -- Events
 
-RegisterNetEvent('qb-admin:client:inventory')
-AddEventHandler('qb-admin:client:inventory', function(targetPed)
+RegisterNetEvent('qb-admin:client:inventory', function(targetPed)
     TriggerServerEvent("inventory:server:OpenInventory", "otherplayer", targetPed)
 end)
 
-RegisterNetEvent('qb-admin:client:spectate')
-AddEventHandler('qb-admin:client:spectate', function(targetPed, coords)
+RegisterNetEvent('qb-admin:client:spectate', function(targetPed, coords)
     local myPed = PlayerPedId()
     local targetplayer = GetPlayerFromServerId(targetPed)
     local target = GetPlayerPed(targetplayer)
@@ -32,18 +44,15 @@ AddEventHandler('qb-admin:client:spectate', function(targetPed, coords)
     end
 end)
 
-RegisterNetEvent('qb-admin:client:SendReport')
-AddEventHandler('qb-admin:client:SendReport', function(name, src, msg)
+RegisterNetEvent('qb-admin:client:SendReport', function(name, src, msg)
     TriggerServerEvent('qb-admin:server:SendReport', name, src, msg)
 end)
 
-RegisterNetEvent('qb-admin:client:SendStaffChat')
-AddEventHandler('qb-admin:client:SendStaffChat', function(name, msg)
+RegisterNetEvent('qb-admin:client:SendStaffChat', function(name, msg)
     TriggerServerEvent('qb-admin:server:StaffChatMessage', name, msg)
 end)
 
-RegisterNetEvent('qb-admin:client:SaveCar')
-AddEventHandler('qb-admin:client:SaveCar', function()
+RegisterNetEvent('qb-admin:client:SaveCar', function()
     local ped = PlayerPedId()
     local veh = GetVehiclePedIsIn(ped)
 
@@ -62,8 +71,24 @@ AddEventHandler('qb-admin:client:SaveCar', function()
     end
 end)
 
-RegisterNetEvent('qb-admin:client:SetModel')
-AddEventHandler('qb-admin:client:SetModel', function(skin)
+local function LoadPlayerModel(skin)
+    RequestModel(skin)
+    while not HasModelLoaded(skin) do
+      Citizen.Wait(0)
+    end
+end
+
+local function isPedAllowedRandom(skin)
+    local retval = false
+    for k, v in pairs(blockedPeds) do
+        if v ~= skin then
+            retval = true
+        end
+    end
+    return retval
+end
+
+RegisterNetEvent('qb-admin:client:SetModel', function(skin)
     local ped = PlayerPedId()
     local model = GetHashKey(skin)
     SetEntityInvincible(ped, true)
@@ -81,8 +106,7 @@ AddEventHandler('qb-admin:client:SetModel', function(skin)
 	SetEntityInvincible(ped, false)
 end)
 
-RegisterNetEvent('qb-admin:client:SetSpeed')
-AddEventHandler('qb-admin:client:SetSpeed', function(speed)
+RegisterNetEvent('qb-admin:client:SetSpeed', function(speed)
     local ped = PlayerId()
     if speed == "fast" then
         SetRunSprintMultiplierForPlayer(ped, 1.49)
@@ -93,8 +117,7 @@ AddEventHandler('qb-admin:client:SetSpeed', function(speed)
     end
 end)
 
-RegisterNetEvent('qb-weapons:client:SetWeaponAmmoManual')
-AddEventHandler('qb-weapons:client:SetWeaponAmmoManual', function(weapon, ammo)
+RegisterNetEvent('qb-weapons:client:SetWeaponAmmoManual', function(weapon, ammo)
     local ped = PlayerPedId()
     if weapon ~= "current" then
         local weapon = weapon:upper()
@@ -111,7 +134,6 @@ AddEventHandler('qb-weapons:client:SetWeaponAmmoManual', function(weapon, ammo)
     end
 end)
 
-RegisterNetEvent('qb-admin:client:GiveNuiFocus')
-AddEventHandler('qb-admin:client:GiveNuiFocus', function(focus, mouse)
+RegisterNetEvent('qb-admin:client:GiveNuiFocus', function(focus, mouse)
     SetNuiFocus(focus, mouse)
 end)
