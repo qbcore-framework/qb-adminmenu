@@ -2,14 +2,16 @@
   * Created by MiiMii1205
   * license MIT
 --]] -- Variables --
-local MOVE_UP_KEY = 20
-local MOVE_DOWN_KEY = 44
-local CHANGE_SPEED_KEY = 21
-local MOVE_LEFT_RIGHT = 30
-local MOVE_UP_DOWN = 31
+local MOVE_DOWN_KEY = 20
+local MOVE_UP_KEY = 44
+local MOVE_FAST_KEY = 21
+local MOVE_SLOW_KEY = 19
+local MOVE_LEFT_KEY = 30
+local MOVE_BACK_KEY = 31
 local NOCLIP_TOGGLE_KEY = 289
+local NO_CLIP_SLOW_SPEED = 0.1
 local NO_CLIP_NORMAL_SPEED = 0.5
-local NO_CLIP_FAST_SPEED = 2.5
+local NO_CLIP_FAST_SPEED = 5.0
 local ENABLE_NO_CLIP_SOUND = true
 local eps = 0.01
 local RESSOURCE_NAME = GetCurrentResourceName();
@@ -72,10 +74,10 @@ local function SetNoClip(val)
             ((isNoClipping and ":airplane: No-clip enabled") or ":rock: No-clip disabled"), GetCurrentResourceName());
         SetUserRadioControlEnabled(not isNoClipping);
         if (isNoClipping) then
-            TriggerEvent('instructor:add-instruction', {MOVE_LEFT_RIGHT, MOVE_UP_DOWN}, "move", RESSOURCE_NAME);
-            TriggerEvent('instructor:add-instruction', {MOVE_UP_KEY, MOVE_DOWN_KEY}, "move up/down", RESSOURCE_NAME);
+            TriggerEvent('instructor:add-instruction', {MOVE_LEFT_KEY, MOVE_BACK_KEY}, "move", RESSOURCE_NAME);
+            TriggerEvent('instructor:add-instruction', {MOVE_DOWN_KEY, MOVE_UP_KEY}, "move up/down", RESSOURCE_NAME);
             TriggerEvent('instructor:add-instruction', {1, 2}, "Turn", RESSOURCE_NAME);
-            TriggerEvent('instructor:add-instruction', CHANGE_SPEED_KEY, "(hold) fast mode", RESSOURCE_NAME);
+            TriggerEvent('instructor:add-instruction', MOVE_FAST_KEY, "(hold) fast mode", RESSOURCE_NAME);
             TriggerEvent('instructor:add-instruction', NOCLIP_TOGGLE_KEY, "Toggle No-clip", RESSOURCE_NAME);
             SetEntityAlpha(noClippingEntity, 51, 0)
             -- Start a No CLip thread
@@ -97,8 +99,12 @@ local function SetNoClip(val)
                     SetEntityAlpha(clipped, 51, false)
                     SetEveryoneIgnorePlayer(pPed, true);
                     SetPoliceIgnorePlayer(pPed, true);
-                    input = vector3(GetControlNormal(0, MOVE_LEFT_RIGHT), GetControlNormal(0, MOVE_UP_DOWN), (IsControlAlwaysPressed(1, MOVE_UP_KEY) and 1) or ((IsControlAlwaysPressed(1, MOVE_DOWN_KEY) and -1) or 0))
-                    speed = ((IsControlAlwaysPressed(1, CHANGE_SPEED_KEY) and NO_CLIP_FAST_SPEED) or NO_CLIP_NORMAL_SPEED) * ((isClippedVeh and 2.75) or 1)
+                    input = vector3(GetControlNormal(0, MOVE_LEFT_KEY), GetControlNormal(0, MOVE_BACK_KEY),
+                        (IsControlAlwaysPressed(1, MOVE_DOWN_KEY) and 1) or
+                            ((IsControlAlwaysPressed(1, MOVE_UP_KEY) and -1) or 0))
+                    speed = ((IsControlAlwaysPressed(1, MOVE_FAST_KEY) and NO_CLIP_FAST_SPEED) or
+                                (IsControlAlwaysPressed(1, MOVE_SLOW_KEY) and NO_CLIP_SLOW_SPEED) or
+                                NO_CLIP_NORMAL_SPEED) * ((isClippedVeh and 2.75) or 1)
                     MoveInNoClip();
                 end
                 Citizen.Wait(0);
