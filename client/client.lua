@@ -76,6 +76,18 @@ local menu_button8 = menu2:AddCheckbox({
     value = menu2,
     description = 'Enable/Disable God Mode'
 })
+local names_button = menu2:AddCheckbox({               
+    icon = '📋',                                        
+    label = 'Names',                                    
+    value = menu2,                               
+    description = 'Enable/Disable Names overhead'   
+})                                               
+local blips_button = menu2:AddCheckbox({     
+    icon = '📍',                             
+    label = 'Blips',                                    
+    value = menu2,                                     
+    description = 'Enable/Disable Blips for players in maps'    
+}) 
 local menu_button11 = menu5:AddButton({
     icon = '🌡️',
     label = 'Weather Options',
@@ -333,18 +345,6 @@ local noclip_button = menu11:AddCheckbox({
     value = menu11,
     description = 'Enable/Disable NoClip'
 })
-local names_button = menu11:AddCheckbox({               
-    icon = '📋',                                        
-    label = 'Names',                                    
-    value = menu11,                               
-    description = 'Enable/Disable Names overhead'   
-})                                               
-local blips_button = menu11:AddCheckbox({     
-    icon = '📍',                             
-    label = 'Blips',                                    
-    value = menu11,                                     
-    description = 'Enable/Disable Blips for players'    
-}) 
 
 local menu12_button1 = menu12:AddButton({
     icon = '🚗',
