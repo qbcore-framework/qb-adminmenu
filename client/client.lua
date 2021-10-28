@@ -295,11 +295,17 @@ local menu_button69 = menu:AddButton({
     value = menu11,
     description = 'Misc. Dev Options'
 })
-local coords_button = menu11:AddButton({
+local coords3_button = menu11:AddButton({
     icon = '📋',
-    label = 'Copy Coords',
+    label = 'Copy vector3',
     value = 'coords',
-    description = 'Copy Coords To Clipboard'
+    description = 'Copy vector3 To Clipboard'
+})
+local coords4_button = menu11:AddButton({
+    icon = '📋',
+    label = 'Copy vector4',
+    value = 'coords',
+    description = 'Copy vector4 To Clipboard'
 })
 local togglecoords_button = menu11:AddCheckbox({
     icon = '📍',
@@ -382,13 +388,24 @@ end
 
 local function CopyToClipboard(dataType)
     local ped = PlayerPedId()
-    if dataType == 'coords' then
+    if dataType == 'coords3' then
         local coords = GetEntityCoords(ped)
         local x = round(coords.x, 2)
         local y = round(coords.y, 2)
         local z = round(coords.z, 2)
         SendNUIMessage({
             string = string.format('vector3(%s, %s, %s)', x, y, z)
+        })
+        QBCore.Functions.Notify("Coordinates copied to clipboard!", "success")
+    elseif dataType == 'coords4' then
+        local coords = GetEntityCoords(ped)
+        local x = round(coords.x, 2)
+        local y = round(coords.y, 2)
+        local z = round(coords.z, 2)
+        local heading = GetEntityHeading(ped)
+        local h = round(heading, 2)
+        SendNUIMessage({
+            string = string.format('vector4(%s, %s, %s, %s)', x, y, z, h)
         })
         QBCore.Functions.Notify("Coordinates copied to clipboard!", "success")
     elseif dataType == 'heading' then
@@ -457,8 +474,12 @@ local function ToggleVehicleDeveloperMode()
     end)
 end
 
-coords_button:On("select", function()
-    CopyToClipboard('coords')
+coords3_button:On("select", function()
+    CopyToClipboard('coords3')
+end)
+
+coords4_button:On("select", function()
+    CopyToClipboard('coords4')
 end)
 
 heading_button:On("select", function()
