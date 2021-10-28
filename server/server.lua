@@ -62,7 +62,7 @@ RegisterNetEvent('qb-admin:server:GetPlayersForBlips', function()
         local targetped = GetPlayerPed(v)                       
         local ped = QBCore.Functions.GetPlayer(v)             
         table.insert(players, {                             
-            name = ped.PlayerData.charinfo.firstname .. ' ' .. ped.PlayerData.charinfo.lastname .. ' | (' .. GetPlayerName(v) .. ')',
+            name = ped.PlayerData.charinfo.firstname .. ' ' .. ped.PlayerData.charinfo.lastname .. ' | ' .. GetPlayerName(v),
             id = v,                                      
             coords = GetEntityCoords(targetped),             
             cid = ped.PlayerData.charinfo.firstname .. ' ' .. ped.PlayerData.charinfo.lastname,
