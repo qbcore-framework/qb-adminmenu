@@ -43,18 +43,18 @@ RegisterNetEvent('qb-admin:client:Show', function(players)
         local name = player.id..'# '..player.name
 
         -- Names Logic
-        local idTesta = Citizen.InvokeNative(0xBFEFE3321A3F5015, ped, name, false, false, "", false)
+        local idTesta = CreateFakeMpGamerTag(ped, name, false, false, "", false)
 
         if ShowNames then
-            Citizen.InvokeNative(0x63BB75ABEDC1F6A0, idTesta, 0, true)
+            SetMpGamerTagVisibility(idTesta, 0, true)
             if NetworkIsPlayerTalking(playeridx) then
-                Citizen.InvokeNative(0x63BB75ABEDC1F6A0, idTesta, 4, true)
+                SetMpGamerTagVisibility(idTesta, 4, true)
             else
-                Citizen.InvokeNative(0x63BB75ABEDC1F6A0, idTesta, 4, false)
+                SetMpGamerTagVisibility(idTesta, 4, false)
             end
         else
-            Citizen.InvokeNative(0x63BB75ABEDC1F6A0, idTesta, 4, false)
-            Citizen.InvokeNative(0x63BB75ABEDC1F6A0, idTesta, 0, false)
+            SetMpGamerTagVisibility(idTesta, 4, false)
+            SetMpGamerTagVisibility(idTesta, 0, false)
             NetCheck2 = false
         end
 
@@ -63,7 +63,7 @@ RegisterNetEvent('qb-admin:client:Show', function(players)
             if not DoesBlipExist(blip) then
                 blip = AddBlipForEntity(ped)
                 SetBlipSprite(blip, 1)
-                Citizen.InvokeNative(0x5FBCA48327B914DF, blip, true)
+                ShowHeadingIndicatorOnBlip(blip, true)
             else
                 local veh = GetVehiclePedIsIn(ped, false)
                 local blipSprite = GetBlipSprite(blip)
@@ -71,7 +71,7 @@ RegisterNetEvent('qb-admin:client:Show', function(players)
                 if not GetEntityHealth(ped) then
                     if blipSprite ~= 274 then
                         SetBlipSprite(blip, 274)            --Dead icon
-                        Citizen.InvokeNative(0x5FBCA48327B914DF, blip, false)
+                        ShowHeadingIndicatorOnBlip(blip, false)
                     end
                 --Player in Vehicle
                 elseif veh ~= 0 then
@@ -81,94 +81,94 @@ RegisterNetEvent('qb-admin:client:Show', function(players)
                     if classveh == 8  or classveh == 13 then
                         if blipSprite ~= 226 then
                             SetBlipSprite(blip, 226)        --Motorcycle icon
-                            Citizen.InvokeNative(0x5FBCA48327B914DF, blip, false)
+                            ShowHeadingIndicatorOnBlip(blip, false)
                         end
                     --OffRoad (9)
                     elseif classveh == 9 then
                         if blipSprite ~= 757 then           
                             SetBlipSprite(blip, 757)        --OffRoad icon
-                            Citizen.InvokeNative(0x5FBCA48327B914DF, blip, false)
+                            ShowHeadingIndicatorOnBlip(blip, false)
                         end
                     --Industrial (10)
                     elseif classveh == 10 then
                         if blipSprite ~= 477 then
                             SetBlipSprite(blip, 477)        --Truck icon
-                            Citizen.InvokeNative(0x5FBCA48327B914DF, blip, false)
+                            ShowHeadingIndicatorOnBlip(blip, false)
                         end
                     --Utility (11)
                     elseif classveh == 11 then
                         if blipSprite ~= 477 then
                             SetBlipSprite(blip, 477)        --Truck icon despite finding better one
-                            Citizen.InvokeNative(0x5FBCA48327B914DF, blip, false)
+                            ShowHeadingIndicatorOnBlip(blip, false)
                         end
                     --Vans (12)
                     elseif classveh == 12 then
                         if blipSprite ~= 67 then
                             SetBlipSprite(blip, 67)         --Van icon
-                            Citizen.InvokeNative(0x5FBCA48327B914DF, blip, false)
+                            ShowHeadingIndicatorOnBlip(blip, false)
                         end
                     --Boats (14)
                     elseif classveh == 14 then
                         if blipSprite ~= 427 then
                             SetBlipSprite(blip, 427)        --Boat icon
-                            Citizen.InvokeNative(0x5FBCA48327B914DF, blip, false)
+                            ShowHeadingIndicatorOnBlip(blip, false)
                         end
                     --Helicopters (15)
                     elseif classveh == 15 then
                         if blipSprite ~= 422 then
                             SetBlipSprite(blip, 422)        --Moving helicopter icon
-                            Citizen.InvokeNative(0x5FBCA48327B914DF, blip, false)
+                            ShowHeadingIndicatorOnBlip(blip, false)
                         end
                     --Planes (16)
                     elseif classveh == 16 then
                         if modelveh == 'besra' or modelveh == 'hydra' or modelveh == 'lazer' then
                             if blipSprite ~= 424 then
                                 SetBlipSprite(blip, 424)    --Jet icon
-                                Citizen.InvokeNative(0x5FBCA48327B914DF, blip, false)
+                                ShowHeadingIndicatorOnBlip(blip, false)
                             end
                         elseif blipSprite ~= 423 then
                             SetBlipSprite(blip, 423)        --Plane icon
-                            Citizen.InvokeNative (0x5FBCA48327B914DF, blip, false)
+                            ShowHeadingIndicatorOnBlip(blip, false)
                         end
                     --Service (17)
                     elseif classveh == 17 then
                         if blipSprite ~= 198 then
                             SetBlipSprite(blip, 198)        --Taxi icon
-                            Citizen.InvokeNative(0x5FBCA48327B914DF, blip, false)
+                            ShowHeadingIndicatorOnBlip(blip, false)
                         end
                     --Emergency (18)
                     elseif classveh == 18 then
                         if blipSprite ~= 56 then
                             SetBlipSprite(blip, 56)        --Cop icon
-                            Citizen.InvokeNative(0x5FBCA48327B914DF, blip, false)
+                            ShowHeadingIndicatorOnBlip(blip, false)
                         end
                     --Military (19)
                     elseif classveh == 19 then
                         if modelveh == 'rhino' then
                             if blipSprite ~= 421 then
                                 SetBlipSprite(blip, 421)    --Tank icon
-                                Citizen.InvokeNative(0x5FBCA48327B914DF, blip, false)
+                                ShowHeadingIndicatorOnBlip(blip, false)
                             end
                         elseif blipSprite ~= 750 then
                             SetBlipSprite(blip, 750)        --Military truck icon
-                            Citizen.InvokeNative(0x5FBCA48327B914DF, blip, false)
+                            ShowHeadingIndicatorOnBlip(blip, false)
                         end
                     --Commercial (20)
                     elseif classveh == 20 then
                         if blipSprite ~= 477 then
                             SetBlipSprite(blip, 477)        --Truck icon
-                            Citizen.InvokeNative(0x5FBCA48327B914DF, blip, false)
+                            ShowHeadingIndicatorOnBlip(blip, false)
                         end
                     --Every car (0, 1, 2, 3, 4, 5, 6, 7)
                     else
                         if modelveh == 'insurgent' or modelveh == 'insurgent2' or modelveh == 'limo2' then
                             if blipSprite ~= 426 then
                                 SetBlipSprite(blip, 426)    --Armed car icon
-                                Citizen.InvokeNative(0x5FBCA48327B914DF, blip, false)
+                                ShowHeadingIndicatorOnBlip(blip, false)
                             end
                         elseif blipSprite ~= 225 then
                             SetBlipSprite(blip, 225)        --Car icon
-                            Citizen.InvokeNative(0x5FBCA48327B914DF, blip, true)
+                            ShowHeadingIndicatorOnBlip(blip, true)
                         end
                     end
                     -- Show number in case of passangers
@@ -186,7 +186,7 @@ RegisterNetEvent('qb-admin:client:Show', function(players)
                     HideNumberOnBlip(blip)
                     if blipSprite ~= 1 then
                         SetBlipSprite(blip, 1)
-                        Citizen.InvokeNative(0x5FBCA48327B914DF, blip, true)
+                        ShowHeadingIndicatorOnBlip(blip, true)
                     end
                 end
 
