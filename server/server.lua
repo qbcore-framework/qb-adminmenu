@@ -256,9 +256,11 @@ end, 'admin')
 
 QBCore.Commands.Add('announce', 'Make An Announcement (Admin Only)', {}, false, function(source, args)
     local msg = table.concat(args, ' ')
-    for i = 1, 3, 1 do
-        TriggerClientEvent('chat:addMessage', -1, 'SYSTEM', 'error', msg)
-    end
+    TriggerClientEvent('chat:addMessage', -1, {
+        color = { 255, 0, 0},
+        multiline = true,
+        args = {"Announcement", msg}
+    })
 end, 'admin')
 
 QBCore.Commands.Add('admin', 'Open Admin Menu (Admin Only)', {}, false, function(source, args)
