@@ -450,6 +450,10 @@ local function ToggleShowCoordinates()
     end)
 end
 
+RegisterNetEvent('qb-admin:client:ToggleCoords', function()
+    ToggleShowCoordinates()
+end)
+
 local function ToggleVehicleDeveloperMode()
     local x = 0.4
     local y = 0.888

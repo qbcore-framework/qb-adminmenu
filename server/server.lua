@@ -199,9 +199,13 @@ end)
 
 RegisterNetEvent('qb-admin:server:SendReport', function(name, targetSrc, msg)
     local src = source
-    if QBCore.Functions.HasPermission(src, 'admin')or IsPlayerAceAllowed(src, 'command') then
+    if QBCore.Functions.HasPermission(src, 'admin') or IsPlayerAceAllowed(src, 'command') then
         if QBCore.Functions.IsOptin(src) then
-            TriggerClientEvent('chat:addMessage', src, 'REPORT - '..name..' ('..targetSrc..')', 'report', msg)
+            TriggerClientEvent('chat:addMessage', src, {
+                color = {255, 0, 0},
+                multiline = true,
+                args = {'Admin Report - '..name..' ('..targetSrc..')', msg}
+            })
         end
     end
 end)
@@ -237,16 +241,24 @@ end)
 
 -- Commands
 
-QBCore.Commands.Add('blips', 'Show blips for players (Admin Only)', {}, false, function(source, args)
-    TriggerClientEvent('qb-admin:client:toggleBlips', source)
+QBCore.Commands.Add('blips', 'Show blips for players (Admin Only)', {}, false, function(source)
+    local src = source
+    TriggerClientEvent('qb-admin:client:toggleBlips', src)
 end, 'admin')
 
-QBCore.Commands.Add('names', 'Show player name overhead (Admin Only)', {}, false, function(source, args)
-    TriggerClientEvent('qb-admin:client:toggleNames', source)
+QBCore.Commands.Add('names', 'Show player name overhead (Admin Only)', {}, false, function(source)
+    local src = source
+    TriggerClientEvent('qb-admin:client:toggleNames', src)
 end, 'admin')
 
-QBCore.Commands.Add('coords', 'Enable coord display for development stuff (Admin Only)', {}, false, function(source, args)
-    TriggerClientEvent('qb-admin:client:ToggleCoords', source)
+QBCore.Commands.Add('coords', 'Enable coord display for development stuff (Admin Only)', {}, false, function(source)
+    local src = source
+    TriggerClientEvent('qb-admin:client:ToggleCoords', src)
+end, 'admin')
+
+QBCore.Commands.Add('noclip', 'Toggle noclip (Admin Only)', {}, false, function(source)
+    local src = source
+    TriggerClientEvent('qb-admin:client:ToggleNoClip', src)
 end, 'admin')
 
 QBCore.Commands.Add('admincar', 'Save Vehicle To Your Garage (Admin Only)', {}, false, function(source, args)
@@ -256,6 +268,7 @@ end, 'admin')
 
 QBCore.Commands.Add('announce', 'Make An Announcement (Admin Only)', {}, false, function(source, args)
     local msg = table.concat(args, ' ')
+    if msg == '' then return end
     TriggerClientEvent('chat:addMessage', -1, {
         color = { 255, 0, 0},
         multiline = true,
@@ -268,10 +281,10 @@ QBCore.Commands.Add('admin', 'Open Admin Menu (Admin Only)', {}, false, function
 end, 'admin')
 
 QBCore.Commands.Add('report', 'Admin Report', {{name='message', help='Message'}}, true, function(source, args)
+    local src = source
     local msg = table.concat(args, ' ')
     local Player = QBCore.Functions.GetPlayer(source)
-    TriggerClientEvent('qb-admin:client:SendReport', -1, GetPlayerName(source), source, msg)
-    TriggerClientEvent('chat:addMessage', source, 'REPORT Send', 'normal', msg)
+    TriggerClientEvent('qb-admin:client:SendReport', -1, GetPlayerName(src), src, msg)
     TriggerEvent('qb-log:server:CreateLog', 'report', 'Report', 'green', '**'..GetPlayerName(source)..'** (CitizenID: '..Player.PlayerData.citizenid..' | ID: '..source..') **Report:** ' ..msg, false)
 end)
 
@@ -308,7 +321,7 @@ QBCore.Commands.Add('warn', 'Warn A Player (Admin Only)', {{name='ID', help='Pla
     end
 end, 'admin')
 
-QBCore.Commands.Add('checkwarns', 'Check Player Warnings (Admin Only)', {{name='ID', help='Player'}, {name='Warning', help='Number of warning, (1, 2 or 3 etc..)'}}, false, function(source, args)
+QBCore.Commands.Add('checkwarns', 'Check Player Warnings (Admin Only)', {{name='id', help='Player'}, {name='Warning', help='Number of warning, (1, 2 or 3 etc..)'}}, false, function(source, args)
     if args[2] == nil then
         local targetPlayer = QBCore.Functions.GetPlayer(tonumber(args[1]))
         local result = exports.oxmysql:executeSync('SELECT * FROM player_warns WHERE targetIdentifier = ?', { targetPlayer.PlayerData.license })
@@ -324,7 +337,7 @@ QBCore.Commands.Add('checkwarns', 'Check Player Warnings (Admin Only)', {{name='
     end
 end, 'admin')
 
-QBCore.Commands.Add('delwarn', 'Delete Players Warnings (Admin Only)', {{name='ID', help='Player'}, {name='Warning', help='Number of warning, (1, 2 or 3 etc..)'}}, true, function(source, args)
+QBCore.Commands.Add('delwarn', 'Delete Players Warnings (Admin Only)', {{name='id', help='Player'}, {name='Warning', help='Number of warning, (1, 2 or 3 etc..)'}}, true, function(source, args)
     local targetPlayer = QBCore.Functions.GetPlayer(tonumber(args[1]))
     local warnings = exports.oxmysql:executeSync('SELECT * FROM player_warns WHERE targetIdentifier = ?', { targetPlayer.PlayerData.license })
     local selectedWarning = tonumber(args[2])
@@ -335,26 +348,27 @@ QBCore.Commands.Add('delwarn', 'Delete Players Warnings (Admin Only)', {{name='I
     end
 end, 'admin')
 
-QBCore.Commands.Add('reportr', 'Reply To A Report (Admin Only)', {}, false, function(source, args)
+QBCore.Commands.Add('reportr', 'Reply To A Report (Admin Only)', {{name='id', help='Player'}, {name = 'message', help = 'Message to respond with'}}, false, function(source, args, rawCommand)
+    local src = source
     local playerId = tonumber(args[1])
     table.remove(args, 1)
     local msg = table.concat(args, ' ')
     local OtherPlayer = QBCore.Functions.GetPlayer(playerId)
-    local Player = QBCore.Functions.GetPlayer(source)
-    if OtherPlayer ~= nil then
-        TriggerClientEvent('chat:addMessage', playerId, 'ADMIN - '..GetPlayerName(source), 'warning', msg)
-        TriggerClientEvent('QBCore:Notify', source, 'Sent reply')
-        for k, v in pairs(QBCore.Functions.GetPlayers()) do
-            if QBCore.Functions.HasPermission(v, 'admin') or IsPlayerAceAllowed(src, 'command') then
-                if QBCore.Functions.IsOptin(v) then
-                    TriggerClientEvent('chat:addMessage', v, 'REPORT REPLY ('..source..') - '..GetPlayerName(source), 'warning', msg)
-                    TriggerEvent('qb-log:server:CreateLog', 'report', 'Report Reply', 'red', '**'..GetPlayerName(source)..'** replied on: **'..OtherPlayer.PlayerData.name.. ' **(ID: '..OtherPlayer.PlayerData.source..') **Message:** ' ..msg, false)
-                end
-            end
-        end
-    else
-        TriggerClientEvent('QBCore:Notify', source, 'Player is not online', 'error')
-    end
+    if msg == '' then return end
+    if not OtherPlayer then return TriggerClientEvent('QBCore:Notify', src, 'Player is not online', 'error') end
+    if not QBCore.Functions.HasPermission(src, 'admin') or IsPlayerAceAllowed(src, 'command') ~= 1 then return end
+    TriggerClientEvent('chat:addMessage', playerId, {
+        color = {255, 0, 0},
+        multiline = true,
+        args = {'Admin Response', msg}
+    })
+    TriggerClientEvent('chat:addMessage', src, {
+        color = {255, 0, 0},
+        multiline = true,
+        args = {'Report Response ('..playerId..')', msg}
+    })
+    TriggerClientEvent('QBCore:Notify', src, 'Reply Sent')
+    TriggerEvent('qb-log:server:CreateLog', 'report', 'Report Reply', 'red', '**'..GetPlayerName(src)..'** replied on: **'..OtherPlayer.PlayerData.name.. ' **(ID: '..OtherPlayer.PlayerData.source..') **Message:** ' ..msg, false)
 end, 'admin')
 
 QBCore.Commands.Add('setmodel', 'Change Ped Model (Admin Only)', {{name='model', help='Name of the model'}, {name='id', help='Id of the Player (empty for yourself)'}}, false, function(source, args)
@@ -386,43 +400,40 @@ QBCore.Commands.Add('setspeed', 'Set Player Foot Speed (Admin Only)', {}, false,
 end, 'admin')
 
 QBCore.Commands.Add('reporttoggle', 'Toggle Incoming Reports (Admin Only)', {}, false, function(source, args)
-    QBCore.Functions.ToggleOptin(source)
-    if QBCore.Functions.IsOptin(source) then
-        TriggerClientEvent('QBCore:Notify', source, 'You are receiving reports', 'success')
+    local src = source
+    QBCore.Functions.ToggleOptin(src)
+    if QBCore.Functions.IsOptin(src) then
+        TriggerClientEvent('QBCore:Notify', src, 'You are receiving reports', 'success')
     else
-        TriggerClientEvent('QBCore:Notify', source, 'You are not receiving reports', 'error')
+        TriggerClientEvent('QBCore:Notify', src, 'You are not receiving reports', 'error')
     end
 end, 'admin')
 
-RegisterCommand('kickall', function(source, args, rawCommand)
+QBCore.Commands.Add('kickall', 'Kick all players', {}, false, function(source, args)
     local src = source
     if src > 0 then
         local reason = table.concat(args, ' ')
-        local Player = QBCore.Functions.GetPlayer(src)
-
         if QBCore.Functions.HasPermission(src, 'god') or IsPlayerAceAllowed(src, 'command') then
-            if args[1] ~= nil then
+            if not reason then
                 for k, v in pairs(QBCore.Functions.GetPlayers()) do
                     local Player = QBCore.Functions.GetPlayer(v)
-                    if Player ~= nil then
+                    if Player then
                         DropPlayer(Player.PlayerData.source, reason)
                     end
                 end
             else
-                TriggerClientEvent('chat:addMessage', src, 'SYSTEM', 'error', 'Mention a reason..')
+                TriggerClientEvent('QBCore:Notify', src, 'No reason specified', 'error')
             end
-        else
-            TriggerClientEvent('chat:addMessage', src, 'SYSTEM', 'error', 'You can\'t do this..')
         end
     else
         for k, v in pairs(QBCore.Functions.GetPlayers()) do
             local Player = QBCore.Functions.GetPlayer(v)
-            if Player ~= nil then
+            if Player then
                 DropPlayer(Player.PlayerData.source, 'Server restart, check our Discord for more information: ' .. QBCore.Config.Server.discord)
             end
         end
     end
-end, false)
+end, 'god')
 
 QBCore.Commands.Add('setammo', 'Set Your Ammo Amount (Admin Only)', {{name='amount', help='Amount of bullets, for example: 20'}, {name='weapon', help='Name of the weapen, for example: WEAPON_VINTAGEPISTOL'}}, false, function(source, args)
     local src = source
