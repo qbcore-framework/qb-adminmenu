@@ -20,7 +20,7 @@ QBCore.Functions.CreateCallback('test:getplayers', function(source, cb) -- WORKS
     for k, v in pairs(QBCore.Functions.GetPlayers()) do
         local targetped = GetPlayerPed(v)
         local ped = QBCore.Functions.GetPlayer(v)
-        table.insert(players, {
+        players[#players+1] = {
             name = ped.PlayerData.charinfo.firstname .. ' ' .. ped.PlayerData.charinfo.lastname .. ' | (' .. GetPlayerName(v) .. ')',
             id = v,
             coords = GetEntityCoords(targetped),
@@ -29,7 +29,7 @@ QBCore.Functions.CreateCallback('test:getplayers', function(source, cb) -- WORKS
             sources = GetPlayerPed(ped.PlayerData.source),
             sourceplayer= ped.PlayerData.source
 
-        })
+        }
     end
     cb(players)
 end)
@@ -56,22 +56,22 @@ end
 -- Events
 
 RegisterNetEvent('qb-admin:server:GetPlayersForBlips', function()
-    local src = source					                        
-    local players = {}                                          
-    for k, v in pairs(QBCore.Functions.GetPlayers()) do         
-        local targetped = GetPlayerPed(v)                       
-        local ped = QBCore.Functions.GetPlayer(v)             
-        table.insert(players, {                             
+    local src = source
+    local players = {}
+    for k, v in pairs(QBCore.Functions.GetPlayers()) do
+        local targetped = GetPlayerPed(v)
+        local ped = QBCore.Functions.GetPlayer(v)
+        players[#players+1] = {
             name = ped.PlayerData.charinfo.firstname .. ' ' .. ped.PlayerData.charinfo.lastname .. ' | ' .. GetPlayerName(v),
-            id = v,                                      
-            coords = GetEntityCoords(targetped),             
+            id = v,
+            coords = GetEntityCoords(targetped),
             cid = ped.PlayerData.charinfo.firstname .. ' ' .. ped.PlayerData.charinfo.lastname,
-            citizenid = ped.PlayerData.citizenid,            
-            sources = GetPlayerPed(ped.PlayerData.source),    
-            sourceplayer= ped.PlayerData.source              
-        })                                                  
-    end                                                  
-    TriggerClientEvent('qb-admin:client:Show', src, players)  
+            citizenid = ped.PlayerData.citizenid,
+            sources = GetPlayerPed(ped.PlayerData.source),
+            sourceplayer= ped.PlayerData.source
+        }
+    end
+    TriggerClientEvent('qb-admin:client:Show', src, players)
 end)
 
 RegisterNetEvent('qb-admin:server:kill', function(player)

@@ -76,18 +76,18 @@ local menu_button8 = menu2:AddCheckbox({
     value = menu2,
     description = 'Enable/Disable God Mode'
 })
-local names_button = menu2:AddCheckbox({               
-    icon = '📋',                                        
-    label = 'Names',                                    
-    value = menu2,                               
-    description = 'Enable/Disable Names overhead'   
-})                                               
-local blips_button = menu2:AddCheckbox({     
-    icon = '📍',                             
-    label = 'Blips',                                    
-    value = menu2,                                     
-    description = 'Enable/Disable Blips for players in maps'    
-}) 
+local names_button = menu2:AddCheckbox({
+    icon = '📋',
+    label = 'Names',
+    value = menu2,
+    description = 'Enable/Disable Names overhead'
+})
+local blips_button = menu2:AddCheckbox({
+    icon = '📍',
+    label = 'Blips',
+    value = menu2,
+    description = 'Enable/Disable Blips for players in maps'
+})
 local menu_button11 = menu5:AddButton({
     icon = '🌡️',
     label = 'Weather Options',
@@ -555,10 +555,10 @@ menu12_button4:On('Select', function(item)
     TriggerServerEvent('QBCore:CallCommand', "dv", {})
 end)
 
-names_button:On('change', function()           
+names_button:On('change', function()
     TriggerEvent('qb-admin:client:toggleNames')
-end)                                           
-blips_button:On('change', function()           
+end)
+blips_button:On('change', function()
     TriggerEvent('qb-admin:client:toggleBlips')
 end)
 
@@ -607,7 +607,7 @@ menu_button4:On('Select', function(item)
     QBCore.Functions.TriggerCallback('test:getdealers', function(dealers)
         for k, v in pairs(dealers) do
             local menu_button10 = menu7:AddButton({
-                label = v["name"], --.. ' | ' .. v[time.min] .. ' | ' .. v[time.max]
+                label = v["name"],
                 value = v,
                 description = 'Dealer Name',
                 select = function(btn)
@@ -648,13 +648,13 @@ local function OpenPermsMenu(permsply)
                     local vcal = newValue
                     if vcal == 1 then
                         selectedgroup = {}
-                        table.insert(selectedgroup, {rank = "user", label = "User"})
+                        selectedgroup[#selectedgroup+1] = {rank = "user", label = "User"}
                     elseif vcal == 2 then
                         selectedgroup = {}
-                        table.insert(selectedgroup, {rank = "admin", label = "Admin"})
+                        selectedgroup[#selectedgroup+1] = {rank = "admin", label = "Admin"}
                     elseif vcal == 3 then
                         selectedgroup = {}
-                        table.insert(selectedgroup, {rank = "god", label = "God"})
+                        selectedgroup[#selectedgroup+1] = {rank = "god", label = "God"}
                     end
                 end
             })
