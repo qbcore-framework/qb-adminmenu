@@ -716,7 +716,7 @@ local function OpenKickMenu(kickplayer)
         value = "reason",
         description = 'Kick reason',
         select = function(btn)
-            kickreason = LocalInput('Kick Reason', 255, 'Reason')
+            kickreason = LocalInput('Kick Reason', 255)
         end
     })
 
@@ -745,7 +745,7 @@ local function OpenBanMenu(banplayer)
         value = "reason",
         description = 'Ban reason',
         select = function(btn)
-            banreason = LocalInput('Ban Reason', 255, 'Reason')
+            banreason = LocalInput('Ban Reason', 255)
         end
     })
 
@@ -804,7 +804,7 @@ local function OpenBanMenu(banplayer)
         }},
         select = function(btn, newValue, oldValue)
             if newValue == "self" then
-                banlength = LocalInputInt('Ban Length', 11, 'Seconds')
+                banlength = LocalInputInt('Ban Length', 11)
             else
                 banlength = newValue
             end
