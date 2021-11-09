@@ -57,7 +57,7 @@ RegisterNetEvent('qb-admin:client:SaveCar', function()
     local veh = GetVehiclePedIsIn(ped)
 
     if veh ~= nil and veh ~= 0 then
-        local plate = GetVehicleNumberPlateText(veh)
+        local plate = QBCore.Functions.GetPlate(veh)
         local props = QBCore.Functions.GetVehicleProperties(veh)
         local hash = props.model
         local vehname = GetDisplayNameFromVehicleModel(hash):lower()
@@ -100,7 +100,7 @@ RegisterNetEvent('qb-admin:client:SetModel', function(skin)
         if isPedAllowedRandom(skin) then
             SetPedRandomComponentVariation(ped, true)
         end
-        
+
 		SetModelAsNoLongerNeeded(model)
 	end
 	SetEntityInvincible(ped, false)
