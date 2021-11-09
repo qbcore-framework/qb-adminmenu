@@ -31,6 +31,11 @@ QBCore.Functions.CreateCallback('test:getplayers', function(source, cb) -- WORKS
 
         }
     end
+        -- Sort players list by source ID (1,2,3,4,5, etc) --
+        table.sort(players, function(a, b)
+            return a.id < b.id
+        end)
+        ------
     cb(players)
 end)
 
