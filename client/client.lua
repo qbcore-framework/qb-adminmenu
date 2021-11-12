@@ -3,7 +3,7 @@ local showCoords = false
 local vehicleDevMode = false
 local banreason = 'Unknown'
 local kickreason = 'Unknown'
-local menuLocation = 'topright'
+local menuLocation = 'topright' -- e.g. topright (default), topleft, bottomright, bottomleft
 
 local menu = MenuV:CreateMenu(false, 'Admin Menu', menuLocation, 220, 20, 60, 'size-125', 'none', 'menuv', 'test')
 local menu2 = MenuV:CreateMenu(false, 'Admin Options', menuLocation, 220, 20, 60, 'size-125', 'none', 'menuv', 'test1')
