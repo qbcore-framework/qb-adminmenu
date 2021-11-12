@@ -313,8 +313,10 @@ QBCore.Commands.Add('warn', 'Warn A Player (Admin Only)', {{name='ID', help='Pla
     local myName = senderPlayer.PlayerData.name
     local warnId = 'WARN-'..math.random(1111, 9999)
     if targetPlayer ~= nil then
-        TriggerClientEvent('chat:addMessage', targetPlayer.PlayerData.source, 'SYSTEM', 'error', 'You have been warned by: '..GetPlayerName(source)..', Reason: '..msg)
-        TriggerClientEvent('chat:addMessage', source, 'SYSTEM', 'error', 'You have warned '..GetPlayerName(targetPlayer.PlayerData.source)..' for: '..msg)
+        --TriggerClientEvent('chat:addMessage', targetPlayer.PlayerData.source, 'SYSTEM', 'error', 'You have been warned by: '..GetPlayerName(source)..', Reason: '..msg)
+		TriggerClientEvent('chat:addMessage', targetPlayer.PlayerData.source, { args = { "SYSTEM", "^8WARNING ^7 You have been warned by"..GetPlayerName(source)..", Reason: "..msg }, color = 255, 0, 0 })
+        --TriggerClientEvent('chat:addMessage', source, 'SYSTEM', 'error', 'You have warned '..GetPlayerName(targetPlayer.PlayerData.source)..' for: '..msg)
+		TriggerClientEvent('chat:addMessage', source, { args = { "SYSTEM", "^8WARNING ^7 You have warned "..GetPlayerName(targetPlayer.PlayerData.source)..", for: "..msg }, color = 255, 0, 0 })
         exports.oxmysql:insert('INSERT INTO player_warns (senderIdentifier, targetIdentifier, reason, warnId) VALUES (?, ?, ?, ?)', {
             senderPlayer.PlayerData.license,
             targetPlayer.PlayerData.license,
