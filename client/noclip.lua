@@ -19,7 +19,6 @@ local input = vector3(0, 0, 0)
 local previousVelocity = vector3(0, 0, 0)
 local breakSpeed = 10.0;
 local offset = vector3(0, 0, 1);
-
 local noClippingEntity = playerPed;
 
 local function IsControlAlwaysPressed(inputGroup, control)
@@ -79,7 +78,7 @@ local function SetNoClip(val)
             TriggerEvent('instructor:add-instruction', NOCLIP_TOGGLE_KEY, "Toggle No-clip", RESSOURCE_NAME);
             SetEntityAlpha(noClippingEntity, 51, 0)
             -- Start a No CLip thread
-            Citizen.CreateThread(function()
+            CreateThread(function()
                 local clipped = noClippingEntity
                 local pPed = playerPed;
                 local isClippedVeh = isVeh;
@@ -89,7 +88,7 @@ local function SetNoClip(val)
                     ClearPedTasksImmediately(pPed)
                 end
                 while isNoClipping do
-                    Citizen.Wait(0);
+                    Wait(0);
                     FreezeEntityPosition(clipped, true);
                     SetEntityCollision(clipped, false, false);
                     SetEntityVisible(clipped, false, false);
@@ -101,7 +100,7 @@ local function SetNoClip(val)
                     speed = ((IsControlAlwaysPressed(1, CHANGE_SPEED_KEY) and NO_CLIP_FAST_SPEED) or NO_CLIP_NORMAL_SPEED) * ((isClippedVeh and 2.75) or 1)
                     MoveInNoClip();
                 end
-                Citizen.Wait(0);
+                Wait(0);
                 FreezeEntityPosition(clipped, false);
                 SetEntityCollision(clipped, true, true);
                 SetEntityVisible(clipped, true, false);
@@ -110,13 +109,13 @@ local function SetNoClip(val)
                 SetEveryoneIgnorePlayer(pPed, false);
                 SetPoliceIgnorePlayer(pPed, false);
                 ResetEntityAlpha(clipped);
-                Citizen.Wait(500);
+                Wait(500);
                 if isClippedVeh then
                     while (not IsVehicleOnAllWheels(clipped)) and not isNoClipping do
-                        Citizen.Wait(0);
+                        Wait(0);
                     end
                     while not isNoClipping do
-                        Citizen.Wait(0);
+                        Wait(0);
                         if IsVehicleOnAllWheels(clipped) then
                             return SetInvincible(false, clipped);
                         end
@@ -124,11 +123,11 @@ local function SetNoClip(val)
                 else
                     if (IsPedFalling(clipped) and math.abs(1 - GetEntityHeightAboveGround(clipped)) > eps) then
                         while (IsPedStopped(clipped) or not IsPedFalling(clipped)) and not isNoClipping do
-                            Citizen.Wait(0);
+                            Wait(0);
                         end
                     end
                     while not isNoClipping do
-                        Citizen.Wait(0);
+                        Wait(0);
                         if (not IsPedFalling(clipped)) and (not IsPedRagdoll(clipped)) then
                             return SetInvincible(false, clipped);
                         end
