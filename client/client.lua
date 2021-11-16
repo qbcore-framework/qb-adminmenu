@@ -436,7 +436,7 @@ local function ToggleShowCoordinates()
     local x = 0.4
     local y = 0.025
     showCoords = not showCoords
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while showCoords do
             local coords = GetEntityCoords(PlayerPedId())
             local heading = GetEntityHeading(PlayerPedId())
@@ -445,7 +445,7 @@ local function ToggleShowCoordinates()
             c.y = round(coords.y, 2)
             c.z = round(coords.z, 2)
             heading = round(heading, 2)
-            Citizen.Wait(0)
+            Wait(0)
             Draw2DText(string.format('~w~Ped Coordinates:~b~ vector4(~w~%s~b~, ~w~%s~b~, ~w~%s~b~, ~w~%s~b~)', c.x, c.y, c.z, heading), 4, {66, 182, 245}, 0.4, x + 0.0, y + 0.0)
         end
     end)
@@ -459,10 +459,10 @@ local function ToggleVehicleDeveloperMode()
     local x = 0.4
     local y = 0.888
     vehicleDevMode = not vehicleDevMode
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while vehicleDevMode do
             local ped = PlayerPedId()
-            Citizen.Wait(0)
+            Wait(0)
             if IsPedInAnyVehicle(ped, false) then
                 local vehicle = GetVehiclePedIsIn(ped, false)
                 local netID = VehToNet(vehicle)
@@ -1148,4 +1148,3 @@ CreateThread(function()	-- While loop needed for delete lazer
         end
         Wait(sleep)
 	end
-end)
