@@ -4,7 +4,7 @@ local ShowNames = false
 local NetCheck1 = false
 local NetCheck2 = false
 
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
         Wait(1000)
         if NetCheck1 or NetCheck2 then
