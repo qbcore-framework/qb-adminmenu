@@ -1148,3 +1148,4 @@ CreateThread(function()	-- While loop needed for delete lazer
         end
         Wait(sleep)
 	end
+end)
