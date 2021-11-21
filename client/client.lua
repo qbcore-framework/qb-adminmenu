@@ -1117,34 +1117,35 @@ end
 
 CreateThread(function()	-- While loop needed for delete lazer
 	while true do
-        sleep = 1000
-        if deleteLazer then
-            sleep = 7
-            local color = {r = 255, g = 255, b = 255, a = 200}
-            local position = GetEntityCoords(PlayerPedId())
-            local hit, coords, entity = RayCastGamePlayCamera(1000.0)
-            -- If entity is found then verifie entity
-            if hit and (IsEntityAVehicle(entity) or IsEntityAPed(entity) or IsEntityAnObject(entity)) then
-                local entityCoord = GetEntityCoords(entity)
-                local minimum, maximum = GetModelDimensions(GetEntityModel(entity))
-                DrawEntityBoundingBox(entity, color)
-                DrawLine(position.x, position.y, position.z, coords.x, coords.y, coords.z, color.r, color.g, color.b, color.a)
-                Draw2DText('Obj: ~b~' .. entity .. '~w~ Model: ~b~' .. GetEntityModel(entity), 4, {255, 255, 255}, 0.4, 0.55, 0.888)
-                Draw2DText('If you want to delete the object click on ~g~E', 4, {255, 255, 255}, 0.4, 0.55, 0.888 + 0.025)
-                -- When E pressed then remove targeted entity
-                if IsControlJustReleased(0, 38) then
-                    -- Set as missionEntity so the object can be remove (Even map objects)
-                    SetEntityAsMissionEntity(entity, true, true)
-                    --SetEntityAsNoLongerNeeded(entity)
-                    --RequestNetworkControl(entity)
-                    DeleteEntity(entity)
-                end
-            -- Only draw of not center of map
-            elseif coords.x ~= 0.0 and coords.y ~= 0.0 then
-                -- Draws line to targeted position
-                DrawLine(position.x, position.y, position.z, coords.x, coords.y, coords.z, color.r, color.g, color.b, color.a)
-                DrawMarker(28, coords.x, coords.y, coords.z, 0.0, 0.0, 0.0, 0.0, 180.0, 0.0, 0.1, 0.1, 0.1, color.r, color.g, color.b, color.a, false, true, 2, nil, nil, false)
-            end
-        end
-        Wait(sleep)
+		sleep = 1000
+		if deleteLazer then
+		    sleep = 7
+		    local color = {r = 255, g = 255, b = 255, a = 200}
+		    local position = GetEntityCoords(PlayerPedId())
+		    local hit, coords, entity = RayCastGamePlayCamera(1000.0)
+		    -- If entity is found then verifie entity
+		    if hit and (IsEntityAVehicle(entity) or IsEntityAPed(entity) or IsEntityAnObject(entity)) then
+			local entityCoord = GetEntityCoords(entity)
+			local minimum, maximum = GetModelDimensions(GetEntityModel(entity))
+			DrawEntityBoundingBox(entity, color)
+			DrawLine(position.x, position.y, position.z, coords.x, coords.y, coords.z, color.r, color.g, color.b, color.a)
+			Draw2DText('Obj: ~b~' .. entity .. '~w~ Model: ~b~' .. GetEntityModel(entity), 4, {255, 255, 255}, 0.4, 0.55, 0.888)
+			Draw2DText('If you want to delete the object click on ~g~E', 4, {255, 255, 255}, 0.4, 0.55, 0.888 + 0.025)
+			-- When E pressed then remove targeted entity
+			if IsControlJustReleased(0, 38) then
+			    -- Set as missionEntity so the object can be remove (Even map objects)
+			    SetEntityAsMissionEntity(entity, true, true)
+			    --SetEntityAsNoLongerNeeded(entity)
+			    --RequestNetworkControl(entity)
+			    DeleteEntity(entity)
+			end
+		    -- Only draw of not center of map
+		    elseif coords.x ~= 0.0 and coords.y ~= 0.0 then
+			-- Draws line to targeted position
+			DrawLine(position.x, position.y, position.z, coords.x, coords.y, coords.z, color.r, color.g, color.b, color.a)
+			DrawMarker(28, coords.x, coords.y, coords.z, 0.0, 0.0, 0.0, 0.0, 180.0, 0.0, 0.1, 0.1, 0.1, color.r, color.g, color.b, color.a, false, true, 2, nil, nil, false)
+		    end
+		end
+		Wait(sleep)
 	end
+end)
