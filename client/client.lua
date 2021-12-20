@@ -1119,7 +1119,7 @@ CreateThread(function()	-- While loop needed for delete lazer
 	while true do
 		sleep = 1000
 		if deleteLazer then
-		    sleep = 7
+		    sleep = 5
 		    local color = {r = 255, g = 255, b = 255, a = 200}
 		    local position = GetEntityCoords(PlayerPedId())
 		    local hit, coords, entity = RayCastGamePlayCamera(1000.0)
