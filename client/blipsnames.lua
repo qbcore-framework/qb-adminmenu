@@ -46,6 +46,7 @@ RegisterNetEvent('qb-admin:client:Show', function(players)
         SetMpGamerTagAlpha(Tag, 0, 255) -- Sets "MP_TAG_GAMER_NAME" bar alpha to 100% (not needed just as a fail safe)
         SetMpGamerTagAlpha(Tag, 2, 255) -- Sets "MP_TAG_HEALTH_ARMOUR" bar alpha to 100%
         SetMpGamerTagAlpha(Tag, 4, 255) -- Sets "MP_TAG_AUDIO_ICON" bar alpha to 100%
+        SetMpGamerTagAlpha(Tag, 6, 255) -- Sets "MP_TAG_PASSIVE_MODE" bar alpha to 100%
         SetMpGamerTagHealthBarColour(Tag, 25)  --https://wiki.rage.mp/index.php?title=Fonts_and_Colors
 
         if ShowNames then
@@ -62,9 +63,10 @@ RegisterNetEvent('qb-admin:client:Show', function(players)
                 SetMpGamerTagVisibility(Tag, 6, false)
             end
         else
-            SetMpGamerTagVisibility(Tag, 4, false)
             SetMpGamerTagVisibility(Tag, 0, false)
             SetMpGamerTagVisibility(Tag, 2, false)
+            SetMpGamerTagVisibility(Tag, 4, false)
+            SetMpGamerTagVisibility(Tag, 6, false)
             RemoveMpGamerTag(Tag) -- Unloads the tags till you activate it again
             NetCheck2 = false
         end
