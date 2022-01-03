@@ -49,7 +49,7 @@ RegisterNetEvent('qb-admin:client:SendReport', function(name, src, msg)
 end)
 
 RegisterNetEvent('qb-admin:client:SendStaffChat', function(name, msg)
-    TriggerServerEvent('qb-admin:server:StaffChatMessage', name, msg)
+    TriggerServerEvent('qb-admin:server:Staffchat:addMessage', name, msg)
 end)
 
 RegisterNetEvent('qb-admin:client:SaveCar', function()
