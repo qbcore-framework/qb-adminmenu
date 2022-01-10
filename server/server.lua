@@ -421,7 +421,7 @@ QBCore.Commands.Add('kickall', 'Kick all players', {}, false, function(source, a
     if src > 0 then
         local reason = table.concat(args, ' ')
         if QBCore.Functions.HasPermission(src, 'god') or IsPlayerAceAllowed(src, 'command') then
-            if not reason then
+            if reason and reason ~= '' then
                 for k, v in pairs(QBCore.Functions.GetPlayers()) do
                     local Player = QBCore.Functions.GetPlayer(v)
                     if Player then
