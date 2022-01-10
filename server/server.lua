@@ -126,16 +126,14 @@ RegisterNetEvent('qb-admin:server:ban', function(player, time, reason)
     end
 end)
 
-RegisterNetEvent('qb-admin:server:spectate')
-AddEventHandler('qb-admin:server:spectate', function(player)
+RegisterNetEvent('qb-admin:server:spectate', function(player)
     local src = source
     local targetped = GetPlayerPed(player.id)
     local coords = GetEntityCoords(targetped)
     TriggerClientEvent('qb-admin:client:spectate', src, player.id, coords)
 end)
 
-RegisterNetEvent('qb-admin:server:freeze')
-AddEventHandler('qb-admin:server:freeze', function(player)
+RegisterNetEvent('qb-admin:server:freeze', function(player)
     local target = GetPlayerPed(player.id)
     if not frozen then
         frozen = true
@@ -175,7 +173,6 @@ RegisterNetEvent('qb-admin:server:intovehicle', function(player)
         end
     end
 end)
-
 
 RegisterNetEvent('qb-admin:server:bring', function(player)
     local src = source
@@ -313,9 +310,7 @@ QBCore.Commands.Add('warn', 'Warn A Player (Admin Only)', {{name='ID', help='Pla
     local myName = senderPlayer.PlayerData.name
     local warnId = 'WARN-'..math.random(1111, 9999)
     if targetPlayer ~= nil then
-        --TriggerClientEvent('chat:addMessage', targetPlayer.PlayerData.source, 'SYSTEM', 'error', 'You have been warned by: '..GetPlayerName(source)..', Reason: '..msg)
 		TriggerClientEvent('chat:addMessage', targetPlayer.PlayerData.source, { args = { "SYSTEM", "^8WARNING ^7 You have been warned by"..GetPlayerName(source)..", Reason: "..msg }, color = 255, 0, 0 })
-        --TriggerClientEvent('chat:addMessage', source, 'SYSTEM', 'error', 'You have warned '..GetPlayerName(targetPlayer.PlayerData.source)..' for: '..msg)
 		TriggerClientEvent('chat:addMessage', source, { args = { "SYSTEM", "^8WARNING ^7 You have warned "..GetPlayerName(targetPlayer.PlayerData.source)..", for: "..msg }, color = 255, 0, 0 })
         MySQL.Async.insert('INSERT INTO player_warns (senderIdentifier, targetIdentifier, reason, warnId) VALUES (?, ?, ?, ?)', {
             senderPlayer.PlayerData.license,
