@@ -1,5 +1,7 @@
 -- Variables
 
+local lastSpectateCoord = nil
+local isSpectating = false
 local blockedPeds = {
     "mp_m_freemode_01",
     "mp_f_freemode_01",
@@ -14,8 +16,22 @@ local blockedPeds = {
     "ig_car3guy1_m",
 }
 
-local lastSpectateCoord = nil
-local isSpectating = false
+local function LoadPlayerModel(skin)
+    RequestModel(skin)
+    while not HasModelLoaded(skin) do
+      Wait(0)
+    end
+end
+
+local function isPedAllowedRandom(skin)
+    local retval = false
+    for k, v in pairs(blockedPeds) do
+        if v ~= skin then
+            retval = true
+        end
+    end
+    return retval
+end
 
 -- Events
 
@@ -70,23 +86,6 @@ RegisterNetEvent('qb-admin:client:SaveCar', function()
         QBCore.Functions.Notify('You are not in a vehicle..', 'error')
     end
 end)
-
-local function LoadPlayerModel(skin)
-    RequestModel(skin)
-    while not HasModelLoaded(skin) do
-      Wait(0)
-    end
-end
-
-local function isPedAllowedRandom(skin)
-    local retval = false
-    for k, v in pairs(blockedPeds) do
-        if v ~= skin then
-            retval = true
-        end
-    end
-    return retval
-end
 
 RegisterNetEvent('qb-admin:client:SetModel', function(skin)
     local ped = PlayerPedId()
