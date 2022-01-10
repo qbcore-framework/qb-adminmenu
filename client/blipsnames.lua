@@ -4,15 +4,6 @@ local ShowNames = false
 local NetCheck1 = false
 local NetCheck2 = false
 
-CreateThread(function()
-    while true do
-        Wait(1000)
-        if NetCheck1 or NetCheck2 then
-            TriggerServerEvent('qb-admin:server:GetPlayersForBlips')
-        end
-    end
-end)
-
 RegisterNetEvent('qb-admin:client:toggleBlips', function()
     if not ShowBlips then
         ShowBlips = true
@@ -224,6 +215,15 @@ RegisterNetEvent('qb-admin:client:Show', function(players)
         else
             RemoveBlip(blip)
             NetCheck1 = false
+        end
+    end
+end)
+
+CreateThread(function()
+    while true do
+        Wait(1000)
+        if NetCheck1 or NetCheck2 then
+            TriggerServerEvent('qb-admin:server:GetPlayersForBlips')
         end
     end
 end)
