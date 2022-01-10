@@ -14,7 +14,10 @@ client_scripts {
     'client/events.lua'
 }
 
-server_script 'server/server.lua'
+server_scripts {
+    '@oxmysql/lib/MySQL.lua',
+    'server/server.lua'
+}
 
 files { -- Credits to https://github.com/LVRP-BEN/bl_coords for clipboard copy method
     'html/index.html',
