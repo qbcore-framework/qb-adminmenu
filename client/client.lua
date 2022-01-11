@@ -297,7 +297,7 @@ menu_button11:On("select",function()
         local menu_button14 = menu6:AddButton({icon = v.icon,label = v.label,value = v,description = v.description,select = function(btn)
             local selection = btn.Value
             TriggerServerEvent('qb-weathersync:server:setWeather', selection.value)
-            QBCore.Functions.Notify(Lang:t("weather.weather_changed") .. selection.label)
+            QBCore.Functions.Notify(Lang:t("weather.weather_changed", {value = selection.label}))
         end})
     end
 end)
@@ -948,8 +948,7 @@ end)
 
 menu_button13:On("select", function(item, value)
     TriggerServerEvent("qb-weathersync:server:setTime", value, value)
-    QBCore.Functions.Notify(Lang:t("time.changed") .. value .. Lang:t("time.placeholder"))
-
+    QBCore.Functions.Notify(Lang:t("time.changed", {time = value}))
 end)
 
 -- Toggle NoClip
