@@ -122,12 +122,12 @@ RegisterNetEvent('qb-weapons:client:SetWeaponAmmoManual', function(weapon, ammo)
     if weapon ~= "current" then
         local weapon = weapon:upper()
         SetPedAmmo(ped, GetHashKey(weapon), ammo)
-        QBCore.Functions.Notify('+'..ammo.. ' ' .. Lang:t("info.ammoforthe")..QBCore.Shared.Weapons[GetHashKey(weapon)]["label"], 'success')
+        QBCore.Functions.Notify(Lang:t("info.ammoforthe", {value = ammo, weapon = QBCore.Shared.Weapons[weapon]["label"})], 'success')
     else
         local weapon = GetSelectedPedWeapon(ped)
         if weapon ~= nil then
             SetPedAmmo(ped, weapon, ammo)
-            QBCore.Functions.Notify('+'..ammo.. ' ' .. Lang:t("info.ammoforthe")..QBCore.Shared.Weapons[weapon]["label"], 'success')
+            QBCore.Functions.Notify(Lang:t("info.ammoforthe", {value = ammo, weapon = QBCore.Shared.Weapons[weapon]["label"})], 'success')
         else
             QBCore.Functions.Notify(Lang:t("error.no_weapon"), 'error')
         end
