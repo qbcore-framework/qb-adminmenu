@@ -50,7 +50,7 @@ local Translations = {
         ["player_name"] = "Player Name",
         ["delete_object_info"] = "If you want to delete the object click on ~g~E", 
         ["obj"] = "Obj",
-        ["ammoforthe"] = "Ammo for the", 
+        ["ammoforthe"] = "+%{value} Ammo for the %{weapon}", 
         ["kicked_server"] = "You have been kicked from the server",
         ["check_discord"] = "🔸 Check our Discord for more information: ", 
         ["banned"] = "You have been banned:",
@@ -159,8 +159,7 @@ local Translations = {
         ["1year"] = "1 Year",
         ["permenent"] = "Permanent",
         ["self"] = "Self",
-        ["changed"] = "Time changed to ",
-        ["placeholder"] = " hs 00 min",
+        ["changed"] = "Time changed to %{time} hs 00 min",
     },
     weather = {
         ["extra_sunny"] = "Extra Sunny",
@@ -193,7 +192,7 @@ local Translations = {
         ["heavy_snow_desc"] = "Snowball Fight!",
         ["halloween"] = "Halloween",
         ["halloween_desc"] = "What Was That Noise?!",
-        ["weather_changed"] = "Weather Changed To: ", 
+        ["weather_changed"] = "Weather Changed To: %{value}", 
     },
     commands = {
         ["blips_for_player"] = "Show blips for players (Admin Only)",
