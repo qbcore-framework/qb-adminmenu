@@ -17,10 +17,10 @@ RegisterNetEvent('qb-admin:client:toggleBlips', function()
     if not ShowBlips then
         ShowBlips = true
         NetCheck1 = true
-        QBCore.Functions.Notify("Blips activated", "success")
+        QBCore.Functions.Notify(Lang:t("success.blips_activated"), "success")
     else
         ShowBlips = false
-        QBCore.Functions.Notify("Blips deactivated", "error")
+        QBCore.Functions.Notify(Lang:t("error.blips_deactivated"), "error")
     end
 end)
 
@@ -28,10 +28,10 @@ RegisterNetEvent('qb-admin:client:toggleNames', function()
     if not ShowNames then
         ShowNames = true
         NetCheck2 = true
-        QBCore.Functions.Notify("Names activated", "success")
+        QBCore.Functions.Notify(Lang:t("success.names_activated"), "success")
     else
         ShowNames = false
-        QBCore.Functions.Notify("Names deactivated", "error")
+        QBCore.Functions.Notify(Lang:t("error.names_deactivated"), "error")
     end
 end)
 

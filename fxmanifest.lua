@@ -6,6 +6,11 @@ version '1.0.0'
 
 ui_page 'html/index.html'
 
+shared_scripts {
+    '@qb-core/shared/locale.lua',
+    'locales/en.lua', -- Change to the language you want
+}
+
 client_scripts {
     '@menuv/menuv.lua',
     'client/noclip.lua',
