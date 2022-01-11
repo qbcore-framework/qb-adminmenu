@@ -54,7 +54,7 @@ local Translations = {
         ["kicked_server"] = "You have been kicked from the server",
         ["check_discord"] = "🔸 Check our Discord for more information: ", 
         ["banned"] = "You have been banned:",
-        ["ban_perm"] = "\n\nYour ban is permanent.\n🔸 Check our Discord for more information: "
+        ["ban_perm"] = "\n\nYour ban is permanent.\n🔸 Check our Discord for more information: ",
         ["ban_expires"] = "\n\nBan expires: ",
         ["rank_level"] = "Your Permission Level Is Now ",
         ["admin_report"] = "Admin Report - ",
@@ -62,7 +62,7 @@ local Translations = {
         ["warning_chat_message"] = "^8WARNING ^7 You have been warned by",
         ["warning_staff_message"] = "^8WARNING ^7 You have warned ",
         ["no_reason_specified"] = "No reason specified",
-        ["server_restart"] = "Server restart, check our Discord for more information: "
+        ["server_restart"] = "Server restart, check our Discord for more information: ",
     },
     menu = {
         ["admin_menu"] = "Admin Menu",
