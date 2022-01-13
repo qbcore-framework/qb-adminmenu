@@ -446,7 +446,7 @@ local function ToggleShowCoordinates()
             c.z = round(coords.z, 2)
             heading = round(heading, 2)
             Wait(0)
-            Draw2DText(string.format('~w~'..Lang:t("info.ped_coords") .. '~b~ vector4(~w~%s~b~, ~w~%s~b~, ~w~%s~b~, ~w~%s~b~)', c.x, c.y, c.z, heading), 4, {66, 182, 245}, 0.4, x + 0.0, y + 0.0)
+            Draw2DText(string.format('~w~'..Lang:t("info.ped_coords") .. '~b~ vector4(~w~%s~b~, ~w~%s~b~, ~w~%s~b~, ~w~%s~b~)', c.x, c.y, c.z, heading), 5, {66, 182, 245}, 0.3, x + 0.0, y + 0.0)
         end
     end)
 end
@@ -470,10 +470,10 @@ local function ToggleVehicleDeveloperMode()
                 local modelName = GetLabelText(GetDisplayNameFromVehicleModel(hash))
                 local eHealth = GetVehicleEngineHealth(vehicle)
                 local bHealth = GetVehicleBodyHealth(vehicle)
-                Draw2DText(Lang:t("info.vehicle_dev_data"), 4, {66, 182, 245}, 0.4, x + 0.0, y + 0.0)
-                Draw2DText(string.format(Lang:t("info.ent_id") .. '~b~%s~s~ | ' .. Lang:t("info.net_id") .. '~b~%s~s~', vehicle, netID), 4, {255, 255, 255}, 0.4, x + 0.0, y + 0.025)
-                Draw2DText(string.format(Lang:t("info.model") .. '~b~%s~s~ | ' .. Lang:t("info.hash") .. '~b~%s~s~', modelName, hash), 4, {255, 255, 255}, 0.4, x + 0.0, y + 0.050)
-                Draw2DText(string.format(Lang:t("info.eng_health") .. '~b~%s~s~ | ' .. Lang:t("info.body_health") .. '~b~%s~s~', round(eHealth, 2), round(bHealth, 2)), 4, {255, 255, 255}, 0.4, x + 0.0, y + 0.075)
+                Draw2DText(Lang:t("info.vehicle_dev_data"), 5, {66, 182, 245}, 0.3, x + 0.0, y + 0.0)
+                Draw2DText(string.format(Lang:t("info.ent_id") .. '~b~%s~s~ | ' .. Lang:t("info.net_id") .. '~b~%s~s~', vehicle, netID), 5, {255, 255, 255}, 0.3, x + 0.0, y + 0.025)
+                Draw2DText(string.format(Lang:t("info.model") .. '~b~%s~s~ | ' .. Lang:t("info.hash") .. '~b~%s~s~', modelName, hash), 5, {255, 255, 255}, 0.3, x + 0.0, y + 0.050)
+                Draw2DText(string.format(Lang:t("info.eng_health") .. '~b~%s~s~ | ' .. Lang:t("info.body_health") .. '~b~%s~s~', round(eHealth, 2), round(bHealth, 2)), 5, {255, 255, 255}, 0.3, x + 0.0, y + 0.075)
             end
         end
     end)
@@ -1128,8 +1128,8 @@ CreateThread(function()	-- While loop needed for delete lazer
 			local minimum, maximum = GetModelDimensions(GetEntityModel(entity))
 			DrawEntityBoundingBox(entity, color)
 			DrawLine(position.x, position.y, position.z, coords.x, coords.y, coords.z, color.r, color.g, color.b, color.a)
-			Draw2DText(Lang:t("info.obj") .. ': ~b~' .. entity .. '~w~ ' .. Lang:t("info.model") .. '~b~' .. GetEntityModel(entity), 4, {255, 255, 255}, 0.4, 0.55, 0.888)
-			Draw2DText(Lang:t("info.delete_object_info"), 4, {255, 255, 255}, 0.4, 0.55, 0.888 + 0.025)
+			Draw2DText(Lang:t("info.obj") .. ': ~b~' .. entity .. '~w~ ' .. Lang:t("info.model") .. '~b~' .. GetEntityModel(entity), 5, {255, 255, 255}, 0.3, 0.63, 0.888)
+			Draw2DText(Lang:t("info.delete_object_info"), 5, {255, 255, 255}, 0.3, 0.63, 0.888 + 0.025)
 			-- When E pressed then remove targeted entity
 			if IsControlJustReleased(0, 38) then
 			    -- Set as missionEntity so the object can be remove (Even map objects)
