@@ -451,3 +451,8 @@ QBCore.Commands.Add('setammo', Lang:t("commands.ammo_amount_set"), {{name='amoun
         TriggerClientEvent('qb-weapons:client:SetWeaponAmmoManual', src, 'current', amount)
     end
 end, 'admin')
+
+QBCore.Commands.Add("fix", "Repair your vehicle (Admin Only)", {}, false, function(source)
+    TriggerClientEvent('iens:repaira', source)
+    TriggerClientEvent('vehiclemod:client:fixEverything', source)
+end, "admin")
