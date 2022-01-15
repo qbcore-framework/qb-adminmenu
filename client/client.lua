@@ -297,7 +297,8 @@ menu_button11:On("select",function()
         local menu_button14 = menu6:AddButton({icon = v.icon,label = v.label,value = v,description = v.description,select = function(btn)
             local selection = btn.Value
             TriggerServerEvent('qb-weathersync:server:setWeather', selection.value)
-            QBCore.Functions.Notify(Lang:t("weather.weather_changed", {value = selection.label}))
+	local weathervalue = selection.value
+            QBCore.Functions.Notify(Lang:t("weather.weather_changed")..weathervalue)
         end})
     end
 end)
