@@ -340,6 +340,14 @@ local vehicledev_button = menu11:AddButton({
     value = nil,
     description = Lang:t("desc.vehicle_dev_mode_desc")
 })
+
+local menu_dev_button = menu11:AddCheckbox({
+    icon = '⚫',
+    label = 'Dev Mode',
+    value = menu11,
+    description = 'Enable/Disable Developer Mode'
+})
+
 local deletelazer_button = menu11:AddCheckbox({
     icon = '🔫',
     label = Lang:t("menu.delete_laser"),
@@ -377,6 +385,19 @@ local menu12_button4 = menu12:AddButton({
     value = 'remove',
     description = Lang:t("desc.remove_vehicle_desc")
 })
+
+local dev = false
+menu_dev_button:On('change', function(item, newValue, oldValue)
+    dev = not dev
+    TriggerEvent('qb-admin:client:ToggleDevmode')
+    if dev then
+        while dev do
+            Wait(200)
+            SetPlayerInvincible(PlayerId(), true)
+        end
+            SetPlayerInvincible(PlayerId(), false)
+    end
+end)
 
 local deleteLazer = false
 deletelazer_button:On('change', function(item, newValue, oldValue)
