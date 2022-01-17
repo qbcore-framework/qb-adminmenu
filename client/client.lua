@@ -343,9 +343,9 @@ local vehicledev_button = menu11:AddButton({
 
 local menu_dev_button = menu11:AddCheckbox({
     icon = '⚫',
-    label = 'Dev Mode',
+    label = Lang:t("menu.hud_dev_mode"),
     value = menu11,
-    description = 'Enable/Disable Developer Mode'
+    description = Lang:t("desc.hud_dev_mode_desc")
 })
 
 local deletelazer_button = menu11:AddCheckbox({
