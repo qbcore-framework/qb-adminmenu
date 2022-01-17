@@ -21,7 +21,7 @@ local Translations = {
         ["coords_copied"] = "Koordinater kopieret!",
         ["heading_copied"] = "Heading kopieret!",
         ["changed_perm"] = "Permission ændret",
-        ["entered_vehicle"] = "Steg i bilen",
+        ["entered_vehicle"] = "Steg ind i bilen",
         ["success_vehicle_owner"] = "Køretøjet er nu dit!",
         ["receive_reports"] = "Du modtager nu rapporter",
     },
