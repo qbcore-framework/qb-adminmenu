@@ -8,6 +8,7 @@ local permissions = {
     ['kickall'] = 'admin',
     ['kick'] = 'admin'
 }
+local players = {}
 
 -- Get Dealers
 QBCore.Functions.CreateCallback('test:getdealers', function(source, cb)
@@ -16,26 +17,6 @@ end)
 
 -- Get Players
 QBCore.Functions.CreateCallback('test:getplayers', function(source, cb) -- WORKS
-    local players = {}
-    for k, v in pairs(QBCore.Functions.GetPlayers()) do
-        local targetped = GetPlayerPed(v)
-        local ped = QBCore.Functions.GetPlayer(v)
-        players[#players+1] = {
-            name = ped.PlayerData.charinfo.firstname .. ' ' .. ped.PlayerData.charinfo.lastname .. ' | (' .. GetPlayerName(v) .. ')',
-            id = v,
-            coords = GetEntityCoords(targetped),
-            cid = ped.PlayerData.charinfo.firstname .. ' ' .. ped.PlayerData.charinfo.lastname,
-            citizenid = ped.PlayerData.citizenid,
-            sources = GetPlayerPed(ped.PlayerData.source),
-            sourceplayer= ped.PlayerData.source
-
-        }
-    end
-        -- Sort players list by source ID (1,2,3,4,5, etc) --
-        table.sort(players, function(a, b)
-            return a.id < b.id
-        end)
-        ------
     cb(players)
 end)
 
@@ -62,20 +43,6 @@ end
 
 RegisterNetEvent('qb-admin:server:GetPlayersForBlips', function()
     local src = source
-    local players = {}
-    for k, v in pairs(QBCore.Functions.GetPlayers()) do
-        local targetped = GetPlayerPed(v)
-        local ped = QBCore.Functions.GetPlayer(v)
-        players[#players+1] = {
-            name = ped.PlayerData.charinfo.firstname .. ' ' .. ped.PlayerData.charinfo.lastname .. ' | ' .. GetPlayerName(v),
-            id = v,
-            coords = GetEntityCoords(targetped),
-            cid = ped.PlayerData.charinfo.firstname .. ' ' .. ped.PlayerData.charinfo.lastname,
-            citizenid = ped.PlayerData.citizenid,
-            sources = GetPlayerPed(ped.PlayerData.source),
-            sourceplayer= ped.PlayerData.source
-        }
-    end
     TriggerClientEvent('qb-admin:client:Show', src, players)
 end)
 
@@ -451,3 +418,29 @@ QBCore.Commands.Add('setammo', Lang:t("commands.ammo_amount_set"), {{name='amoun
         TriggerClientEvent('qb-weapons:client:SetWeaponAmmoManual', src, 'current', amount)
     end
 end, 'admin')
+
+CreateThread(function()
+    while true do
+        local tempPlayers = {}
+        for k, v in pairs(QBCore.Functions.GetPlayers()) do
+            local targetped = GetPlayerPed(v)
+            local ped = QBCore.Functions.GetPlayer(v)
+            tempPlayers[#tempPlayers + 1] = {
+                name = (ped.PlayerData.charinfo.firstname or '') .. ' ' .. (ped.PlayerData.charinfo.lastname or '') .. ' | (' .. (GetPlayerName(v) or '') .. ')',
+                id = v,
+                coords = GetEntityCoords(targetped),
+                cid = ped.PlayerData.charinfo.firstname .. ' ' .. ped.PlayerData.charinfo.lastname,
+                citizenid = ped.PlayerData.citizenid,
+                sources = GetPlayerPed(ped.PlayerData.source),
+                sourceplayer = ped.PlayerData.source
+
+            }
+        end
+        -- Sort players list by source ID (1,2,3,4,5, etc) --
+        table.sort(tempPlayers, function(a, b)
+            return a.id < b.id
+        end)
+        players = tempPlayers
+        Wait(1500)
+    end
+end)
