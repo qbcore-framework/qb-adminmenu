@@ -883,7 +883,7 @@ local function OpenPlayerMenus(player)
             icon = '➡️',
             label = Lang:t("info.goto"),
             value = "goto",
-            description = Lang:t("info.goto") .. " " .. player.cid .. Lang:t("info.position")
+            description = Lang:t("info.goto") .. " " .. player.cid .. " " .. Lang:t("info.position")
         },
         [6] = {
             icon = '⬅️',
@@ -901,7 +901,7 @@ local function OpenPlayerMenus(player)
             icon = '🎒',
             label = Lang:t("menu.open_inv"),
             value = "inventory",
-            description = Lang:t("info.open") .. " " .. player.cid .. Lang:t("info.inventories")
+            description = Lang:t("info.open") .. " " .. player.cid .. " " .. Lang:t("info.inventories")
         },
         [9] = {
             icon = '👕',
@@ -1149,7 +1149,7 @@ CreateThread(function()	-- While loop needed for delete lazer
 			local minimum, maximum = GetModelDimensions(GetEntityModel(entity))
 			DrawEntityBoundingBox(entity, color)
 			DrawLine(position.x, position.y, position.z, coords.x, coords.y, coords.z, color.r, color.g, color.b, color.a)
-			Draw2DText(Lang:t("info.obj") .. ': ~b~' .. entity .. '~w~ ' .. Lang:t("info.model") .. '~b~' .. GetEntityModel(entity), 4, {255, 255, 255}, 0.4, 0.55, 0.888)
+			Draw2DText(Lang:t("info.obj") .. ': ~b~' .. entity .. '~w~ ' .. Lang:t("info.model") .. ': ~b~' .. GetEntityModel(entity), 4, {255, 255, 255}, 0.4, 0.55, 0.888)
 			Draw2DText(Lang:t("info.delete_object_info"), 4, {255, 255, 255}, 0.4, 0.55, 0.888 + 0.025)
 			-- When E pressed then remove targeted entity
 			if IsControlJustReleased(0, 38) then
