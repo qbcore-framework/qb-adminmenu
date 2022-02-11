@@ -110,6 +110,7 @@ local Translations = {
         ["sit_in_vehicle"] = "Sit in vehicle", 
         ["open_inv"] = "Open Inventory",
         ["give_clothing_menu"] = "Give Clothing Menu",
+        ["hud_dev_mode"] = "Dev Mode (qb-hud)",
     },
     desc = {
         ["admin_options_desc"] = "Misc. Admin Options",
@@ -144,6 +145,7 @@ local Translations = {
         ["sit_in_veh_desc"] = "Sit in",
         ["sit_in_veh_desc2"] = "'s vehicle",
         ["clothing_menu_desc"] = "Give the Cloth menu to",
+        ["hud_dev_mode_desc"] = "Enable/Disable Developer Mode",
     },
     time = {
         ["ban_length"] = "Ban Length",
