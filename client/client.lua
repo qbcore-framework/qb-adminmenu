@@ -1140,31 +1140,33 @@ CreateThread(function()	-- While loop needed for delete lazer
 		sleep = 1000
 		if deleteLazer then
 		    sleep = 5
-		    local color = {r = 255, g = 255, b = 255, a = 200}
+		    local color = {r = 255, g = 50, b = 50, a = 200} -- Changes the color of the lines (currently red)
 		    local position = GetEntityCoords(PlayerPedId())
 		    local hit, coords, entity = RayCastGamePlayCamera(1000.0)
 		    -- If entity is found then verifie entity
 		    if hit and (IsEntityAVehicle(entity) or IsEntityAPed(entity) or IsEntityAnObject(entity)) then
-			local entityCoord = GetEntityCoords(entity)
-			local minimum, maximum = GetModelDimensions(GetEntityModel(entity))
-			DrawEntityBoundingBox(entity, color)
-			DrawLine(position.x, position.y, position.z, coords.x, coords.y, coords.z, color.r, color.g, color.b, color.a)
-			Draw2DText(Lang:t("info.obj") .. ': ~b~' .. entity .. '~w~ ' .. Lang:t("info.model") .. '~b~' .. GetEntityModel(entity), 4, {255, 255, 255}, 0.4, 0.55, 0.888)
-			Draw2DText(Lang:t("info.delete_object_info"), 4, {255, 255, 255}, 0.4, 0.55, 0.888 + 0.025)
-			-- When E pressed then remove targeted entity
-			if IsControlJustReleased(0, 38) then
-			    -- Set as missionEntity so the object can be remove (Even map objects)
-			    SetEntityAsMissionEntity(entity, true, true)
-			    --SetEntityAsNoLongerNeeded(entity)
-			    --RequestNetworkControl(entity)
-			    DeleteEntity(entity)
-			end
+                local entityCoord = GetEntityCoords(entity)
+                DrawEntityBoundingBox(entity, color)
+                DrawLine(position.x, position.y, position.z, coords.x, coords.y, coords.z, color.r, color.g, color.b, color.a)
+                Draw2DText(Lang:t("info.health") .. ': ~g~'..GetEntityHealth(entity)..' ~w~' .. Lang:t("info.speed") .. ': ~b~'..GetEntitySpeed(entity)..'~w~', 4, {255, 255, 255}, 0.4, 0.55, 0.888 - 0.050)
+                Draw2DText(Lang:t("info.networked") .. ': ~b~'..tostring(NetworkGetEntityIsNetworked(entity))..' ~w~' .. Lang:t("info.networked_owner_id") ..': ~b~'..GetPlayerServerId(NetworkGetEntityOwner(entity))..'~w~', 4, {255, 255, 255}, 0.4, 0.55, 0.888 - 0.025)
+                Draw2DText(Lang:t("info.obj") .. ': ~b~' .. entity .. '~w~ ' .. Lang:t("info.model") .. ': ~b~' .. GetEntityModel(entity), 4, {255, 255, 255}, 0.4, 0.55, 0.888)
+                Draw2DText(Lang:t("info.delete_object_info"), 4, {255, 255, 255}, 0.4, 0.55, 0.888 + 0.025)
+
+                if IsControlJustReleased(0, 38) then -- When E pressed then remove targeted entity
+                    SetEntityAsMissionEntity(entity, true, true) -- Set as missionEntity so the object can be remove (Even map objects)
+                    NetworkRequestControlOfEntity(entity) -- Request Network control so we own the object
+                    Wait(250) -- Safety Wait
+                    DeleteEntity(entity) -- Delete the object
+                    DeleteObject(entity) -- Delete the object (failsafe)
+                    SetEntityAsNoLongerNeeded(entity) -- Tells the engine this prop isnt needed anymore
+                end
 		    -- Only draw of not center of map
 		    elseif coords.x ~= 0.0 and coords.y ~= 0.0 then
-			-- Draws line to targeted position
-			DrawLine(position.x, position.y, position.z, coords.x, coords.y, coords.z, color.r, color.g, color.b, color.a)
-			DrawMarker(28, coords.x, coords.y, coords.z, 0.0, 0.0, 0.0, 0.0, 180.0, 0.0, 0.1, 0.1, 0.1, color.r, color.g, color.b, color.a, false, true, 2, nil, nil, false)
-		    end
+			    -- Draws line to targeted position
+			    DrawLine(position.x, position.y, position.z, coords.x, coords.y, coords.z, color.r, color.g, color.b, color.a)
+			    DrawMarker(28, coords.x, coords.y, coords.z, 0.0, 0.0, 0.0, 0.0, 180.0, 0.0, 0.1, 0.1, 0.1, color.r, color.g, color.b, color.a, false, true, 2, nil, nil, false)
+            end
 		end
 		Wait(sleep)
 	end
