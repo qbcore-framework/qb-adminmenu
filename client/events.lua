@@ -19,8 +19,12 @@ local isSpectating = false
 
 -- Events
 
-RegisterNetEvent('qb-admin:client:inventory', function(targetPed)
-    TriggerServerEvent("inventory:server:OpenInventory", "otherplayer", targetPed)
+AddEventHandler('qb-admin:client:inventory', function(targetPed)
+    QBCore.Functions.TriggerCallback('qb-adminmenu:callback:haspermission', function(has)
+        if has then
+            TriggerServerEvent("inventory:server:OpenInventory", "otherplayer", targetPed)
+        end
+    end)
 end)
 
 RegisterNetEvent('qb-admin:client:spectate', function(targetPed, coords)
@@ -136,4 +140,28 @@ end)
 
 RegisterNetEvent('qb-admin:client:GiveNuiFocus', function(focus, mouse)
     SetNuiFocus(focus, mouse)
+end)
+
+RegisterNetEvent('qb-admin:client:getsounds', function(sounds)
+    local soundMenu = {
+        {
+            header = Lang:t('menu.choose_sound'),
+            isMenuHeader = true
+        }
+    }
+
+    for i = 1, #sounds do
+        soundMenu[#soundMenu + 1] = {
+            header = sounds[i],
+            txt = "",
+            params = {
+                event = "qb-admin:client:openSoundMenu",
+                args = {
+                    name = sounds[i]
+                }
+            }
+        }
+    end
+
+    exports['qb-menu']:openMenu(soundMenu)
 end)

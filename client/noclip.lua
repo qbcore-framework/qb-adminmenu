@@ -33,11 +33,6 @@ local function IsPedDrivingVehicle(ped, veh)
     return ped == GetPedInVehicleSeat(veh, -1);
 end
 
-local function SetInvincible(val, id)
-    SetEntityInvincible(id, val)
-    return SetPlayerInvincible(id, val)
-end
-
 local function MoveInNoClip()
     SetEntityRotation(noClippingEntity, GetGameplayCamRot(0), 0, false)
     local forward, right, up, c = GetEntityMatrix(noClippingEntity);
@@ -83,7 +78,6 @@ local function SetNoClip(val)
                 local pPed = playerPed;
                 local isClippedVeh = isVeh;
                 -- We start with no-clip mode because of the above if --
-                SetInvincible(true, clipped);
                 if not isClippedVeh then
                     ClearPedTasksImmediately(pPed)
                 end
@@ -114,22 +108,10 @@ local function SetNoClip(val)
                     while (not IsVehicleOnAllWheels(clipped)) and not isNoClipping do
                         Wait(0);
                     end
-                    while not isNoClipping do
-                        Wait(0);
-                        if IsVehicleOnAllWheels(clipped) then
-                            return SetInvincible(false, clipped);
-                        end
-                    end
                 else
                     if (IsPedFalling(clipped) and math.abs(1 - GetEntityHeightAboveGround(clipped)) > eps) then
                         while (IsPedStopped(clipped) or not IsPedFalling(clipped)) and not isNoClipping do
                             Wait(0);
-                        end
-                    end
-                    while not isNoClipping do
-                        Wait(0);
-                        if (not IsPedFalling(clipped)) and (not IsPedRagdoll(clipped)) then
-                            return SetInvincible(false, clipped);
                         end
                     end
                 end
@@ -142,7 +124,11 @@ local function SetNoClip(val)
 end
 
 function ToggleNoClipMode()
-    return SetNoClip(not isNoClipping)
+    QBCore.Functions.TriggerCallback('qb-adminmenu:callback:haspermission', function(has)
+        if has then
+            return SetNoClip(not isNoClipping)
+        end
+    end)
 end
 
 AddEventHandler('onResourceStop', function(resourceName)
@@ -156,7 +142,6 @@ AddEventHandler('onResourceStop', function(resourceName)
         SetEveryoneIgnorePlayer(playerPed, false);
         SetPoliceIgnorePlayer(playerPed, false);
         ResetEntityAlpha(noClippingEntity);
-        SetInvincible(false, noClippingEntity);
     end
 end)
 
