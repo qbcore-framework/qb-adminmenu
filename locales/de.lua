@@ -16,7 +16,7 @@ local Translations = {
         ["failed_set_model"] = "Du hast kein model festgelegt..",
     },
     success = {
-        ["blips_activated"] = "Blips activiert",
+        ["blips_activated"] = "Blips aktiviert",
         ["names_activated"] = "Names activiert",
         ["coords_copied"] = "Koordinaten in Zwischenablage kopiert!",
         ["heading_copied"] = "Heading in Zwischenablage kopiert!",
