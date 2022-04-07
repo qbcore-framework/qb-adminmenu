@@ -1,7 +1,7 @@
 local Translations = {
     error = {
         ["blips_deactivated"] = "Blips deaktiviert",
-        ["names_deactivated"] = "Names deactiviert",
+        ["names_deactivated"] = "Namen deaktiviert",
         ["changed_perm_failed"] = "suche eine Gruppe aus!",
         ["missing_reason"] = "Du musst einen Grund angeben!",
         ["invalid_reason_length_ban"] = "Du musst einen Grund und die länge des Bans festlegen!",
