@@ -52,6 +52,14 @@ RegisterNetEvent('qb-admin:client:SendStaffChat', function(name, msg)
     TriggerServerEvent('qb-admin:server:Staffchat:addMessage', name, msg)
 end)
 
+local function getVehicleFromVehList(hash)
+	for k,v in pairs(QBCore.Shared.Vehicles) do
+		if hash == v.hash then
+			return v.model
+		end
+	end
+end
+
 RegisterNetEvent('qb-admin:client:SaveCar', function()
     local ped = PlayerPedId()
     local veh = GetVehiclePedIsIn(ped)
@@ -60,7 +68,7 @@ RegisterNetEvent('qb-admin:client:SaveCar', function()
         local plate = QBCore.Functions.GetPlate(veh)
         local props = QBCore.Functions.GetVehicleProperties(veh)
         local hash = props.model
-        local vehname = GetDisplayNameFromVehicleModel(hash):lower()
+        local vehname = getVehicleFromVehList(hash)
         if QBCore.Shared.Vehicles[vehname] ~= nil and next(QBCore.Shared.Vehicles[vehname]) ~= nil then
             TriggerServerEvent('qb-admin:server:SaveCar', props, QBCore.Shared.Vehicles[vehname], GetHashKey(veh), plate)
         else
