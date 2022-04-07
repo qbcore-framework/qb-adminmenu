@@ -17,7 +17,7 @@ local Translations = {
     },
     success = {
         ["blips_activated"] = "Blips aktiviert",
-        ["names_activated"] = "Names activiert",
+        ["names_activated"] = "Namen aktiviert",
         ["coords_copied"] = "Koordinaten in Zwischenablage kopiert!",
         ["heading_copied"] = "Heading in Zwischenablage kopiert!",
         ["changed_perm"] = "Gruppenrechte geändert",
