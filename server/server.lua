@@ -186,7 +186,11 @@ RegisterNetEvent('qb-admin:server:Staffchat:addMessage', function(name, msg)
     local src = source
     if QBCore.Functions.HasPermission(src, 'admin') or IsPlayerAceAllowed(src, 'command') then
         if QBCore.Functions.IsOptin(src) then
-            TriggerClientEvent('chat:addMessage', src, Lang:t("info.staffchat")..name, 'error', msg)
+            TriggerClientEvent('chat:addMessage', src, {
+                color = {255, 0, 0},
+                multiline = true,
+                args = {Lang:t("info.staffchat")..name, msg}
+            })
         end
     end
 end)
