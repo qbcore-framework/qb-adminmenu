@@ -975,7 +975,7 @@ end)
 -- Toggle NoClip
 
 menu_button5:On('change', function(item, newValue, oldValue)
-    ToggleNoClipMode()
+    ToggleNoClip()
 end)
 
 -- Revive Self
