@@ -14,6 +14,7 @@ shared_scripts {
 client_scripts {
     '@menuv/menuv.lua',
     'client/noclip.lua',
+    'client/entity_view.lua',
     'client/blipsnames.lua',
     'client/client.lua',
     'client/events.lua'
