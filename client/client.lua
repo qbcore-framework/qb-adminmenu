@@ -58,7 +58,7 @@ local menu_button4 = menu:AddButton({
 local menu_button5 = menu2:AddCheckbox({
     icon = '🎥',
     label = Lang:t("menu.noclip"),
-    value = menu2,
+    value = nil,
     description = Lang:t("desc.noclip_desc")
 })
 local menu_button6 = menu2:AddButton({
@@ -70,25 +70,25 @@ local menu_button6 = menu2:AddButton({
 local menu_button7 = menu2:AddCheckbox({
     icon = '👻',
     label = Lang:t("menu.invisible"),
-    value = menu2,
+    value = nil,
     description = Lang:t("desc.invisible_desc")
 })
 local menu_button8 = menu2:AddCheckbox({
     icon = '⚡',
     label = Lang:t("menu.god"),
-    value = menu2,
+    value = nil,
     description = Lang:t("desc.god_desc")
 })
 local names_button = menu2:AddCheckbox({
     icon = '📋',
     label = Lang:t("menu.names"),
-    value = menu2,
+    value = nil,
     description = Lang:t("desc.names_desc")
 })
 local blips_button = menu2:AddCheckbox({
     icon = '📍',
     label = Lang:t("menu.blips"),
-    value = menu2,
+    value = nil,
     description = Lang:t("desc.blips_desc")
 })
 local menu_button11 = menu5:AddButton({
@@ -322,12 +322,6 @@ local coords4_button = menu11:AddButton({
     value = 'coords',
     description = Lang:t("desc.vector4_desc")
 })
-local togglecoords_button = menu11:AddCheckbox({
-    icon = '📍',
-    label = Lang:t("menu.display_coords"),
-    value = nil,
-    description = Lang:t("desc.display_coords_desc")
-})
 
 local heading_button = menu11:AddButton({
     icon = '📋',
@@ -336,7 +330,14 @@ local heading_button = menu11:AddButton({
     description = Lang:t("desc.copy_heading_desc")
 })
 
-local vehicledev_button = menu11:AddButton({
+local togglecoords_button = menu11:AddCheckbox({
+    icon = '📍',
+    label = Lang:t("menu.display_coords"),
+    value = nil,
+    description = Lang:t("desc.display_coords_desc")
+})
+
+local vehicledev_button = menu11:AddCheckbox({
     icon = '🚘',
     label = Lang:t("menu.vehicle_dev_mode"),
     value = nil,
@@ -346,14 +347,14 @@ local vehicledev_button = menu11:AddButton({
 local menu_dev_button = menu11:AddCheckbox({
     icon = '⚫',
     label = Lang:t("menu.hud_dev_mode"),
-    value = menu11,
+    value = nil,
     description = Lang:t("desc.hud_dev_mode_desc")
 })
 
 local noclip_button = menu11:AddCheckbox({
     icon = '🎥',
     label = Lang:t("menu.noclip"),
-    value = menu11,
+    value = nil,
     description = Lang:t("desc.noclip_desc")
 })
 
@@ -444,28 +445,28 @@ local entity_view_distance = menu15:AddSlider({
 local entity_view_freeaim = menu15:AddCheckbox({
     icon = '🔫',
     label = Lang:t("menu.entity_view_freeaim"),
-    value = menu15,
+    value = nil,
     description = Lang:t("desc.entity_view_freeaim_desc")
 })
 
 local entity_view_vehicle = menu15:AddCheckbox({
     icon = '🚗',
     label = Lang:t("menu.entity_view_vehicles"),
-    value = menu15,
+    value = nil,
     description = Lang:t("desc.entity_view_vehicles_desc")
 })
 
 local entity_view_ped = menu15:AddCheckbox({
     icon = '🧍‍♂‍',
     label = Lang:t("menu.entity_view_peds"),
-    value = menu15,
+    value = nil,
     description = Lang:t("desc.entity_view_peds_desc")
 })
 
 local entity_view_object = menu15:AddCheckbox({
     icon = '📦',
     label = Lang:t("menu.entity_view_objects"),
-    value = menu15,
+    value = nil,
     description = Lang:t("desc.entity_view_objects_desc")
 })
 
@@ -594,7 +595,7 @@ heading_button:On("select", function()
     CopyToClipboard('heading')
 end)
 
-vehicledev_button:On('select', function()
+vehicledev_button:On('change', function()
     ToggleVehicleDeveloperMode()
 end)
 
@@ -611,15 +612,15 @@ entity_view_distance:On("select", function(item, value)
     QBCore.Functions.Notify(Lang:t("info.entity_view_distance", {distance = value}))
 end)
 
-entity_view_vehicle:On('change', function(item, newValue, oldValue)
+entity_view_vehicle:On('change', function()
     ToggleEntityVehicleView()
 end)
 
-entity_view_object:On('change', function(item, newValue, oldValue)
+entity_view_object:On('change', function()
     ToggleEntityObjectView()
 end)
 
-entity_view_ped:On('change', function(item, newValue, oldValue)
+entity_view_ped:On('change', function()
     ToggleEntityPedView()
 end)
 
