@@ -14,6 +14,7 @@ local Translations = {
         ["no_receive_report"] = "Vous ne recevez plus de reports",
         ["failed_set_speed"] = "Vous n'avez pas spécifié de vitesse.. (`fast` pour super-run, `normal` pour normal)",
         ["failed_set_model"] = "Vous n'avez pas mis de model..",
+        ["failed_entity_copy"] = "Aucune information d'entité freeaim à copier dans le presse-papier !",
     },
     success = {
         ["blips_activated"] = "Blips activés",
@@ -24,6 +25,7 @@ local Translations = {
         ["entered_vehicle"] = "Vous êtes entré dans un véhicule",
         ["success_vehicle_owner"] = "Le véhicule vous appartients maintenant!",
         ["receive_reports"] = "Vous recevez des reports",
+        ["entity_copy"] = "Informations sur l'entité Freeaim copiées dans le presse-papier !",
     },
     info = {
         ["ped_coords"] = "Coordonnés du ped:",
@@ -117,6 +119,7 @@ local Translations = {
         ["entity_view_peds"] = "Afficher les Peds",
         ["entity_view_vehicles"] = "Afficher les véhicules",
         ["entity_view_objects"] = "Afficher les objets",
+        ["entity_view_freeaim_copy"] = "Copier les informations d'entité Freeaim",
     },
     desc = {
         ["admin_options_desc"] = "Options Admin Divers",
@@ -157,6 +160,7 @@ local Translations = {
         ["entity_view_peds_desc"] = "Activer/Désactiver les infos ped dans le monde",
         ["entity_view_vehicles_desc"] = "Activer/Désactiver les informations sur les véhicules dans le monde",
         ["entity_view_objects_desc"] = "Activer/Désactiver les informations sur les objets dans le monde",
+        ["entity_view_freeaim_copy_desc"] = "Copie les informations de l'entité de visée libre dans le presse-papiers",
     },
     time = {
         ["ban_length"] = "Durée du Ban",

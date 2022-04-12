@@ -14,6 +14,7 @@ local Translations = {
         ["no_receive_report"] = "أنت لا تتلقى تقارير",
         ["failed_set_speed"] = "(`fast` - سريع / `normal` - عادي) أنت لم تحدد السرعة",
         ["failed_set_model"] = "لم تقم بتعيين نموذج",
+        ["failed_entity_copy"] = "لا توجد معلومات كيان مجانية لنسخها إلى الحافظة!",
     },
     success = {
         ["blips_activated"] = "تم عرض اماكن اللاعبين على الخريطة",
@@ -24,6 +25,7 @@ local Translations = {
         ["entered_vehicle"] = "دخلت السيارة",
         ["success_vehicle_owner"] = "السيارة الآن لك",
         ["receive_reports"] = "أنت تتلقى تقارير",
+        ["entity_copy"] = "تم نسخ معلومات الكيان المجانية إلى الحافظة!",
     },
     info = { -- you need font arabic --
         ["ped_coords"] = "ﺕﺎﻴﺛﺍﺪﺣﺇ:",
@@ -116,6 +118,7 @@ local Translations = {
         ["entity_view_peds"] = "عرض البيديستيريين",
         ["entity_view_vehicles"] = "عرض المركبات",
         ["entity_view_objects"] = "عرض الكائنات",
+        ["entity_view_freeaim_copy"] = "نسخ معلومات الكيان المجانية",
     },
     desc = {
         ["admin_options_desc"] = "خيارات المسؤول",
@@ -155,6 +158,7 @@ local Translations = {
         ["entity_view_peds_desc"] = "تمكين / تعطيل معلومات البدن في العالم",
         ["entity_view_vehicles_desc"] = "تمكين / تعطيل معلومات السيارة في العالم",
         ["entity_view_objects_desc"] = "تمكين / تعطيل معلومات الكائن في العالم",
+        ["entity_view_freeaim_copy_desc"] = "نسخ معلومات كيان الهدف المجاني",
     },
     time = {
         ["ban_length"] = "وقت الباند",

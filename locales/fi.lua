@@ -14,6 +14,7 @@ local Translations = {
         ["no_receive_report"] = "Et saa reporteja",
         ["failed_set_speed"] = "Et asettanut nopeutta(`fast` nopea, `normal` normaali)",
         ["failed_set_model"] = "Et asettanut mallia",
+        ["failed_entity_copy"] = "Ei vapaan kohteen tietoja kopioitaviksi leikepöydälle!",
     },
     success = {
         ["blips_activated"] = "Blipit aktivoitu!",
@@ -24,6 +25,7 @@ local Translations = {
         ["entered_vehicle"] = "Menit ajoneuvoon",
         ["success_vehicle_owner"] = "Ajoneuvo on nyt omistuksessasi!",
         ["receive_reports"] = "Saat reportteja",
+        ["entity_copy"] = "Freeaim-yksikön tiedot kopioitu leikepöydälle!",
     },
     info = {
         ["ped_coords"] = "Pedin koordinaatit:",
@@ -117,6 +119,7 @@ local Translations = {
         ["entity_view_peds"] = "Näytä pedit",
         ["entity_view_vehicles"] = "Näyttöajoneuvot",
         ["entity_view_objects"] = "Näytä objektit",
+        ["entity_view_freeaim_copy"] = "Kopioi Freeaim-yksikön tiedot",
    },
     desc = {
         ["admin_options_desc"] = "Valinnat ylläpidolle",
@@ -156,6 +159,7 @@ local Translations = {
         ["entity_view_peds_desc"] = "Ota käyttöön/poista käytöstä ped-tiedot maailmassa",
         ["entity_view_vehicles_desc"] = "Ota käyttöön/poista käytöstä ajoneuvotiedot maailmassa",
         ["entity_view_objects_desc"] = "Ota käyttöön/poista käytöstä kohteen tiedot maailmassa",
+        ["entity_view_freeaim_copy_desc"] = "Kopioi Free Aim -yksikön tiedot leikepöydälle",
     },
     time = {
         ["ban_length"] = "Porttikiellon pituus",

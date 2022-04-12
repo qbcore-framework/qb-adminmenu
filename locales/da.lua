@@ -14,6 +14,7 @@ local Translations = {
         ["no_receive_report"] = "Du modtager ikke rapporter",
         ["failed_set_speed"] = "Du har ikke sat en hastighed.. (`fast` for super-run, `normal` for normal)",
         ["failed_set_model"] = "Du har ikke sat en model..",
+        ["failed_entity_copy"] = "Ingen freeaim-enhedsoplysninger at kopiere til udklipsholder!",
     },
     success = {
         ["blips_activated"] = "Blips aktiveret",
@@ -24,6 +25,7 @@ local Translations = {
         ["entered_vehicle"] = "Kom ind i køretøjet",
         ["success_vehicle_owner"] = "Køretøjer er nu dit!",
         ["receive_reports"] = "Du modtager rapporter",
+        ["entity_copy"] = "Freeaim-enhedsoplysninger kopieret til udklipsholder!",
     },
     info = {
         ["ped_coords"] = "Ped Koordinater:",
@@ -117,6 +119,7 @@ local Translations = {
         ["entity_view_peds"] = "Vis Peds",
         ["entity_view_vehicles"] = "Visningskøretøjer",
         ["entity_view_objects"] = "Vis objekter",
+        ["entity_view_freeaim_copy"] = "Kopiér Freeaim-enhedsoplysninger",
     },
     desc = {
         ["admin_options_desc"] = "Misc. Admin Indstillinger",
@@ -157,6 +160,7 @@ local Translations = {
         ["entity_view_peds_desc"] = "Aktiver/deaktiver ped-oplysninger i verden",
         ["entity_view_vehicles_desc"] = "Aktiver/deaktiver køretøjsoplysninger i verden",
         ["entity_view_objects_desc"] = "Aktiver/deaktiver objektinfo i verden",
+        ["entity_view_freeaim_copy_desc"] = "Kopierer oplysningerne om Free Aim-enheden til udklipsholder",
     },
     time = {
         ["ban_length"] = "Udelukkelse Længde",

@@ -14,6 +14,7 @@ local Translations = {
         ["no_receive_report"] = "Non stai ricevendo report",
         ["failed_set_speed"] = "Non hai impostato una velocità. (`fast` per super-corsa, `normal` per normale)",
         ["failed_set_model"] = "Non hai impostato un modello.",
+        ["failed_entity_copy"] = "Nessuna informazione sull'entità freeaim da copiare negli appunti!",
     },
     success = {
         ["blips_activated"] = "Blips attivati",
@@ -24,6 +25,7 @@ local Translations = {
         ["entered_vehicle"] = "Entrato nel veicolo",
         ["success_vehicle_owner"] = "Il veicolo è ora tuo!",
         ["receive_reports"] = "Stai ricevendo report",
+        ["entity_copy"] = "Informazioni sull'entità Freeaim copiate negli appunti!",
     },
     info = {
         ["ped_coords"] = "Coordinate Ped:",
@@ -117,6 +119,7 @@ local Translations = {
         ["entity_view_peds"] = "Visualizza Peds",
         ["entity_view_vehicles"] = "Visualizza veicoli",
         ["entity_view_objects"] = "Visualizza oggetti",
+        ["entity_view_freeaim_copy"] = "Copia informazioni sull'entità Freeaim",
     },
     desc = {
         ["admin_options_desc"] = "Misc. Opzioni Admin",
@@ -157,6 +160,7 @@ local Translations = {
         ["entity_view_peds_desc"] = "Abilita/Disabilita informazioni ped nel mondo",
         ["entity_view_vehicles_desc"] = "Abilita/Disabilita informazioni sul veicolo nel mondo",
         ["entity_view_objects_desc"] = "Abilita/Disabilita informazioni oggetto nel mondo",
+        ["entity_view_freeaim_copy_desc"] = "Copia le informazioni sull'entità Obiettivo libero negli appunti",
     },
     time = {
         ["ban_length"] = "Lunghezza ban",

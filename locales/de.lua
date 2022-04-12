@@ -14,6 +14,7 @@ local Translations = {
         ["no_receive_report"] = "Du bekommst keine Reports",
         ["failed_set_speed"] = "Du hast kein speed festgelegt.. (`fast` for super-run, `normal` for normal)",
         ["failed_set_model"] = "Du hast kein model festgelegt..",
+        ["failed_entity_copy"] = "Keine Freeaim-Entity-Info zum Kopieren in die Zwischenablage!",
     },
     success = {
         ["blips_activated"] = "Blips aktiviert",
@@ -24,6 +25,7 @@ local Translations = {
         ["entered_vehicle"] = "Ins Fahrzeug gestiegen",
         ["success_vehicle_owner"] = "Das Fahrzeug ist nicht deins!",
         ["receive_reports"] = "Du erhälst Reports",
+        ["entity_copy"] = "Freeaim-Entitätsinfo in die Zwischenablage kopiert!",
     },
     info = {
         ["ped_coords"] = "Ped Koordinaten:",
@@ -116,6 +118,7 @@ local Translations = {
         ["entity_view_peds"] = "Fußgänger anzeigen",
         ["entity_view_vehicles"] = "Fahrzeuge anzeigen",
         ["entity_view_objects"] = "Objekte anzeigen",
+        ["entity_view_freeaim_copy"] = "Freeaim-Entitätsinformationen kopieren",
     },
     desc = {
         ["admin_options_desc"] = "Verschiedene. Admin Optionen",
@@ -155,6 +158,7 @@ local Translations = {
         ["entity_view_peds_desc"] = "Pädagogik in der Welt aktivieren/deaktivieren",
         ["entity_view_vehicles_desc"] = "Fahrzeuginformationen in der Welt aktivieren/deaktivieren",
         ["entity_view_objects_desc"] = "Objektinformationen in der Welt aktivieren/deaktivieren",
+        ["entity_view_freeaim_copy_desc"] = "Kopiert die Free Aim Entitätsinfo in die Zwischenablage",
     },
     time = {
         ["ban_length"] = "Ban Länge",

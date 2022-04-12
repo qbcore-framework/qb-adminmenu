@@ -442,6 +442,13 @@ local entity_view_distance = menu15:AddSlider({
     }}
 })
 
+local copy_free_aim_entity_info = menu15:AddButton({
+    icon = '📋',
+    label = Lang:t("menu.entity_view_freeaim_copy"),
+    value = 'freeaimEntity',
+    description = Lang:t("desc.entity_view_freeaim_copy_desc")
+})
+
 local entity_view_freeaim = menu15:AddCheckbox({
     icon = '🔫',
     label = Lang:t("menu.entity_view_freeaim"),
@@ -520,6 +527,29 @@ local function CopyToClipboard(dataType)
             string = h
         })
         QBCore.Functions.Notify(Lang:t("success.heading_copied"), "success")
+    elseif dataType == 'freeaimEntity' then
+        local entity = GetFreeAimEntity()
+
+        if entity then
+            local entityHash    = GetEntityModel(entity)
+            local entityName    = Entities[entityHash] ~= nil and Entities[entityHash] or "Unknown"
+            local entityCoords = GetEntityCoords(entity)
+            local entityHeading = GetEntityHeading(entity)
+            local entityRotation = GetEntityRotation(entity)
+            local x = round(entityCoords.x, 2)
+            local y = round(entityCoords.y, 2)
+            local z = round(entityCoords.z, 2)
+            local rotX = round(entityRotation.x, 2)
+            local rotY = round(entityRotation.y, 2)
+            local rotZ = round(entityRotation.z, 2)
+            local h = round(entityHeading, 2)
+            SendNUIMessage({
+                string = string.format('Model Name:\t%s\nModel Hash:\t%s\n\nHeading:\t%s\nCoords:\t\tvector3(%s, %s, %s)\nRotation:\tvector3(%s, %s, %s)', entityName, entityHash, h, x, y, z, rotX, rotY, rotZ)
+            })
+            QBCore.Functions.Notify(Lang:t("success.entity_copy"), "success")
+        else
+            QBCore.Functions.Notify(Lang:t("error.failed_entity_copy"), "error")
+        end
     end
 end
 
@@ -593,6 +623,10 @@ end)
 
 heading_button:On("select", function()
     CopyToClipboard('heading')
+end)
+
+copy_free_aim_entity_info:On("select", function()
+    CopyToClipboard('freeaimEntity')
 end)
 
 vehicledev_button:On('change', function()

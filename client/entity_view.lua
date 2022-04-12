@@ -1,11 +1,11 @@
 local FreezeEntities        = false
 local EntityViewDistance    = 10
 local EntityViewEnabled     = false
-
 local EntityFreeAim         = false
 local EntityPedView         = false
 local EntityObjectView      = false
 local EntityVehicleView     = false
+local FreeAimEntity         = nil
 
 local CanEntityBeUsed = function(ped)
     if ped == PlayerPedId() then
@@ -362,6 +362,10 @@ SetEntityViewDistance = function(data)
     EntityViewDistance = tonumber(data)
 end
 
+GetFreeAimEntity = function()
+    return FreeAimEntity
+end
+
 RunEntityViewThread = function()
     EntityViewEnabled = true
     Citizen.CreateThread(function()
@@ -392,6 +396,7 @@ RunEntityViewThread = function()
                 hit, coords, entity = RayCastGamePlayCamera(1000.0)
                 -- If entity is found then verify entity
                 if hit and (IsEntityAVehicle(entity) or IsEntityAPed(entity) or IsEntityAnObject(entity)) then
+                    FreeAimEntity = entity
                     local entityCoord = GetEntityCoords(entity)
                     local minimum, maximum = GetModelDimensions(GetEntityModel(entity))
                     DrawEntityBoundingBox(entity, color)
@@ -413,7 +418,6 @@ RunEntityViewThread = function()
             if EntityPedView or EntityVehicleView or EntityObjectView then
                 if IsControlJustReleased(0, 47) then -- Freeze entities
                     FreezeEntities = not FreezeEntities
-
 
                     QBCore.Functions.Notify('Freeze all entities now '.. (FreezeEntities and "enabled" or "disabled"), FreezeEntities and 'success' or 'error')        
                 end

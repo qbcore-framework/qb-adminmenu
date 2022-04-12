@@ -14,6 +14,7 @@ local Translations = {
         ["no_receive_report"] = "You are not receiving reports",
         ["failed_set_speed"] = "You did not set a speed.. (`fast` for super-run, `normal` for normal)",
         ["failed_set_model"] = "You did not set a model..",
+        ["failed_entity_copy"] = "No freeaim entity info to copy to clipboard!",
     },
     success = {
         ["blips_activated"] = "Blips activated",
@@ -24,6 +25,7 @@ local Translations = {
         ["entered_vehicle"] = "Entered vehicle",
         ["success_vehicle_owner"] = "The vehicle is now yours!",
         ["receive_reports"] = "You are receiving reports",
+        ["entity_copy"] = "Freeaim entity info copied to clipboard!",
     },
     info = {
         ["ped_coords"] = "Ped Coordinates:",
@@ -117,6 +119,7 @@ local Translations = {
         ["entity_view_peds"] = "Display Peds",
         ["entity_view_vehicles"] = "Display Vehicles",
         ["entity_view_objects"] = "Display Objects",
+        ["entity_view_freeaim_copy"] = "Copy Freeaim Entity Info",
     },
     desc = {
         ["admin_options_desc"] = "Misc. Admin Options",
@@ -157,6 +160,7 @@ local Translations = {
         ["entity_view_peds_desc"] = "Enable/Disable ped info in the world",
         ["entity_view_vehicles_desc"] = "Enable/Disable vehicle info in the world",
         ["entity_view_objects_desc"] = "Enable/Disable object info in the world",
+        ["entity_view_freeaim_copy_desc"] = "Copies the Free Aim entity info to clipboard",
     },
     time = {
         ["ban_length"] = "Ban Length",

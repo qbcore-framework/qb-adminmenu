@@ -14,6 +14,7 @@ local Translations = {
         ["no_receive_report"] = "No estás recibiendo reportes",
         ["failed_set_speed"] = "No pusiste una velocidad.. (`fast` para super-rapido, `normal` para normal)",
         ["failed_set_model"] = "No estableciste un modelo..",
+        ["failed_entity_copy"] = "¡No hay información de entidad de freeaim para copiar al portapapeles!",
     },
     success = {
         ["blips_activated"] = "Blips activados",
@@ -24,6 +25,7 @@ local Translations = {
         ["entered_vehicle"] = "Vehículo ingresado",
         ["success_vehicle_owner"] = "¡El vehículo ahora es tuyo!",
         ["receive_reports"] = "Estás recibiendo reports",
+        ["entity_copy"] = "¡Información de la entidad Freeaim copiada al portapapeles!",
     },
     info = {
         ["ped_coords"] = "Coordenadas de Ped:",
@@ -117,6 +119,7 @@ local Translations = {
         ["entity_view_peds"] = "Mostrar peds",
         ["entity_view_vehicles"] = "Mostrar vehículos",
         ["entity_view_objects"] = "Mostrar objetos",
+        ["entity_view_freeaim_copy"] = "Copiar información de la entidad Freeaim",
     },
     desc = {
         ["admin_options_desc"] = "Varias opciones de administración",
@@ -157,6 +160,7 @@ local Translations = {
         ["entity_view_peds_desc"] = "Habilitar/Deshabilitar información de ped en el mundo",
         ["entity_view_vehicles_desc"] = "Habilitar/Deshabilitar información de vehículos en el mundo",
         ["entity_view_objects_desc"] = "Habilitar/Deshabilitar la información del objeto en el mundo",
+        ["entity_view_freeaim_copy_desc"] = "Copia la información de la entidad Free Aim al portapapeles",
     },
     time = {
         ["ban_length"] = "Duración del Ban",
