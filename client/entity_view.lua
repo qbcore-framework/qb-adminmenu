@@ -1,5 +1,5 @@
 local FreezeEntities        = false
-local EntityViewDistance    = 10.0
+local EntityViewDistance    = 10
 local EntityViewEnabled     = false
 
 local EntityFreeAim         = false
@@ -352,7 +352,7 @@ ToggleEntityPedView = function()
 end
 
 GetCurrentEntityViewDistance = function()
-    return EntityViewDistance
+    return EntityViewDistance / 5
 end
 
 SetEntityViewDistance = function(data)

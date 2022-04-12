@@ -396,7 +396,7 @@ local menu12_button4 = menu12:AddButton({
 -- Entity View Buttons
 local entity_view_distance = menu15:AddSlider({
     icon = '📏',
-    label = Lang:t("menu.entity_view_distance_desc"),
+    label = Lang:t("menu.entity_view_distance"),
     value = GetCurrentEntityViewDistance(),
     values = {{
         label = '5',
@@ -443,9 +443,9 @@ local entity_view_distance = menu15:AddSlider({
 
 local entity_view_freeaim = menu15:AddCheckbox({
     icon = '🔫',
-    label = Lang:t("menu.entity_view_toggle"),
+    label = Lang:t("menu.entity_view_freeaim"),
     value = menu15,
-    description = Lang:t("desc.entity_view_toggle_desc")
+    description = Lang:t("desc.entity_view_freeaim_desc")
 })
 
 local entity_view_vehicle = menu15:AddCheckbox({
@@ -608,7 +608,7 @@ end)
 
 entity_view_distance:On("select", function(item, value)
     SetEntityViewDistance(value)
-    QBCore.Functions.Notify(Lang:t("distance.value", {distance = value}))
+    QBCore.Functions.Notify(Lang:t("info.entity_view_distance", {distance = value}))
 end)
 
 entity_view_vehicle:On('change', function(item, newValue, oldValue)
