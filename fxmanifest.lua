@@ -17,7 +17,8 @@ client_scripts {
     'client/entity_view.lua',
     'client/blipsnames.lua',
     'client/client.lua',
-    'client/events.lua'
+    'client/events.lua',
+    'entityhashes/entity.lua',
 }
 
 server_scripts {

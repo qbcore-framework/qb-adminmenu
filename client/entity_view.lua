@@ -158,12 +158,15 @@ end
 local GetEntityInfo = function(entity, coords)
     local playerCoords  = GetEntityCoords(PlayerPedId())
     local entityType    = GetEntityType(entity)
+    local entityHash    = GetEntityModel(entity)
+    local entityName    = Entities[entityHash] ~= nil and Entities[entityHash] or "Unknown"
     local entityData    = {
         'Entity Information',
         '',
-        'Model Hash: ~y~'..GetEntityModel(entity),
+        'Model Hash: ~y~'..entityHash,
         ' ',
         'Object ID: ~y~'..entity,
+        'Object name: ~y~'.. entityName,
         'Network ID: ~y~'..(NetworkGetEntityIsNetworked(entity) and NetworkGetNetworkIdFromEntity(entity) or "Not Registered"),
         'Entity Owner: ~y~'..GetPlayerServerId(NetworkGetEntityOwner(entity)),
         ' '
