@@ -22,6 +22,13 @@ local RoundVector3 = function(vector, num)
     return 'vector3('..RoundFloat(vector.x, num).. ', '..RoundFloat(vector.y, num).. ', '..RoundFloat(vector.z, num)..')'
 end
 
+
+local RelationshipTypes = { ['0'] = 'Companion', ['1'] = 'Respect', ['2'] = 'Like', ['3'] = 'Neutral', ['4'] = 'Dislike', ['5'] = 'Hate', ['255'] = 'Pedestrians' }
+local GetPedRelationshipType = function(value)
+    value = tostring(value)
+    return RelationshipTypes[value] or "Unknown"
+end
+
 local DrawTitle = function(text, width, height)
     SetTextScale(0.50, 0.50)
     SetTextFont(4)
@@ -159,7 +166,7 @@ local GetEntityInfo = function(entity, coords)
     local playerCoords  = GetEntityCoords(PlayerPedId())
     local entityType    = GetEntityType(entity)
     local entityHash    = GetEntityModel(entity)
-    local entityName    = Entities[entityHash] ~= nil and Entities[entityHash] or "Unknown"
+    local entityName    = Entities[entityHash] or "Unknown"
     local entityData    = {
         'Entity Information',
         '',
@@ -173,10 +180,12 @@ local GetEntityInfo = function(entity, coords)
     }
 
     if entityType == 1 then
+        local pedRelationshipGroup = GetPedRelationshipGroupHash(entity)
         table.insert(entityData, 'Current Health: ~y~'..GetEntityHealth(entity))
         table.insert(entityData, 'Max Health: ~y~'..GetPedMaxHealth(entity))
         table.insert(entityData, 'Armour: ~y~'..GetPedArmour(entity))
-        table.insert(entityData, 'Relation Group: ~y~'..GetPedRelationshipGroupHash(entity))
+        table.insert(entityData, 'Relation Group: ~y~'.. (Entities[pedRelationshipGroup] or "Custom"))
+        table.insert(entityData, 'Relation to Player: ~y~'..GetPedRelationshipType(GetRelationshipBetweenPeds(pedRelationshipGroup, PlayerPedId())))
     elseif entityType == 2 then
         table.insert(entityData, 'Rpm: ~y~'..RoundFloat(GetVehicleCurrentRpm(entity), 2))
         table.insert(entityData, 'Kph: ~y~'..RoundFloat((GetEntitySpeed(entity)*3.6),0))
