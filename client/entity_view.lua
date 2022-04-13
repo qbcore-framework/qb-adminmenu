@@ -1,4 +1,4 @@
-local FreezeEntities        = false
+local FrozenEntities        = { }
 local EntityViewDistance    = 10
 local EntityViewEnabled     = false
 local EntityFreeAim         = false
@@ -295,8 +295,6 @@ local GetVehicle = function(playerPed, playerCoords)
                 DrawEntityBoundingBox(vehicle)
             elseif distance < 5.0 then
                 rveh = vehicle
-
-                FreezeEntityPosition(vehicle, FreezeEntities)
                 DrawEntityViewTextInWorld(vehicle, pos)
             end
         end
@@ -318,8 +316,6 @@ local GetObject = function(playerPed, playerCoords)
                 DrawEntityBoundingBox(object)
             elseif distance < 5.0 then
                 robject = object
-
-                FreezeEntityPosition(object, FreezeEntities)
                 DrawEntityViewTextInWorld(object, pos)
             end
         end
@@ -342,8 +338,6 @@ local GetNPC = function(playerPed, playerCoords)
                     DrawEntityBoundingBox(ped)
                 elseif distance < 5.0 then
                     rped = ped
-
-                    FreezeEntityPosition(ped, FreezeEntities)
                     DrawEntityViewTextInWorld(ped, pos)
                 end
             end
@@ -399,9 +393,6 @@ RunEntityViewThread = function()
     Citizen.CreateThread(function()
         while EntityViewEnabled do
             Citizen.Wait(0)
-            local freezeDesc = (EntityObjectView or EntityPedView or EntityVehicleView)
-            DrawTitle("~y~Entity Viewing Mode~w~\n"..(EntityFreeAim and "\n[~y~E~w~] - Delete Entity~w~" or "").. (freezeDesc and '\n[~y~G~w~] - Freeze All Entities' or ''), 0.15, freezeDesc and 0.14 or 0.11)
-
             local entity        = nil
             local playerPed     = PlayerPedId()
             local playerCoords  = GetEntityCoords(playerPed)
@@ -419,6 +410,7 @@ RunEntityViewThread = function()
             end
 
             if EntityFreeAim then
+                DrawTitle("~y~Entity Freeaim Mode~w~\n\n[~y~E~w~] - Delete Entity~w~\n[~y~G~w~] - Freeze Entity", 0.15, 0.14)
                 local color = {r = 255, g = 255, b = 255, a = 200}
                 local position = GetEntityCoords(PlayerPedId())
                 local hit, coords, entity = RayCastGamePlayCamera(1000.0)
@@ -430,29 +422,34 @@ RunEntityViewThread = function()
                     local minimum, maximum = GetModelDimensions(GetEntityModel(entity))
                     DrawEntityBoundingBox(entity, color)
                     DrawEntityViewText(entity, entityCoord)
+
+                    if IsControlJustReleased(0, 47) then -- Freeze entities
+                        if FrozenEntities[entity] then
+                            FrozenEntities[entity] = not FrozenEntities[entity]
+                        else
+                            FrozenEntities[entity] = true
+                        end
+
+                        FreezeEntityPosition(entity, FrozenEntities[entity])
+                        QBCore.Functions.Notify('You have '..(FrozenEntities[entity] and "Frozen" or "Unfrozen").. ' the freeaim entity', (FrozenEntities[entity] and 'success' or 'error'))
+                    end
+
+                    if IsControlJustReleased(0, 38) then -- Delete entity
+                        -- Set as missionEntity so the object can be remove (Even map objects)
+                        SetEntityAsMissionEntity(entity, true, true)
+                        DeleteEntity(entity)
+
+                        if not DoesEntityExist(entity) then
+                            QBCore.Functions.Notify('Entity Deleted', 'success')
+                        else
+                            QBCore.Functions.Notify('Error deleting vehicles', 'error')
+                        end
+                    end
                 else
                     FreeAimEntity = nil
                 end
 
                 DrawLine(position.x, position.y, position.z, coords.x, coords.y, coords.z, color.r, color.g, color.b, color.a)
-            end
-
-            if IsControlJustReleased(0, 38) then -- Delete entity
-                -- Set as missionEntity so the object can be remove (Even map objects)
-			    SetEntityAsMissionEntity(entity, true, true)
-			    DeleteEntity(entity)
-
-                if not DoesEntityExist(entiy) then
-                    QBCore.Functions.Notify('Entity Deleted', 'success')
-                end
-            end
-
-            if EntityPedView or EntityVehicleView or EntityObjectView then
-                if IsControlJustReleased(0, 47) then -- Freeze entities
-                    FreezeEntities = not FreezeEntities
-
-                    QBCore.Functions.Notify('Freeze all entities now '.. (FreezeEntities and "enabled" or "disabled"), FreezeEntities and 'success' or 'error')
-                end
             end
 
             if EntityPedView == false and EntityObjectView == false and EntityVehicleView == false and EntityFreeAim == false then
