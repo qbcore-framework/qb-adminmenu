@@ -461,8 +461,3 @@ RunEntityViewThread = function()
         end
     end)
 end
-
-Citizen.CreateThread(function()
-    ToggleEntityFreeView()
-    --ToggleEntityObjectView()
-end)
