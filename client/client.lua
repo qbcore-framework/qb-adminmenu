@@ -532,7 +532,7 @@ local function CopyToClipboard(dataType)
 
         if entity then
             local entityHash    = GetEntityModel(entity)
-            local entityName    = Entities[entityHash] ~= nil and Entities[entityHash] or "Unknown"
+            local entityName    = Entities[entityHash] or "Unknown"
             local entityCoords = GetEntityCoords(entity)
             local entityHeading = GetEntityHeading(entity)
             local entityRotation = GetEntityRotation(entity)
