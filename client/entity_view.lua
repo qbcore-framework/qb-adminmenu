@@ -7,6 +7,10 @@ local EntityObjectView      = false
 local EntityVehicleView     = false
 local FreeAimEntity         = nil
 
+-- Configurable values
+local FreeAimInfoBoxX       = 0.60      -- X-axis (0.0 being left, 1.0 being right position of the screen)
+local FreeAimInfoBoxY       = 0.02      -- Y-axis (0.0 being up, 1.0 being down position of the screen)
+
 local CanEntityBeUsed = function(ped)
     if ped == PlayerPedId() then
         return false
@@ -40,9 +44,7 @@ local DrawTitle = function(text, width, height)
     AddTextComponentString(text)
     DrawText(0.5, 0.02)
 
-    local topPadding = 0.01
-    local offSetY = height/2+topPadding
-    DrawRect(0.5, offSetY, width, height, 11, 11, 11, 200)
+    DrawRect(0.425+(width/2), 0.01+(height/2), width, height, 11, 11, 11, 200)
 end
 
 local RotationToDirection = function(rotation)
@@ -63,7 +65,7 @@ local RayCastGamePlayCamera = function(distance)
     -- Checks to see if the Gameplay Cam is Rendering or another is rendering (no clip functionality)
     local currentRenderingCam = false
     if not IsGameplayCamRendering() then
-        currentRenderingCam = GetRenderingCam()      
+        currentRenderingCam = GetRenderingCam()
     end
 
     local cameraRotation = not currentRenderingCam and GetGameplayCamRot() or GetCamRot(currentRenderingCam, 2)
@@ -147,7 +149,7 @@ local DrawEntityBoundingBox = function(entity, color)
         y = edge5.y - 2 * dim.z*upVector.y,
         z = edge5.z - 2 * dim.z*upVector.z
     }
-
+    color = (color == nil and {r = 255, g = 255, b = 255, a = 255} or color)
     DrawLine(edge1.x, edge1.y, edge1.z, edge2.x, edge2.y, edge2.z, color.r, color.g, color.b, color.a)
     DrawLine(edge1.x, edge1.y, edge1.z, edge4.x, edge4.y, edge4.z, color.r, color.g, color.b, color.a)
     DrawLine(edge2.x, edge2.y, edge2.z, edge3.x, edge3.y, edge3.z, color.r, color.g, color.b, color.a)
@@ -168,7 +170,7 @@ local GetEntityInfo = function(entity, coords)
     local entityHash    = GetEntityModel(entity)
     local entityName    = Entities[entityHash] or "Unknown"
     local entityData    = {
-        'Entity Information',
+        '~y~Entity Information',
         '',
         'Model Hash: ~y~'..entityHash,
         ' ',
@@ -195,7 +197,7 @@ local GetEntityInfo = function(entity, coords)
         table.insert(entityData, 'Engine Health: ~y~'..GetVehicleEngineHealth(entity))
     elseif entityType == 3 then
         table.insert(entityData, 'Health: ~y~'..GetEntityHealth(entity))
-    end 
+    end
     local entityCoords = GetEntityCoords(entity)
 
     table.insert(entityData, ' ')
@@ -209,18 +211,22 @@ local GetEntityInfo = function(entity, coords)
 end
 
 local DrawEntityViewText = function(entity, coords)
-    local data          = GetEntityInfo(entity, coords)
-    local count         = #data
-    local titleOffsetY  = 0.03
-    local textOffsetY   = 0.022
-    local bottomPadding = 0.01
-    local offSetCount   = (((count) * textOffsetY)+titleOffsetY)/count 
-    local posX, posY    = 0.70, 0.50
-    local rectWidth     = 0.18
-    local rectHeight    = ((count-1) * offSetCount)+bottomPadding
-    DrawRect(posX, posY, rectWidth, rectHeight, 11, 11, 11, 200)
+    local data              = GetEntityInfo(entity, coords)
+    local count             = #data
 
-    local offsetY =  (1.0-rectHeight)/2
+    local posX              = FreeAimInfoBoxX
+    local posY              = FreeAimInfoBoxY
+    local titleSpacing      = 0.03
+    local textSpacing       = 0.022
+    local titeLeftMargin    = 0.05
+    local paddingTop        = 0.02
+    local paddingLeft       = 0.005
+    local rectWidth         = 0.18
+    local heightOfContent   = (((count) * textSpacing)+titleSpacing)/count
+    local rectHeight        = ((count-1) * heightOfContent)+paddingTop
+
+    DrawRect(posX+(rectWidth/2), posY+((rectHeight/2)-posY/2), rectWidth, rectHeight, 11, 11, 11, 200)
+
     for k, v in ipairs(data) do
         SetTextScale(0.35, 0.35)
         SetTextFont(4)
@@ -232,13 +238,13 @@ local DrawEntityViewText = function(entity, coords)
         AddTextComponentString(v)
         if k == 1 then
             SetTextScale(0.50, 0.50)
-            DrawText(posX-0.035, offsetY)
-            offsetY = offsetY + titleOffsetY
+            DrawText(posX+titeLeftMargin, posY)
+            posY = posY + titleSpacing
         else
             SetTextScale(0.35, 0.35)
-            DrawText(posX-0.086, offsetY)
-            offsetY = offsetY + textOffsetY
-        end        
+            DrawText(posX+paddingLeft, posY)
+            posY = posY + textSpacing
+        end
     end
 end
 
@@ -252,7 +258,7 @@ local DrawEntityViewTextInWorld = function(entity, coords)
         local leftPadding   = 0.005
         local topPadding    = 0.01
         local botPadding    = 0.02
-        local offSetCount   = (((count-2) * textOffsetY))/count 
+        local offSetCount   = (((count-2) * textOffsetY))/count
         local rectWidth     = 0.12
         local rectHeight    = ((count) * offSetCount)+botPadding
 
@@ -280,20 +286,24 @@ end
 local GetVehicle = function(playerPed, playerCoords)
     local handle, vehicle = FindFirstVehicle()
     local success
-    local rped = nil
+    local rveh = nil
     repeat
-        local pos = GetEntityCoords(vehicle)
-        local distance = #(playerCoords-pos)
-        if distance < EntityViewDistance  then
-            rped = vehicle
+        if vehicle ~= FreeAimEntity then
+            local pos = GetEntityCoords(vehicle)
+            local distance = #(playerCoords-pos)
+            if distance < EntityViewDistance and distance > 5.0 then
+                DrawEntityBoundingBox(vehicle)
+            elseif distance < 5.0 then
+                rveh = vehicle
 
-            FreezeEntityPosition(vehicle, FreezeEntities)
-            DrawEntityViewTextInWorld(vehicle, pos)
+                FreezeEntityPosition(vehicle, FreezeEntities)
+                DrawEntityViewTextInWorld(vehicle, pos)
+            end
         end
         success, vehicle = FindNextVehicle(handle)
     until not success
     EndFindVehicle(handle)
-    return rped
+    return rveh
 end
 
 local GetObject = function(playerPed, playerCoords)
@@ -301,15 +311,18 @@ local GetObject = function(playerPed, playerCoords)
     local success
     local robject = nil
     repeat
-        local pos = GetEntityCoords(object)
-        local distance = #(playerCoords-pos)
-        if distance < EntityViewDistance then
-            robject = object
+        if object ~= FreeAimEntity then
+            local pos = GetEntityCoords(object)
+            local distance = #(playerCoords-pos)
+            if distance < EntityViewDistance and distance > 5.0 then
+                DrawEntityBoundingBox(object)
+            elseif distance < 5.0 then
+                robject = object
 
-            FreezeEntityPosition(object, FreezeEntities)
-            DrawEntityViewTextInWorld(object, pos)
+                FreezeEntityPosition(object, FreezeEntities)
+                DrawEntityViewTextInWorld(object, pos)
+            end
         end
-
         success, object = FindNextObject(handle)
     until not success
     EndFindObject(handle)
@@ -321,13 +334,19 @@ local GetNPC = function(playerPed, playerCoords)
     local success
     local rped = nil
     repeat
-        local pos = GetEntityCoords(ped)
-        local distance = #(playerCoords-pos)
-        if CanEntityBeUsed(ped) and distance < EntityViewDistance  then
-            rped = ped
-            
-            FreezeEntityPosition(ped, FreezeEntities)
-            DrawEntityViewTextInWorld(ped, pos)
+        if ped ~= FreeAimEntity then
+            local pos = GetEntityCoords(ped)
+            local distance = #(playerCoords-pos)
+            if CanEntityBeUsed(ped) then
+                if distance < EntityViewDistance and distance > 5.0 then
+                    DrawEntityBoundingBox(ped)
+                elseif distance < 5.0 then
+                    rped = ped
+
+                    FreezeEntityPosition(ped, FreezeEntities)
+                    DrawEntityViewTextInWorld(ped, pos)
+                end
+            end
         end
         success, ped = FindNextPed(handle)
     until not success
@@ -381,7 +400,7 @@ RunEntityViewThread = function()
         while EntityViewEnabled do
             Citizen.Wait(0)
             local freezeDesc = (EntityObjectView or EntityPedView or EntityVehicleView)
-            DrawTitle("~y~ENTITY VIEW~w~\n"..(EntityFreeAim and "\n[~y~E~w~] - Delete Entity~w~" or "").. (freezeDesc and '\n[~y~G~w~] - Freeze All Entities' or ''), 0.15, freezeDesc and 0.14 or 0.11)
+            DrawTitle("~y~Entity Viewing Mode~w~\n"..(EntityFreeAim and "\n[~y~E~w~] - Delete Entity~w~" or "").. (freezeDesc and '\n[~y~G~w~] - Freeze All Entities' or ''), 0.15, freezeDesc and 0.14 or 0.11)
 
             local entity        = nil
             local playerPed     = PlayerPedId()
@@ -394,24 +413,28 @@ RunEntityViewThread = function()
             if EntityObjectView then
                 GetObject(playerPed, playerCoords)
             end
-            
+
             if EntityVehicleView then
                 GetVehicle(playerPed, playerCoords)
             end
 
             if EntityFreeAim then
-                local color = {r = 255, g = 200, b = 0, a = 200}
+                local color = {r = 255, g = 255, b = 255, a = 200}
                 local position = GetEntityCoords(PlayerPedId())
                 local hit, coords, entity = RayCastGamePlayCamera(1000.0)
                 -- If entity is found then verify entity
                 if hit and (IsEntityAVehicle(entity) or IsEntityAPed(entity) or IsEntityAnObject(entity)) then
+                    color = {r = 0, g = 255, b = 0, a = 200}
                     FreeAimEntity = entity
                     local entityCoord = GetEntityCoords(entity)
                     local minimum, maximum = GetModelDimensions(GetEntityModel(entity))
                     DrawEntityBoundingBox(entity, color)
-                    DrawLine(position.x, position.y, position.z, coords.x, coords.y, coords.z, color.r, color.g, color.b, color.a)
                     DrawEntityViewText(entity, entityCoord)
+                else
+                    FreeAimEntity = nil
                 end
+
+                DrawLine(position.x, position.y, position.z, coords.x, coords.y, coords.z, color.r, color.g, color.b, color.a)
             end
 
             if IsControlJustReleased(0, 38) then -- Delete entity
@@ -438,3 +461,8 @@ RunEntityViewThread = function()
         end
     end)
 end
+
+Citizen.CreateThread(function()
+    ToggleEntityFreeView()
+    --ToggleEntityObjectView()
+end)
