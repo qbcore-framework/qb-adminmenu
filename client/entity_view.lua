@@ -369,14 +369,14 @@ end
 RunEntityViewThread = function()
     EntityViewEnabled = true
     Citizen.CreateThread(function()
-        while EntityViewEnabled do         
+        while EntityViewEnabled do
             Citizen.Wait(0)
             local freezeDesc = (EntityObjectView or EntityPedView or EntityVehicleView)
             DrawTitle("~y~ENTITY VIEW~w~\n"..(EntityFreeAim and "\n[~y~E~w~] - Delete Entity~w~" or "").. (freezeDesc and '\n[~y~G~w~] - Freeze All Entities' or ''), 0.15, freezeDesc and 0.14 or 0.11)
 
             local entity        = nil
             local playerPed     = PlayerPedId()
-            local playerCoords  = GetEntityCoords(playerPed)            
+            local playerCoords  = GetEntityCoords(playerPed)
 
             if EntityPedView then
                 GetNPC(playerPed, playerCoords)
@@ -393,7 +393,7 @@ RunEntityViewThread = function()
             if EntityFreeAim then
                 local color = {r = 255, g = 200, b = 0, a = 200}
                 local position = GetEntityCoords(PlayerPedId())
-                hit, coords, entity = RayCastGamePlayCamera(1000.0)
+                local hit, coords, entity = RayCastGamePlayCamera(1000.0)
                 -- If entity is found then verify entity
                 if hit and (IsEntityAVehicle(entity) or IsEntityAPed(entity) or IsEntityAnObject(entity)) then
                     FreeAimEntity = entity
@@ -412,14 +412,14 @@ RunEntityViewThread = function()
 
                 if not DoesEntityExist(entiy) then
                     QBCore.Functions.Notify('Entity Deleted', 'success')
-                end          
+                end
             end
 
             if EntityPedView or EntityVehicleView or EntityObjectView then
                 if IsControlJustReleased(0, 47) then -- Freeze entities
                     FreezeEntities = not FreezeEntities
 
-                    QBCore.Functions.Notify('Freeze all entities now '.. (FreezeEntities and "enabled" or "disabled"), FreezeEntities and 'success' or 'error')        
+                    QBCore.Functions.Notify('Freeze all entities now '.. (FreezeEntities and "enabled" or "disabled"), FreezeEntities and 'success' or 'error')
                 end
             end
 
