@@ -10,6 +10,7 @@ local FreeAimEntity         = nil
 -- Configurable values
 local FreeAimInfoBoxX       = 0.60      -- X-axis (0.0 being left, 1.0 being right position of the screen)
 local FreeAimInfoBoxY       = 0.02      -- Y-axis (0.0 being up, 1.0 being down position of the screen)
+local useKph                = true      -- True to display KPH or false to display MPH
 
 local CanEntityBeUsed = function(ped)
     if ped == PlayerPedId() then
@@ -168,44 +169,44 @@ local GetEntityInfo = function(entity, coords)
     local playerCoords  = GetEntityCoords(PlayerPedId())
     local entityType    = GetEntityType(entity)
     local entityHash    = GetEntityModel(entity)
-    local entityName    = Entities[entityHash] or "Unknown"
+    local entityName    = Entities[entityHash] or Lang:t("info.obj_unknown")
     local entityData    = {
-        '~y~Entity Information',
+        '~y~'..Lang:t("info.entity_view_info"),
         '',
-        'Model Hash: ~y~'..entityHash,
+        Lang:t("info.model_hash")..' ~y~'..entityHash,
         ' ',
-        'Object ID: ~y~'..entity,
-        'Object name: ~y~'.. entityName,
-        'Network ID: ~y~'..(NetworkGetEntityIsNetworked(entity) and NetworkGetNetworkIdFromEntity(entity) or "Not Registered"),
-        'Entity Owner: ~y~'..GetPlayerServerId(NetworkGetEntityOwner(entity)),
+        Lang:t("info.ent_id")..' ~y~'..entity,
+        Lang:t("info.obj_name")..' ~y~'.. entityName,
+        Lang:t("info.net_id")..' ~y~'..(NetworkGetEntityIsNetworked(entity) and NetworkGetNetworkIdFromEntity(entity) or Lang:t("info.net_id_not_registered")),
+        Lang:t("info.ent_owner")..' ~y~'..GetPlayerServerId(NetworkGetEntityOwner(entity)),
         ' '
     }
 
     if entityType == 1 then
         local pedRelationshipGroup = GetPedRelationshipGroupHash(entity)
-        table.insert(entityData, 'Current Health: ~y~'..GetEntityHealth(entity))
-        table.insert(entityData, 'Max Health: ~y~'..GetPedMaxHealth(entity))
-        table.insert(entityData, 'Armour: ~y~'..GetPedArmour(entity))
-        table.insert(entityData, 'Relation Group: ~y~'.. (Entities[pedRelationshipGroup] or "Custom"))
-        table.insert(entityData, 'Relation to Player: ~y~'..GetPedRelationshipType(GetRelationshipBetweenPeds(pedRelationshipGroup, PlayerPedId())))
+        table.insert(entityData, Lang:t("info.cur_health")..' ~y~'..GetEntityHealth(entity))
+        table.insert(entityData, Lang:t("info.max_health")..' ~y~'..GetPedMaxHealth(entity))
+        table.insert(entityData, Lang:t("info.armour")..' ~y~'..GetPedArmour(entity))
+        table.insert(entityData, Lang:t("info.rel_group")..' ~y~'.. (Entities[pedRelationshipGroup] or Lang:t("info.rel_group_custom")))
+        table.insert(entityData, Lang:t("info.rel_to_player")..' ~y~'..GetPedRelationshipType(GetRelationshipBetweenPeds(pedRelationshipGroup, PlayerPedId())))
     elseif entityType == 2 then
-        table.insert(entityData, 'Rpm: ~y~'..RoundFloat(GetVehicleCurrentRpm(entity), 2))
-        table.insert(entityData, 'Kph: ~y~'..RoundFloat((GetEntitySpeed(entity)*3.6),0))
-        table.insert(entityData, 'Current Gear: ~y~'..GetVehicleCurrentGear(entity))
-        table.insert(entityData, 'Acceleration: ~y~'..RoundFloat(GetVehicleAcceleration(entity), 2))
-        table.insert(entityData, 'Body Health: ~y~'..GetVehicleBodyHealth(entity))
-        table.insert(entityData, 'Engine Health: ~y~'..GetVehicleEngineHealth(entity))
+        table.insert(entityData, Lang:t("info.veh_rpm")..' ~y~'..RoundFloat(GetVehicleCurrentRpm(entity), 2))
+        table.insert(entityData, (useKph and Lang:t("info.veh_speed_kph") or Lang:t("info.veh_speed_mph"))..' ~y~'..RoundFloat((GetEntitySpeed(entity)*(useKph and 3.6 or 2.23694)), 0))
+        table.insert(entityData, Lang:t("info.veh_cur_gear")..' ~y~'..GetVehicleCurrentGear(entity))
+        table.insert(entityData, Lang:t("info.veh_acceleration")..' ~y~'..RoundFloat(GetVehicleAcceleration(entity), 2))
+        table.insert(entityData, Lang:t("info.body_health")..' ~y~'..GetVehicleBodyHealth(entity))
+        table.insert(entityData, Lang:t("info.eng_health")..' ~y~'..GetVehicleEngineHealth(entity))
     elseif entityType == 3 then
-        table.insert(entityData, 'Health: ~y~'..GetEntityHealth(entity))
+        table.insert(entityData, Lang:t("info.cur_health")..' ~y~'..GetEntityHealth(entity))
     end
     local entityCoords = GetEntityCoords(entity)
 
     table.insert(entityData, ' ')
-    table.insert(entityData, 'Dist: ~y~'.. RoundFloat(#(playerCoords-entityCoords), 2).. " meters")
-    table.insert(entityData, 'Heading: ~y~'.. RoundFloat(GetEntityHeading(entity), 2))
-    table.insert(entityData, 'Coords: ~y~'.. RoundVector3(entityCoords, 2))
-    table.insert(entityData, 'Rotation: ~y~'.. RoundVector3(GetEntityRotation(entity), 2))
-    table.insert(entityData, 'Velocity: ~y~'.. RoundVector3(GetEntityVelocity(entity), 2))
+    table.insert(entityData, Lang:t("info.dist_to_obj")..' ~y~'.. RoundFloat(#(playerCoords-entityCoords), 2))
+    table.insert(entityData, Lang:t("info.obj_heading")..' ~y~'.. RoundFloat(GetEntityHeading(entity), 2))
+    table.insert(entityData, Lang:t("info.obj_coords")..' ~y~'.. RoundVector3(entityCoords, 2))
+    table.insert(entityData, Lang:t("info.obj_rot")..' ~y~'.. RoundVector3(GetEntityRotation(entity), 2))
+    table.insert(entityData, Lang:t("info.obj_velocity")..' ~y~'.. RoundVector3(GetEntityVelocity(entity), 2))
 
     return entityData
 end
@@ -410,7 +411,7 @@ RunEntityViewThread = function()
             end
 
             if EntityFreeAim then
-                DrawTitle("~y~Entity Freeaim Mode~w~\n\n[~y~E~w~] - Delete Entity~w~\n[~y~G~w~] - Freeze Entity", 0.15, 0.14)
+                DrawTitle("~y~"..Lang:t("info.entity_view_title").."~w~\n\n[~y~E~w~] - "..Lang:t("info.entity_freeaim_delete").."~w~\n[~y~G~w~] - "..Lang:t("info.entity_freeaim_freeze"), 0.15, 0.14)
                 local color = {r = 255, g = 255, b = 255, a = 200}
                 local position = GetEntityCoords(PlayerPedId())
                 local hit, coords, entity = RayCastGamePlayCamera(1000.0)
@@ -431,7 +432,7 @@ RunEntityViewThread = function()
                         end
 
                         FreezeEntityPosition(entity, FrozenEntities[entity])
-                        QBCore.Functions.Notify('You have '..(FrozenEntities[entity] and "Frozen" or "Unfrozen").. ' the freeaim entity', (FrozenEntities[entity] and 'success' or 'error'))
+                        QBCore.Functions.Notify(Lang:t("info.you_have")..(FrozenEntities[entity] and Lang:t("info.entity_frozen") or Lang:t("info.entity_unfrozen")).. Lang:t("info.freeaim_entity"), (FrozenEntities[entity] and 'success' or 'error'))
                     end
 
                     if IsControlJustReleased(0, 38) then -- Delete entity
@@ -440,9 +441,9 @@ RunEntityViewThread = function()
                         DeleteEntity(entity)
 
                         if not DoesEntityExist(entity) then
-                            QBCore.Functions.Notify('Entity Deleted', 'success')
+                            QBCore.Functions.Notify(Lang:t("info.entity_del"), 'success')
                         else
-                            QBCore.Functions.Notify('Error deleting vehicles', 'error')
+                            QBCore.Functions.Notify(Lang:t("info.entity_del_error"), 'error')
                         end
                     end
                 else
