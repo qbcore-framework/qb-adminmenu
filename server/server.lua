@@ -195,6 +195,11 @@ RegisterNetEvent('qb-admin:server:Staffchat:addMessage', function(name, msg)
     end
 end)
 
+RegisterNetEvent('qb-admin:giveWeapon', function(weapon)
+    local src = source
+    TriggerClientEvent('qb-admin:client:giveWeapon', src, weapon)
+end)
+
 RegisterNetEvent('qb-admin:server:SaveCar', function(mods, vehicle, hash, plate)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
@@ -216,6 +221,11 @@ RegisterNetEvent('qb-admin:server:SaveCar', function(mods, vehicle, hash, plate)
 end)
 
 -- Commands
+
+QBCore.Commands.Add('maxmods', "Max mod your vehicle", {}, false, function(source)
+    local src = source
+    TriggerClientEvent('qb-admin:client:maxmodVehicle', src)
+end, 'admin')
 
 QBCore.Commands.Add('blips', Lang:t("commands.blips_for_player"), {}, false, function(source)
     local src = source
@@ -255,6 +265,7 @@ end, 'admin')
 QBCore.Commands.Add('admin', Lang:t("commands.open_admin"), {}, false, function(source, args)
     TriggerClientEvent('qb-admin:client:openMenu', source)
 end, 'admin')
+
 
 QBCore.Commands.Add('report', Lang:t("info.admin_report"), {{name='message', help='Message'}}, true, function(source, args)
     local src = source

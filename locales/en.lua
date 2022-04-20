@@ -214,7 +214,7 @@ local Translations = {
         ["set_player_foot_speed"] = "Set Player Foot Speed (Admin Only)",
         ["report_toggle"] = "Toggle Incoming Reports (Admin Only)",
         ["kick_all"] = "Kick all players",
-        ["ammo_amount_set"] = "Set Your Ammo Amount (Admin Only)",
+        ["ammo_amount_set"] = "Set Your Ammo Amount (Admin Only)"
     }
 }
 

@@ -15,12 +15,12 @@ local MinY, MaxY        = -89.0, 89.0
 ]]
 
 -- Perspective values
-local PedFirstPersonNoClip      = false      -- No Clip in first person when not in a vehicle
+local PedFirstPersonNoClip      = true      -- No Clip in first person when not in a vehicle
 local VehFirstPersonNoClip      = false      -- No Clip in first person when in a vehicle
 
 -- Speed settings
 local Speed                     = 1         -- Default: 1
-local MaxSpeed                  = 16.0      -- Default: 16.0
+local MaxSpeed                  = 20.0      -- Default: 16.0
 
 -- Key bindings
 local MOVE_FORWARDS             = 32        -- Default: W
