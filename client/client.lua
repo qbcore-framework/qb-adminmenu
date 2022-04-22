@@ -761,7 +761,7 @@ local function OpenKickMenu(kickplayer)
     MenuV:OpenMenu(menu9)
     menu9:ClearItems()
     local menu_button19 = menu9:AddButton({
-        icon = '🔫',
+        icon = '',
         label = Lang:t("info.reason"),
         value = "reason",
         description = Lang:t("desc.kick_reason"),
@@ -771,7 +771,7 @@ local function OpenKickMenu(kickplayer)
     })
 
     local menu_button18 = menu9:AddButton({
-        icon = '🔫',
+        icon = '',
         label = Lang:t("info.confirm"),
         value = "kick",
         description = Lang:t("desc.confirm_kick"),
@@ -790,7 +790,7 @@ local function OpenBanMenu(banplayer)
     MenuV:OpenMenu(menu8)
     menu8:ClearItems()
     local menu_button15 = menu8:AddButton({
-        icon = '🔫',
+        icon = '',
         label = Lang:t("info.reason"),
         value = "reason",
         description = Lang:t("desc.ban_reason"),
@@ -862,7 +862,7 @@ local function OpenBanMenu(banplayer)
     })
 
     local menu_button17 = menu8:AddButton({
-        icon = '🔫',
+        icon = '',
         label = Lang:t("info.confirm"),
         value = "ban",
         description = Lang:t("desc.confirm_ban"),
