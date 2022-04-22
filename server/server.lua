@@ -195,9 +195,15 @@ RegisterNetEvent('qb-admin:server:Staffchat:addMessage', function(name, msg)
     end
 end)
 
-RegisterNetEvent('qb-admin:giveWeapon', function(weapon)
+RegisterNetEvent('qb-admin:giveWeapon', function(weapon, ammo)
     local src = source
-    TriggerClientEvent('qb-admin:client:giveWeapon', src, weapon)
+    local Player = QBCore.Functions.GetPlayer(src)
+    local info = {
+        name = weapon,
+        ammo = ammo
+    }
+    Player.Functions.AddItem(weapon, 1, false, info)
+    TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[weapon], "add")
 end)
 
 RegisterNetEvent('qb-admin:server:SaveCar', function(mods, vehicle, hash, plate)

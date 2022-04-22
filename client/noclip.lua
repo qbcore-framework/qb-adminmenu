@@ -40,9 +40,9 @@ local SPEED_FASTER_MODIFIER     = 19        -- Default: Left Alt
 
 local DisabledControls = function()
     HudWeaponWheelIgnoreSelection()
-    DisableAllControlActions(0)
-    DisableAllControlActions(1)
-    DisableAllControlActions(2)
+    -- DisableAllControlActions(0)
+    --DisableAllControlActions(1)
+    -- DisableAllControlActions(2)
     EnableControlAction(0, 220, true)
     EnableControlAction(0, 221, true)
     EnableControlAction(0, 245, true)
@@ -99,8 +99,8 @@ local CheckInputRotation = function()
     if newX ~= nil and newZ ~= nil then
         SetCamRot(Camera, vector3(newX, rotation.y, newZ), 2)
     end
-    
-    SetEntityHeading(NoClipEntity, math.max(0, (rotation.z % 360)))        
+
+    SetEntityHeading(NoClipEntity, math.max(0, (rotation.z % 360)))
 end
 
 RunNoClipThread = function()
@@ -126,9 +126,9 @@ RunNoClipThread = function()
 
             local multi = 1.0
             if IsControlAlwaysPressed(0, SPEED_FAST_MODIFIER) then
-                multi = 2			
+                multi = 2
             elseif IsControlAlwaysPressed(0, SPEED_FASTER_MODIFIER) then
-                multi = 4			
+                multi = 4
             elseif IsControlAlwaysPressed(0, SPEED_SLOW_MODIFIER) then
                 multi = 0.25
             end
@@ -151,20 +151,20 @@ RunNoClipThread = function()
                 end
             end
 
-            if IsControlAlwaysPressed(0, MOVE_LEFT) then 			
+            if IsControlAlwaysPressed(0, MOVE_LEFT) then
                 SetEntityCoordsNoOffset(NoClipEntity, GetOffsetFromEntityInWorldCoords(NoClipEntity, -0.5*(Speed * multi), 0.0, 0.0))
             elseif IsControlAlwaysPressed(0, MOVE_RIGHT) then
                 SetEntityCoordsNoOffset(NoClipEntity, GetOffsetFromEntityInWorldCoords(NoClipEntity, 0.5*(Speed * multi), 0.0, 0.0))
             end
 
-            if IsControlAlwaysPressed(0, MOVE_UP) then 			
+            if IsControlAlwaysPressed(0, MOVE_UP) then
                 SetEntityCoordsNoOffset(NoClipEntity, GetOffsetFromEntityInWorldCoords(NoClipEntity, 0.0, 0.0, 0.5*(Speed * multi)))
             elseif IsControlAlwaysPressed(0, MOVE_DOWN) then
                 SetEntityCoordsNoOffset(NoClipEntity, GetOffsetFromEntityInWorldCoords(NoClipEntity, 0.0, 0.0, -0.5*(Speed * multi)))
             end
 
             local coords = GetEntityCoords(NoClipEntity)
-   
+
             RequestCollisionAtCoord(coords.x, coords.y, coords.z)
 
             FreezeEntityPosition(NoClipEntity, true)
@@ -257,10 +257,10 @@ ToggleNoClip = function(state)
         DestroyCamera(NoClipEntity)
         PlaySoundFromEntity(-1, "CANCEL", PlayerPed, "HUD_LIQUOR_STORE_SOUNDSET", 0, 0)
     end
-    
+
     QBCore.Functions.Notify(IsNoClipping and "No-clip enabled" or "No-clip disabled")
     SetUserRadioControlEnabled(not IsNoClipping)
-   
+
     if IsNoClipping then
         RunNoClipThread()
     end
