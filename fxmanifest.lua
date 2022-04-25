@@ -15,7 +15,6 @@ client_scripts {
     '@menuv/menuv.lua',
     'client/noclip.lua',
     'client/blipsnames.lua',
-    'client/weapons.lua',
     'client/client.lua',
     'client/events.lua'
 }
