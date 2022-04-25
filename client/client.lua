@@ -18,7 +18,7 @@ local menu11 = MenuV:CreateMenu(false, Lang:t("menu.developer_options"), menuLoc
 local menu12 = MenuV:CreateMenu(false, Lang:t("menu.vehicle_options"), menuLocation, 220, 80, 20, 'size-125', 'example', 'menuv', 'test11')
 local menu13 = MenuV:CreateMenu(false, Lang:t("menu.vehicle_categories"), menuLocation, 220, 80, 20, 'size-125', 'example', 'menuv', 'test12')
 local menu14 = MenuV:CreateMenu(false, Lang:t("menu.vehicle_models"), menuLocation, 220, 80, 20, 'size-125', 'example', 'menuv', 'test13')
-local menu15 = MenuV:CreateMenu(false, "menu.Spawn_weapons", menuLocation, 220, 80, 20, 'size-125', 'example', 'menuv', 'test14')
+local menu15 = MenuV:CreateMenu(false, Lang:t("menu.spawn_weapons"), menuLocation, 220, 80, 20, 'size-125', 'example', 'menuv', 'test14')
 
 
 
@@ -100,9 +100,9 @@ local menu_button11 = menu5:AddButton({
 })
 local menu_button12 = menu2:AddButton({
     icon = '🔫',
-    label = "menu.Spawn_weapons",
+    label = Lang:t("menu.spawn_weapons"),
     value = menu15,
-    description = "Here, you can spawn any weapon you want"
+    description = Lang:t("desc.spawn_weapons_desc")
 })
 local menu_button13 = menu5:AddSlider({
     icon = '⏲️',
@@ -402,13 +402,7 @@ local menu12_button5 = menu12:AddButton({
     description = 'You can have the maximum mods and capacities of this vehicle'
 })
 
-for k,v in pairs(weaponsList) do
-    local menu_button20 = menu15:AddButton({icon = '🔫',label = v:gsub("%weapon_", ''):gsub('%_', ' '),value = v,description = 'You can spawn this weapon by clicking in the button',select = function(btn)
-        local selection = btn.Value
-        TriggerServerEvent('qb-admin:giveWeapon', selection, 999)
-        QBCore.Functions.Notify("You have spawned a "..selection:gsub("%weapon_", ''):gsub('%_', ' '))
-    end})
-end
+
 
 local dev = false
 menu_dev_button:On('change', function(item, newValue, oldValue)
@@ -611,6 +605,22 @@ end)
 blips_button:On('change', function()
     TriggerEvent('qb-admin:client:toggleBlips')
 end)
+
+
+-- Weapons list
+local Weapons = {}
+for k,v in pairs(QBCore.Shared.Weapons) do
+    local menu15 = menu15:AddButton({icon = '🔫',label = v.name,value = name,description = Lang:t("desc.spawn_weapons_desc"),selection = function(btn)
+        if Weapons[weapon] == nil then
+            Weapons[weapon] = { }
+        end
+        Weapons[weapon][k] = v
+        local selection = v.name
+        TriggerServerEvent('qb-admin:giveWeapon', selection, 999)
+        QBCore.Functions.Notify(Lang:t("success_spawn_weapon", {value = ammo, weapon = QBCore.Shared.Weapons["name"]}), 'success')
+    end})
+end
+
 
 -- Dealer List
 
@@ -1196,8 +1206,4 @@ CreateThread(function()	-- While loop needed for delete lazer
 		end
 		Wait(sleep)
 	end
-end)
-
-RegisterNetEvent('qb-admin:client:giveWeapon', function(weapon)
-    GiveWeaponToPed(PlayerPedId(), GetHashKey(weapon), 1000, false, true)
 end)

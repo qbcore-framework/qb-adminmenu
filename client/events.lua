@@ -63,6 +63,14 @@ local function getVehicleFromVehList(hash)
 	end
 end
 
+local function getweaponfromList(hash)
+    for k,v in pairs(QBCore.Shared.weapons) do
+        if hash == v.name then
+            return v.name
+        end
+    end
+end
+
 RegisterNetEvent('qb-admin:client:SaveCar', function()
     local ped = PlayerPedId()
     local veh = GetVehiclePedIsIn(ped)
@@ -166,4 +174,9 @@ end
 RegisterNetEvent('qb-admin:client:maxmodVehicle', function()
     local vehicle = GetVehiclePedIsIn(PlayerPedId())
     PerformanceUpgradeVehicle(vehicle)
+end)
+
+
+RegisterNetEvent('qb-admin:client:giveWeapon', function(weapon)
+    GiveWeaponToPed(PlayerPedId(), GetHashKey(weapon), 1000, false, true)
 end)

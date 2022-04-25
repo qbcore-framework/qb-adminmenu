@@ -24,6 +24,7 @@ local Translations = {
         ["entered_vehicle"] = "Entered vehicle",
         ["success_vehicle_owner"] = "The vehicle is now yours!",
         ["receive_reports"] = "You are receiving reports",
+        ["spawn_weapon_success"] = "You have spawned a"
     },
     info = {
         ["ped_coords"] = "Ped Coordinates:",
@@ -111,6 +112,7 @@ local Translations = {
         ["open_inv"] = "Open Inventory",
         ["give_clothing_menu"] = "Give Clothing Menu",
         ["hud_dev_mode"] = "Dev Mode (qb-hud)",
+        ["spawn_weapons"] = "Spawn Weapons"
     },
     desc = {
         ["admin_options_desc"] = "Misc. Admin Options",
@@ -146,6 +148,7 @@ local Translations = {
         ["sit_in_veh_desc2"] = "'s vehicle",
         ["clothing_menu_desc"] = "Give the Cloth menu to",
         ["hud_dev_mode_desc"] = "Enable/Disable Developer Mode",
+        ["spawn_weapons_desc"] = "Spawn Any Weapon.",
     },
     time = {
         ["ban_length"] = "Ban Length",
