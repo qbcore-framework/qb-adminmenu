@@ -18,7 +18,8 @@ local menu11 = MenuV:CreateMenu(false, Lang:t("menu.developer_options"), menuLoc
 local menu12 = MenuV:CreateMenu(false, Lang:t("menu.vehicle_options"), menuLocation, 220, 80, 20, 'size-125', 'example', 'menuv', 'test11')
 local menu13 = MenuV:CreateMenu(false, Lang:t("menu.vehicle_categories"), menuLocation, 220, 80, 20, 'size-125', 'example', 'menuv', 'test12')
 local menu14 = MenuV:CreateMenu(false, Lang:t("menu.vehicle_models"), menuLocation, 220, 80, 20, 'size-125', 'example', 'menuv', 'test13')
-local menu15 = MenuV:CreateMenu(false, Lang:t("menu.spawn_weapons"), menuLocation, 220, 80, 20, 'size-125', 'example', 'menuv', 'test14')
+
+local menu16 = MenuV:CreateMenu(false, Lang:t("menu.spawn_weapons"), menuLocation, 220, 80, 20, 'size-125', 'example', 'menuv', 'test15')
 
 
 
@@ -101,7 +102,7 @@ local menu_button11 = menu5:AddButton({
 local menu_button12 = menu2:AddButton({
     icon = '🔫',
     label = Lang:t("menu.spawn_weapons"),
-    value = menu15,
+    value = menu16,
     description = Lang:t("desc.spawn_weapons_desc")
 })
 local menu_button13 = menu5:AddSlider({
@@ -610,7 +611,7 @@ end)
 -- Weapons list
 local Weapons = {}
 for k,v in pairs(QBCore.Shared.Weapons) do
-    local menu15 = menu15:AddButton({icon = '🔫',label = v.name,value = name,description = Lang:t("desc.spawn_weapons_desc"),selection = function(btn)
+    local menu16 = menu16:AddButton({icon = '🔫',label = v.name,value = name,description = Lang:t("desc.spawn_weapons_desc"),selection = function(btn)
         if Weapons[weapon] == nil then
             Weapons[weapon] = { }
         end
