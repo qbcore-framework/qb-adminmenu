@@ -1,5 +1,5 @@
 # qb-adminmenu
-![image](https://user-images.githubusercontent.com/26008458/164336085-6b626239-a4ce-472b-80db-daf9447da500.png)
+![image](https://user-images.githubusercontent.com/57848836/134793591-1ff62665-01e6-4e63-941b-a78dff41ea37.png)
 
 Added- Weapons spawn button in admin menu 
 
