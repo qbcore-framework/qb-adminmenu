@@ -195,15 +195,11 @@ RegisterNetEvent('qb-admin:server:Staffchat:addMessage', function(name, msg)
     end
 end)
 
-RegisterNetEvent('qb-admin:giveWeapon', function(weapon, ammo)
+RegisterServerEvent('qb-admin:giveWeapon')
+AddEventHandler('qb-admin:giveWeapon', function(weapon)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-    local info = {
-        name = weapon,
-        ammo = ammo
-    }
-    Player.Functions.AddItem(weapon, 1, false, info)
-    TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[weapon], "add")
+    Player.Functions.AddItem(weapon, 1)
 end)
 
 RegisterNetEvent('qb-admin:server:SaveCar', function(mods, vehicle, hash, plate)
@@ -228,7 +224,7 @@ end)
 
 -- Commands
 
-QBCore.Commands.Add('maxmods', "Max mod your vehicle", {}, false, function(source)
+QBCore.Commands.Add('maxmods', Lang:t("desc.max_mod_desc"), {}, false, function(source)
     local src = source
     TriggerClientEvent('qb-admin:client:maxmodVehicle', src)
 end, 'admin')

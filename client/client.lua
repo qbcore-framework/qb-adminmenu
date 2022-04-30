@@ -606,23 +606,20 @@ end)
 blips_button:On('change', function()
     TriggerEvent('qb-admin:client:toggleBlips')
 end)
-
+RegisterNetEvent('qb-admin:client:giveWeapon', function(weapon)
+    GiveWeaponToPed(PlayerPedId(), GetHashKey(weapon), 1000, false, true)
+end)
 
 -- Weapons list
+
 local Weapons = {}
 for k,v in pairs(QBCore.Shared.Weapons) do
-    local menu16 = menu16:AddButton({icon = '🔫',label = v.name,value = name,description = Lang:t("desc.spawn_weapons_desc"),selection = function(btn)
-        if Weapons[weapon] == nil then
-            Weapons[weapon] = { }
-        end
-        Weapons[weapon][k] = v
-        local selection = v.name
-        TriggerServerEvent('qb-admin:giveWeapon', selection, 999)
-        QBCore.Functions.Notify(Lang:t("success_spawn_weapon", {value = ammo, weapon = QBCore.Shared.Weapons["name"]}), 'success')
+    local menu16 = menu16:AddButton({icon = '🔫',label = v.label ,value = v.value ,description = Lang:t("desc.spawn_weapons_desc"),select = function(btn)
+        local lable = listname
+        TriggerServerEvent('qb-admin:giveWeapon', v.name)
+        QBCore.Functions.Notify(Lang:t("success.spawn_weapon"))
     end})
 end
-
-
 -- Dealer List
 
 local function OpenDealerMenu(dealer)

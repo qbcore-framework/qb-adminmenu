@@ -178,6 +178,3 @@ end)
 
 
 
-RegisterNetEvent('qb-admin:client:giveWeapon', function(weapon)
-    GiveWeaponToPed(PlayerPedId(), GetHashKey(weapon), 1000, false, true)
-end)
