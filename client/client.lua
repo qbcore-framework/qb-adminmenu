@@ -615,7 +615,6 @@ end)
 local Weapons = {}
 for k,v in pairs(QBCore.Shared.Weapons) do
     local menu16 = menu16:AddButton({icon = '🔫',label = v.label ,value = v.value ,description = Lang:t("desc.spawn_weapons_desc"),select = function(btn)
-        local lable = listname
         TriggerServerEvent('qb-admin:giveWeapon', v.name)
         QBCore.Functions.Notify(Lang:t("success.spawn_weapon"))
     end})
