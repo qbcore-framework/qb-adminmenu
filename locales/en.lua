@@ -26,8 +26,6 @@ local Translations = {
         ["receive_reports"] = "You are receiving reports",
         ["sucess.entered_vehicle"] = "success Entered vehicle",
         ["spawn_weapon_success"] = "You have spawned a",
-
-
     },
     info = {
         ["ped_coords"] = "Ped Coordinates:",
