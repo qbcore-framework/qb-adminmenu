@@ -24,7 +24,9 @@ local Translations = {
         ["entered_vehicle"] = "Entered vehicle",
         ["success_vehicle_owner"] = "The vehicle is now yours!",
         ["receive_reports"] = "You are receiving reports",
-        ["spawn_weapon_success"] = "You have spawned a"
+        ["spawn_weapon_success"] = "You have spawned a",
+        ["sucess.entered_vehicle"] = "success Entered vehicle",
+
     },
     info = {
         ["ped_coords"] = "Ped Coordinates:",
