@@ -113,7 +113,7 @@ local Translations = {
         ["give_clothing_menu"] = "Give Clothing Menu",
         ["hud_dev_mode"] = "Dev Mode (qb-hud)",
         ["spawn_weapons"] = "Spawn Weapons",
-        ["max_mods"] = "Max car mods"
+        ["max_mods"] = "Max car mods",
     },
     desc = {
         ["admin_options_desc"] = "Misc. Admin Options",
