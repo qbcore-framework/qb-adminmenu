@@ -398,9 +398,9 @@ local menu12_button4 = menu12:AddButton({
 })
 local menu12_button5 = menu12:AddButton({
     icon = '🔧',
-    label = "Max mod vehicle",
+    label = Lang:t("menu.max_mods"),
     value = 'maxmods',
-    description = 'You can have the maximum mods and capacities of this vehicle'
+    description = Lang:t("desc.max_mod_desc")
 })
 
 
