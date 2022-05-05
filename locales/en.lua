@@ -26,6 +26,7 @@ local Translations = {
         ["success_vehicle_owner"] = "The vehicle is now yours!",
         ["receive_reports"] = "You are receiving reports",
         ["entity_copy"] = "Freeaim entity info copied to clipboard!",
+        ["sucess.entered_vehicle"] = "success Entered vehicle",
     },
     info = {
         ["ped_coords"] = "Ped Coordinates:",
