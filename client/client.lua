@@ -25,7 +25,7 @@ RegisterNetEvent('qb-admin:client:openMenu', function()
     MenuV:OpenMenu(menu)
 end)
 
-local menu_button = menu:AddButton({
+menu:AddButton({
     icon = '😃',
     label = Lang:t("menu.admin_options"),
     value = menu2,
@@ -37,13 +37,15 @@ local menu_button2 = menu:AddButton({
     value = menu4,
     description = Lang:t("desc.player_management_desc")
 })
-local menu_button3 = menu:AddButton({
+
+menu:AddButton({
     icon = '🎮',
     label = Lang:t("menu.server_management"),
     value = menu5,
     description = Lang:t("desc.server_management_desc")
 })
-local menu_button21 = menu:AddButton({
+
+menu:AddButton({
     icon = '🚗',
     label = Lang:t("menu.vehicles"),
     value = menu12,
@@ -295,8 +297,8 @@ menu_button11:On("select",function()
             description = Lang:t("weather.halloween_desc")
         }
     }
-    for k,v in ipairs(elements) do
-        local menu_button14 = menu6:AddButton({icon = v.icon,label = v.label,value = v,description = v.description,select = function(btn)
+    for _, v in ipairs(elements) do
+        menu6:AddButton({icon = v.icon,label = v.label,value = v,description = v.description,select = function(btn)
             local selection = btn.Value
             TriggerServerEvent('qb-weathersync:server:setWeather', selection.value)
             QBCore.Functions.Notify(Lang:t("weather.weather_changed", {value = selection.label}))
@@ -304,7 +306,7 @@ menu_button11:On("select",function()
     end
 end)
 
-local menu_button69 = menu:AddButton({
+menu:AddButton({
     icon = '🔧',
     label = Lang:t("menu.developer_options"),
     value = menu11,
@@ -358,7 +360,7 @@ local noclip_button = menu11:AddCheckbox({
     description = Lang:t("desc.noclip_desc")
 })
 
-local entity_view_button = menu11:AddButton({
+menu11:AddButton({
     icon = '🔍',
     label = Lang:t("menu.entity_view_options"),
     value = menu15,
@@ -478,7 +480,7 @@ local entity_view_object = menu15:AddCheckbox({
 })
 
 local dev = false
-menu_dev_button:On('change', function(item, newValue, oldValue)
+menu_dev_button:On('change', function(_, _, _)
     dev = not dev
     TriggerEvent('qb-admin:client:ToggleDevmode')
     if dev then
@@ -490,7 +492,7 @@ menu_dev_button:On('change', function(item, newValue, oldValue)
     end
 end)
 
-entity_view_freeaim:On('change', function(item, newValue, oldValue)
+entity_view_freeaim:On('change', function(_, _, _)
     ToggleEntityFreeView()
 end)
 
@@ -633,7 +635,7 @@ vehicledev_button:On('change', function()
     ToggleVehicleDeveloperMode()
 end)
 
-noclip_button:On('change', function(item, newValue, oldValue)
+noclip_button:On('change', function(_, _, _)
     ToggleNoClip()
 end)
 
@@ -641,7 +643,7 @@ togglecoords_button:On('change', function()
     ToggleShowCoordinates()
 end)
 
-entity_view_distance:On("select", function(item, value)
+entity_view_distance:On("select", function(_, value)
     SetEntityViewDistance(value)
     QBCore.Functions.Notify(Lang:t("info.entity_view_distance", {distance = value}))
 end)
@@ -673,21 +675,21 @@ local function OpenCarModelsMenu(category)
     menu14:ClearItems()
     MenuV:OpenMenu(menu14)
     for k, v in pairs(category) do
-        local menu_button10 = menu14:AddButton({
+        menu14:AddButton({
              label = v["name"],
              value = k,
              description = 'Spawn ' .. v["name"],
-             select = function(btn)
+             select = function(_)
                  TriggerServerEvent('QBCore:CallCommand', "car", { k })
              end
         })
     end
 end
 
-menu12_button1:On('Select', function(item)
+menu12_button1:On('Select', function(_)
     menu13:ClearItems()
     for k, v in pairs(vehicles) do
-        local menu_button10 = menu13:AddButton({
+        menu13:AddButton({
             label = k,
             value = v,
             description = Lang:t("menu.category_name"),
@@ -699,15 +701,15 @@ menu12_button1:On('Select', function(item)
     end
 end)
 
-menu12_button2:On('Select', function(item)
+menu12_button2:On('Select', function(_)
     TriggerServerEvent('QBCore:CallCommand', "fix", {})
 end)
 
-menu12_button3:On('Select', function(item)
+menu12_button3:On('Select', function(_)
     TriggerServerEvent('QBCore:CallCommand', "admincar", {})
 end)
 
-menu12_button4:On('Select', function(item)
+menu12_button4:On('Select', function(_)
     TriggerServerEvent('QBCore:CallCommand', "dv", {})
 end)
 
@@ -738,8 +740,8 @@ local function OpenDealerMenu(dealer)
             description = Lang:t("desc.dealerremove_desc") .. " " .. dealer["name"]
         }
     }
-    for k, v in ipairs(elements) do
-        local menu_button10 = EditDealer:AddButton({
+    for _, v in ipairs(elements) do
+        EditDealer:AddButton({
             icon = v.icon,
             label = ' ' .. v.label,
             value = v.value,
@@ -758,11 +760,11 @@ local function OpenDealerMenu(dealer)
     end
 end
 
-menu_button4:On('Select', function(item)
+menu_button4:On('Select', function(_)
     menu7:ClearItems()
     QBCore.Functions.TriggerCallback('test:getdealers', function(dealers)
-        for k, v in pairs(dealers) do
-            local menu_button10 = menu7:AddButton({
+        for _, v in pairs(dealers) do
+            menu7:AddButton({
                 label = v["name"],
                 value = v,
                 description = Lang:t("menu.dealer_name"),
@@ -783,7 +785,7 @@ local function OpenPermsMenu(permsply)
             local selectedgroup = 'Unknown'
             MenuV:OpenMenu(menu10)
             menu10:ClearItems()
-            local menu_button20 = menu10:AddSlider({
+            menu10:AddSlider({
                 icon = '',
                 label = 'Group',
                 value = 'user',
@@ -800,7 +802,7 @@ local function OpenPermsMenu(permsply)
                     value = 'god',
                     description = 'Group'
                 }},
-                change = function(item, newValue, oldValue)
+                change = function(_, newValue, _)
                     local vcal = newValue
                     if vcal == 1 then
                         selectedgroup = {}
@@ -815,12 +817,12 @@ local function OpenPermsMenu(permsply)
                 end
             })
 
-            local menu_button21 = menu10:AddButton({
+            menu10:AddButton({
                 icon = '',
                 label = Lang:t("info.confirm"),
                 value = "giveperms",
                 description = 'Give the permission group',
-                select = function(btn)
+                select = function(_)
                     if selectedgroup ~= 'Unknown' then
                         TriggerServerEvent('qb-admin:server:setPermissions', permsply.id, selectedgroup)
 			            QBCore.Functions.Notify(Lang:t("success.changed_perm"), 'success')
@@ -866,22 +868,22 @@ end
 local function OpenKickMenu(kickplayer)
     MenuV:OpenMenu(menu9)
     menu9:ClearItems()
-    local menu_button19 = menu9:AddButton({
+    menu9:AddButton({
         icon = '',
         label = Lang:t("info.reason"),
         value = "reason",
         description = Lang:t("desc.kick_reason"),
-        select = function(btn)
+        select = function(_)
             kickreason = LocalInput(Lang:t("desc.kick_reason"), 255)
         end
     })
 
-    local menu_button18 = menu9:AddButton({
+    menu9:AddButton({
         icon = '',
         label = Lang:t("info.confirm"),
         value = "kick",
         description = Lang:t("desc.confirm_kick"),
-        select = function(btn)
+        select = function(_)
             if kickreason ~= 'Unknown' then
                 TriggerServerEvent('qb-admin:server:kick', kickplayer, kickreason)
                 kickreason = 'Unknown'
@@ -895,17 +897,17 @@ end
 local function OpenBanMenu(banplayer)
     MenuV:OpenMenu(menu8)
     menu8:ClearItems()
-    local menu_button15 = menu8:AddButton({
+    menu8:AddButton({
         icon = '',
         label = Lang:t("info.reason"),
         value = "reason",
         description = Lang:t("desc.ban_reason"),
-        select = function(btn)
+        select = function(_)
             banreason = LocalInput(Lang:t("desc.ban_reason"), 255)
         end
     })
 
-    local menu_button16 = menu8:AddSlider({
+    menu8:AddSlider({
         icon = '⏲️',
         label = Lang:t("info.length"),
         value = '3600',
@@ -958,7 +960,7 @@ local function OpenBanMenu(banplayer)
             value = "self",
             description = Lang:t("time.ban_length")
         }},
-        select = function(btn, newValue, oldValue)
+        select = function(_, newValue, _)
             if newValue == "self" then
                 banlength = LocalInputInt('Ban Length', 11)
             else
@@ -967,12 +969,12 @@ local function OpenBanMenu(banplayer)
         end
     })
 
-    local menu_button17 = menu8:AddButton({
+    menu8:AddButton({
         icon = '',
         label = Lang:t("info.confirm"),
         value = "ban",
         description = Lang:t("desc.confirm_ban"),
-        select = function(btn)
+        select = function(_)
             if banreason ~= 'Unknown' and banlength ~= nil then
                 TriggerServerEvent('qb-admin:server:ban', banplayer, banlength, banreason)
                 banreason = 'Unknown'
@@ -1062,8 +1064,8 @@ local function OpenPlayerMenus(player)
             description = Lang:t("info.give") .. " " .. player.cid .. " " .. Lang:t("menu.permissions")
         }
     }
-    for k, v in ipairs(elements) do
-        local menu_button10 = Players:AddButton({
+    for _, v in ipairs(elements) do
+        Players:AddButton({
             icon = v.icon,
             label = ' ' .. v.label,
             value = v.value,
@@ -1084,11 +1086,11 @@ local function OpenPlayerMenus(player)
     end
 end
 
-menu_button2:On('select', function(item)
+menu_button2:On('select', function(_)
     menu4:ClearItems()
     QBCore.Functions.TriggerCallback('test:getplayers', function(players)
-        for k, v in pairs(players) do
-            local menu_button10 = menu4:AddButton({
+        for _, v in pairs(players) do
+            menu4:AddButton({
                 label = Lang:t("info.id") .. v["id"] .. ' | ' .. v["name"],
                 value = v,
                 description = Lang:t("info.player_name"),
@@ -1101,27 +1103,27 @@ menu_button2:On('select', function(item)
     end)
 end)
 
-menu_button13:On("select", function(item, value)
+menu_button13:On("select", function(_, value)
     TriggerServerEvent("qb-weathersync:server:setTime", value, value)
     QBCore.Functions.Notify(Lang:t("time.changed", {time = value}))
 end)
 
 -- Toggle NoClip
 
-menu_button5:On('change', function(item, newValue, oldValue)
+menu_button5:On('change', function(_, _, _)
     ToggleNoClip()
 end)
 
 -- Revive Self
 
-menu_button6:On('select', function(item)
+menu_button6:On('select', function(_)
     TriggerEvent('hospital:client:Revive', PlayerPedId())
 end)
 
 -- Invisible
 
 local invisible = false
-menu_button7:On('change', function(item, newValue, oldValue)
+menu_button7:On('change', function(_, _, _)
     if not invisible then
         invisible = true
         SetEntityVisible(PlayerPedId(), false, 0)
@@ -1134,7 +1136,7 @@ end)
 -- Godmode
 
 local godmode = false
-menu_button8:On('change', function(item, newValue, oldValue)
+menu_button8:On('change', function(_, _, _)
     godmode = not godmode
 
     if godmode then
