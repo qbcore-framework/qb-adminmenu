@@ -54,7 +54,7 @@ local IsPedDrivingVehicle = function(ped, veh)
     return ped == GetPedInVehicleSeat(veh, -1)
 end
 
-local SetupCam = function(coords, rotation)
+local SetupCam = function()
     local entityRot = GetEntityRotation(NoClipEntity)
     Camera = CreateCameraWithParams("DEFAULT_SCRIPTED_CAMERA", GetEntityCoords(NoClipEntity), vector3(0.0, 0.0, entityRot.z), 75.0)
     SetCamActive(Camera, true)
@@ -68,7 +68,7 @@ local SetupCam = function(coords, rotation)
 
 end
 
-local DestroyCamera = function(entity)
+local DestroyCamera = function()
     SetGameplayCamRelativeHeading(0)
     RenderScriptCams(false, true, 1000, true, true)
     DetachEntity(NoClipEntity, true, true)
@@ -98,7 +98,7 @@ local CheckInputRotation = function()
         SetCamRot(Camera, vector3(newX, rotation.y, newZ), 2)
     end
     
-    SetEntityHeading(NoClipEntity, math.max(0, (rotation.z % 360)))        
+    SetEntityHeading(NoClipEntity, math.max(0, (rotation.z % 360)))
 end
 
 RunNoClipThread = function()
@@ -124,9 +124,9 @@ RunNoClipThread = function()
 
             local multi = 1.0
             if IsControlAlwaysPressed(0, SPEED_FAST_MODIFIER) then
-                multi = 2			
+                multi = 2
             elseif IsControlAlwaysPressed(0, SPEED_FASTER_MODIFIER) then
-                multi = 4			
+                multi = 4
             elseif IsControlAlwaysPressed(0, SPEED_SLOW_MODIFIER) then
                 multi = 0.25
             end
@@ -149,13 +149,13 @@ RunNoClipThread = function()
                 end
             end
 
-            if IsControlAlwaysPressed(0, MOVE_LEFT) then 			
+            if IsControlAlwaysPressed(0, MOVE_LEFT) then
                 SetEntityCoordsNoOffset(NoClipEntity, GetOffsetFromEntityInWorldCoords(NoClipEntity, -0.5*(Speed * multi), 0.0, 0.0))
             elseif IsControlAlwaysPressed(0, MOVE_RIGHT) then
                 SetEntityCoordsNoOffset(NoClipEntity, GetOffsetFromEntityInWorldCoords(NoClipEntity, 0.5*(Speed * multi), 0.0, 0.0))
             end
 
-            if IsControlAlwaysPressed(0, MOVE_UP) then 			
+            if IsControlAlwaysPressed(0, MOVE_UP) then
                 SetEntityCoordsNoOffset(NoClipEntity, GetOffsetFromEntityInWorldCoords(NoClipEntity, 0.0, 0.0, 0.5*(Speed * multi)))
             elseif IsControlAlwaysPressed(0, MOVE_DOWN) then
                 SetEntityCoordsNoOffset(NoClipEntity, GetOffsetFromEntityInWorldCoords(NoClipEntity, 0.0, 0.0, -0.5*(Speed * multi)))
@@ -249,10 +249,9 @@ ToggleNoClip = function(state)
 
     else
         local groundCoords      = GetGroundCoords(GetEntityCoords(NoClipEntity))
-        local entityHeading     = GetEntityHeading(NoClipEntity)
         SetEntityCoords(NoClipEntity, groundCoords.x, groundCoords.y, groundCoords.z)
         Citizen.Wait(50)
-        DestroyCamera(NoClipEntity)
+        DestroyCamera()
         PlaySoundFromEntity(-1, "CANCEL", PlayerPed, "HUD_LIQUOR_STORE_SOUNDSET", 0, 0)
     end
     
