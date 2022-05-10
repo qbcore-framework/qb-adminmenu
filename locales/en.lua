@@ -5,7 +5,7 @@ local Translations = {
         ["changed_perm_failed"] = "Choose a group!",
         ["missing_reason"] = "You must give a reason!",
         ["invalid_reason_length_ban"] = "You must give a Reason and set a Length for the ban!",
-        ["no_store_vehicle_garage"] = "You cant store this vehicle in your garage..", 
+        ["no_store_vehicle_garage"] = "You cant store this vehicle in your garage..",
         ["no_vehicle"] = "You are not in a vehicle..",
         ["no_weapon"] = "You dont have a weapon in your hands..",
         ["no_free_seats"] = "The vehicle has no free seats!",
@@ -28,7 +28,6 @@ local Translations = {
         ["entity_copy"] = "Freeaim entity info copied to clipboard!",
         ["sucess.entered_vehicle"] = "success Entered vehicle",
         ["spawn_weapon"] = "You have spawned a Weapon ",
-
     },
     info = {
         ["ped_coords"] = "Ped Coordinates:",
@@ -198,7 +197,6 @@ local Translations = {
         ["entity_view_freeaim_copy_desc"] = "Copies the Free Aim entity info to clipboard",
         ["spawn_weapons_desc"] = "Spawn Any Weapon.",
         ["max_mod_desc"] = "Max mod your current vehicle",
-
     },
     time = {
         ["ban_length"] = "Ban Length",
@@ -267,10 +265,9 @@ local Translations = {
         ["set_player_foot_speed"] = "Set Player Foot Speed (Admin Only)",
         ["report_toggle"] = "Toggle Incoming Reports (Admin Only)",
         ["kick_all"] = "Kick all players",
-        ["ammo_amount_set"] = "Set Your Ammo Amount (Admin Only)"
+        ["ammo_amount_set"] = "Set Your Ammo Amount (Admin Only)",
     }
 }
-
 Lang = Locale:new({
     phrases = Translations,
     warnOnMissing = true
