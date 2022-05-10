@@ -99,7 +99,7 @@ local menu_button11 = menu5:AddButton({
     value = menu6,
     description = Lang:t("desc.weather_desc")
 })
-local menu_button12 = menu2:AddButton({
+ menu2:AddButton({
     icon = '🔫',
     label = Lang:t("menu.spawn_weapons"),
     value = menu16,

@@ -63,13 +63,7 @@ local function getVehicleFromVehList(hash)
 	end
 end
 
-local function getweaponfromList(hash)
-    for _,v in pairs(QBCore.Shared.weapons) do
-        if hash == v.name then
-            return v.name
-        end
-    end
-end
+
 
 RegisterNetEvent('qb-admin:client:SaveCar', function()
     local ped = PlayerPedId()
