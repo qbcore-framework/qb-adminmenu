@@ -64,7 +64,7 @@ local function getVehicleFromVehList(hash)
 end
 
 local function getweaponfromList(hash)
-    for k,v in pairs(QBCore.Shared.weapons) do
+    for _,v in pairs(QBCore.Shared.weapons) do
         if hash == v.name then
             return v.name
         end

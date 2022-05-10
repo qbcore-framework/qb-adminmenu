@@ -734,9 +734,7 @@ end)
 blips_button:On('change', function()
     TriggerEvent('qb-admin:client:toggleBlips')
 end)
-RegisterNetEvent('qb-admin:client:giveWeapon', function(_)
-    GiveWeaponToPed(PlayerPedId(), GetHashKey(weapon), 1000, false, true)
-end)
+
 -- Weapons list
 
 for _,v in pairs(QBCore.Shared.Weapons) do
