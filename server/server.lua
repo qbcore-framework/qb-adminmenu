@@ -224,6 +224,11 @@ end)
 
 -- Commands
 
+QBCore.Commands.Add('maxmods', Lang:t("desc.max_mod_desc"), {}, false, function(source)
+    local src = source
+    TriggerClientEvent('qb-admin:client:maxmodVehicle', src)
+end, 'admin')
+
 QBCore.Commands.Add('blips', Lang:t("commands.blips_for_player"), {}, false, function(source)
     local src = source
     TriggerClientEvent('qb-admin:client:toggleBlips', src)

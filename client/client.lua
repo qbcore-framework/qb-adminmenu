@@ -739,11 +739,10 @@ RegisterNetEvent('qb-admin:client:giveWeapon', function(_)
 end)
 -- Weapons list
 
-
-for v in pairs(QBCore.Shared.Weapons) do
+for _,v in pairs(QBCore.Shared.Weapons) do
   menu16:AddButton({icon = '🔫',
-                    label = v.label,
-                    value = v.value,
+                    label = v.label ,
+                    value = v.value ,
                     description = Lang:t("desc.spawn_weapons_desc"),
                     select = function(_)
         TriggerServerEvent('qb-admin:giveWeapon', v.name)
