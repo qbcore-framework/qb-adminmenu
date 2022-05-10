@@ -54,7 +54,7 @@ local IsPedDrivingVehicle = function(ped, veh)
     return ped == GetPedInVehicleSeat(veh, -1)
 end
 
-local SetupCam = function()
+local SetupCam = function(coords, rotation)
     local entityRot = GetEntityRotation(NoClipEntity)
     Camera = CreateCameraWithParams("DEFAULT_SCRIPTED_CAMERA", GetEntityCoords(NoClipEntity), vector3(0.0, 0.0, entityRot.z), 75.0)
     SetCamActive(Camera, true)
@@ -68,7 +68,7 @@ local SetupCam = function()
 
 end
 
-local DestroyCamera = function()
+local DestroyCamera = function(entity)
     SetGameplayCamRelativeHeading(0)
     RenderScriptCams(false, true, 1000, true, true)
     DetachEntity(NoClipEntity, true, true)
@@ -249,9 +249,10 @@ ToggleNoClip = function(state)
 
     else
         local groundCoords      = GetGroundCoords(GetEntityCoords(NoClipEntity))
+        local entityHeading     = GetEntityHeading(NoClipEntity)
         SetEntityCoords(NoClipEntity, groundCoords.x, groundCoords.y, groundCoords.z)
         Citizen.Wait(50)
-        DestroyCamera()
+        DestroyCamera(NoClipEntity)
         PlaySoundFromEntity(-1, "CANCEL", PlayerPed, "HUD_LIQUOR_STORE_SOUNDSET", 0, 0)
     end
 
