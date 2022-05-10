@@ -56,7 +56,7 @@ RegisterNetEvent('qb-admin:client:SendStaffChat', function(name, msg)
 end)
 
 local function getVehicleFromVehList(hash)
-	for k,v in pairs(QBCore.Shared.Vehicles) do
+	for _, v in pairs(QBCore.Shared.Vehicles) do
 		if hash == v.hash then
 			return v.model
 		end
@@ -99,7 +99,7 @@ end
 
 local function isPedAllowedRandom(skin)
     local retval = false
-    for k, v in pairs(blockedPeds) do
+    for _, v in pairs(blockedPeds) do
         if v ~= skin then
             retval = true
         end
@@ -139,11 +139,11 @@ end)
 RegisterNetEvent('qb-weapons:client:SetWeaponAmmoManual', function(weapon, ammo)
     local ped = PlayerPedId()
     if weapon ~= "current" then
-        local weapon = weapon:upper()
+        weapon = weapon:upper()
         SetPedAmmo(ped, GetHashKey(weapon), ammo)
         QBCore.Functions.Notify(Lang:t("info.ammoforthe", {value = ammo, weapon = QBCore.Shared.Weapons[weapon]["label"]}), 'success')
     else
-        local weapon = GetSelectedPedWeapon(ped)
+        weapon = GetSelectedPedWeapon(ped)
         if weapon ~= nil then
             SetPedAmmo(ped, weapon, ammo)
             QBCore.Functions.Notify(Lang:t("info.ammoforthe", {value = ammo, weapon = QBCore.Shared.Weapons[weapon]["label"]}), 'success')
@@ -175,6 +175,3 @@ RegisterNetEvent('qb-admin:client:maxmodVehicle', function()
     local vehicle = GetVehiclePedIsIn(PlayerPedId())
     PerformanceUpgradeVehicle(vehicle)
 end)
-
-
-

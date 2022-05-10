@@ -1,16 +1,6 @@
 # qb-adminmenu
+
 ![image](https://user-images.githubusercontent.com/57848836/134793591-1ff62665-01e6-4e63-941b-a78dff41ea37.png)
-
-Added- Weapons spawn button in admin menu 
-
-
-
-
-
-
-added- /maxmods  for adding all max mods from bennys to the car your siting in 
-
-
 
 # License
 
