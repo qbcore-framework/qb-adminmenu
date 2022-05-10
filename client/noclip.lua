@@ -18,7 +18,7 @@ local VehFirstPersonNoClip      = false      -- No Clip in first person when in 
 
 -- Speed settings
 local Speed                     = 1         -- Default: 1
-local MaxSpeed                  = 20.0      -- Default: 16.0
+local MaxSpeed                  = 16.0      -- Default: 16.0
 
 -- Key bindings
 local MOVE_FORWARDS             = 32        -- Default: W
@@ -38,9 +38,9 @@ local SPEED_FASTER_MODIFIER     = 19        -- Default: Left Alt
 
 local DisabledControls = function()
     HudWeaponWheelIgnoreSelection()
-    -- DisableAllControlActions(0)
-    --DisableAllControlActions(1)
-    -- DisableAllControlActions(2)
+    DisableAllControlActions(0)
+    DisableAllControlActions(1)
+    DisableAllControlActions(2)
     EnableControlAction(0, 220, true)
     EnableControlAction(0, 221, true)
     EnableControlAction(0, 245, true)
@@ -54,7 +54,7 @@ local IsPedDrivingVehicle = function(ped, veh)
     return ped == GetPedInVehicleSeat(veh, -1)
 end
 
-local SetupCam = function(coords, rotation)
+local SetupCam = function()
     local entityRot = GetEntityRotation(NoClipEntity)
     Camera = CreateCameraWithParams("DEFAULT_SCRIPTED_CAMERA", GetEntityCoords(NoClipEntity), vector3(0.0, 0.0, entityRot.z), 75.0)
     SetCamActive(Camera, true)
@@ -68,7 +68,7 @@ local SetupCam = function(coords, rotation)
 
 end
 
-local DestroyCamera = function(entity)
+local DestroyCamera = function()
     SetGameplayCamRelativeHeading(0)
     RenderScriptCams(false, true, 1000, true, true)
     DetachEntity(NoClipEntity, true, true)
@@ -97,7 +97,7 @@ local CheckInputRotation = function()
     if newX ~= nil and newZ ~= nil then
         SetCamRot(Camera, vector3(newX, rotation.y, newZ), 2)
     end
-
+    
     SetEntityHeading(NoClipEntity, math.max(0, (rotation.z % 360)))
 end
 
@@ -162,7 +162,7 @@ RunNoClipThread = function()
             end
 
             local coords = GetEntityCoords(NoClipEntity)
-
+   
             RequestCollisionAtCoord(coords.x, coords.y, coords.z)
 
             FreezeEntityPosition(NoClipEntity, true)
@@ -249,16 +249,15 @@ ToggleNoClip = function(state)
 
     else
         local groundCoords      = GetGroundCoords(GetEntityCoords(NoClipEntity))
-        local entityHeading     = GetEntityHeading(NoClipEntity)
         SetEntityCoords(NoClipEntity, groundCoords.x, groundCoords.y, groundCoords.z)
         Citizen.Wait(50)
-        DestroyCamera(NoClipEntity)
+        DestroyCamera()
         PlaySoundFromEntity(-1, "CANCEL", PlayerPed, "HUD_LIQUOR_STORE_SOUNDSET", 0, 0)
     end
-
+    
     QBCore.Functions.Notify(IsNoClipping and "No-clip enabled" or "No-clip disabled")
     SetUserRadioControlEnabled(not IsNoClipping)
-
+   
     if IsNoClipping then
         RunNoClipThread()
     end

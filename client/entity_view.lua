@@ -77,7 +77,7 @@ local RayCastGamePlayCamera = function(distance)
 		y = cameraCoord.y + direction.y * distance,
 		z = cameraCoord.z + direction.z * distance
 	}
-	local a, b, c, d, e = GetShapeTestResult(StartShapeTestRay(cameraCoord.x, cameraCoord.y, cameraCoord.z, destination.x, destination.y, destination.z, -1, PlayerPedId(), 0))
+	local _, b, c, _, e = GetShapeTestResult(StartShapeTestRay(cameraCoord.x, cameraCoord.y, cameraCoord.z, destination.x, destination.y, destination.z, -1, PlayerPedId(), 0))
 	return b, c, e
 end
 
@@ -99,7 +99,7 @@ local DrawEntityBoundingBox = function(entity, color)
 		z = 0
     }
 
-    local FUR_bool, FUR_z = GetGroundZFor_3dCoord(FUR.x, FUR.y, 1000.0, 0)
+    local _, FUR_z = GetGroundZFor_3dCoord(FUR.x, FUR.y, 1000.0, 0)
     FUR.z = FUR_z
     FUR.z = FUR.z + 2 * dim.z
 
@@ -108,7 +108,7 @@ local DrawEntityBoundingBox = function(entity, color)
         y = position.y - dim.y*rightVector.y - dim.x*forwardVector.y - dim.z*upVector.y,
         z = 0
     }
-    local BLL_bool, BLL_z = GetGroundZFor_3dCoord(FUR.x, FUR.y, 1000.0, 0)
+    local _, BLL_z = GetGroundZFor_3dCoord(FUR.x, FUR.y, 1000.0, 0)
     BLL.z = BLL_z
 
     -- DEBUG
@@ -165,7 +165,7 @@ local DrawEntityBoundingBox = function(entity, color)
     DrawLine(edge4.x, edge4.y, edge4.z, edge6.x, edge6.y, edge6.z, color.r, color.g, color.b, color.a)
 end
 
-local GetEntityInfo = function(entity, coords)
+local GetEntityInfo = function(entity)
     local playerCoords  = GetEntityCoords(PlayerPedId())
     local entityType    = GetEntityType(entity)
     local entityHash    = GetEntityModel(entity)
@@ -211,8 +211,8 @@ local GetEntityInfo = function(entity, coords)
     return entityData
 end
 
-local DrawEntityViewText = function(entity, coords)
-    local data              = GetEntityInfo(entity, coords)
+local DrawEntityViewText = function(entity)
+    local data              = GetEntityInfo(entity)
     local count             = #data
 
     local posX              = FreeAimInfoBoxX
@@ -252,8 +252,7 @@ end
 local DrawEntityViewTextInWorld = function(entity, coords)
     local onScreen, posX, posY = World3dToScreen2d(coords.x, coords.y, coords.z)
     if onScreen then
-        local dist = #(coords-GetEntityCoords(PlayerPedId()))
-        local data = GetEntityInfo(entity, coords)
+        local data = GetEntityInfo(entity)
         local count = #data
         local textOffsetY   = 0.015
         local leftPadding   = 0.005
@@ -264,8 +263,6 @@ local DrawEntityViewTextInWorld = function(entity, coords)
         local rectHeight    = ((count) * offSetCount)+botPadding
 
         DrawRect(posX, posY, rectWidth, rectHeight, 11, 11, 11, 200)
-
-        local offsetY =  (1.0-rectHeight)/2
 
         for k, v in ipairs(data) do
             if k ~= 1 and k ~= 2 then
@@ -284,7 +281,7 @@ local DrawEntityViewTextInWorld = function(entity, coords)
     end
 end
 
-local GetVehicle = function(playerPed, playerCoords)
+local GetVehicle = function(playerCoords)
     local handle, vehicle = FindFirstVehicle()
     local success
     local rveh = nil
@@ -305,7 +302,7 @@ local GetVehicle = function(playerPed, playerCoords)
     return rveh
 end
 
-local GetObject = function(playerPed, playerCoords)
+local GetObject = function(playerCoords)
     local handle, object = FindFirstObject()
     local success
     local robject = nil
@@ -326,7 +323,7 @@ local GetObject = function(playerPed, playerCoords)
     return robject
 end
 
-local GetNPC = function(playerPed, playerCoords)
+local GetNPC = function(playerCoords)
     local handle, ped = FindFirstPed()
     local success
     local rped = nil
@@ -394,35 +391,32 @@ RunEntityViewThread = function()
     Citizen.CreateThread(function()
         while EntityViewEnabled do
             Citizen.Wait(0)
-            local entity        = nil
             local playerPed     = PlayerPedId()
             local playerCoords  = GetEntityCoords(playerPed)
 
             if EntityPedView then
-                GetNPC(playerPed, playerCoords)
+                GetNPC(playerCoords)
             end
 
             if EntityObjectView then
-                GetObject(playerPed, playerCoords)
+                GetObject(playerCoords)
             end
 
             if EntityVehicleView then
-                GetVehicle(playerPed, playerCoords)
+                GetVehicle(playerCoords)
             end
 
             if EntityFreeAim then
                 DrawTitle("~y~"..Lang:t("info.entity_view_title").."~w~\n\n[~y~E~w~] - "..Lang:t("info.entity_freeaim_delete").."~w~\n[~y~G~w~] - "..Lang:t("info.entity_freeaim_freeze"), 0.15, 0.14)
                 local color = {r = 255, g = 255, b = 255, a = 200}
-                local position = GetEntityCoords(PlayerPedId())
+                local position = GetEntityCoords(playerPed)
                 local hit, coords, entity = RayCastGamePlayCamera(1000.0)
                 -- If entity is found then verify entity
                 if hit and (IsEntityAVehicle(entity) or IsEntityAPed(entity) or IsEntityAnObject(entity)) then
                     color = {r = 0, g = 255, b = 0, a = 200}
                     FreeAimEntity = entity
-                    local entityCoord = GetEntityCoords(entity)
-                    local minimum, maximum = GetModelDimensions(GetEntityModel(entity))
                     DrawEntityBoundingBox(entity, color)
-                    DrawEntityViewText(entity, entityCoord)
+                    DrawEntityViewText(entity)
 
                     if IsControlJustReleased(0, 47) then -- Freeze entities
                         if FrozenEntities[entity] then

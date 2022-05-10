@@ -99,7 +99,7 @@ local menu_button11 = menu5:AddButton({
     value = menu6,
     description = Lang:t("desc.weather_desc")
 })
-local menu16 = menu2:AddButton({
+local menu_button12 = menu2:AddButton({
     icon = '🔫',
     label = Lang:t("menu.spawn_weapons"),
     value = menu16,
@@ -734,19 +734,18 @@ end)
 blips_button:On('change', function()
     TriggerEvent('qb-admin:client:toggleBlips')
 end)
-RegisterNetEvent('qb-admin:client:giveWeapon', function(weapon)
+RegisterNetEvent('qb-admin:client:giveWeapon', function(_)
     GiveWeaponToPed(PlayerPedId(), GetHashKey(weapon), 1000, false, true)
 end)
 -- Weapons list
 
 
 for v in pairs(QBCore.Shared.Weapons) do
-    menu16:AddButton({
-        icon = '🔫',
-        label = v.label ,
-        value = v.value ,
-        description = Lang:t("desc.spawn_weapons_desc"),
-        select = function(_)
+  menu16:AddButton({icon = '🔫',
+                    label = v.label,
+                    value = v.value,
+                    description = Lang:t("desc.spawn_weapons_desc"),
+                    select = function(_)
         TriggerServerEvent('qb-admin:giveWeapon', v.name)
         QBCore.Functions.Notify(Lang:t("success.spawn_weapon"))
     end})
