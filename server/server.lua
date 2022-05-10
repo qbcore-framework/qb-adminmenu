@@ -194,6 +194,14 @@ RegisterNetEvent('qb-admin:server:Staffchat:addMessage', function(name, msg)
     end
 end)
 
+
+RegisterServerEvent('qb-admin:giveWeapon')
+AddEventHandler('qb-admin:giveWeapon', function(weapon)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    Player.Functions.AddItem(weapon, 1)
+end)
+
 RegisterNetEvent('qb-admin:server:SaveCar', function(mods, vehicle, _, plate)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
@@ -407,7 +415,7 @@ QBCore.Commands.Add('kickall', Lang:t("commands.kick_all"), {}, false, function(
     end
 end, 'god')
 
-QBCore.Commands.Add('setammo', Lang:t("commands.ammo_amount_set"), {{name='amount', help='Amount of bullets, for example: 20'}, {name='weapon', help='Name of the weapen, for example: WEAPON_VINTAGEPISTOL'}}, false, function(source, args)
+QBCore.Commands.Add('setammo', Lang:t("commands.ammo_amount_set"), {{name='amount', help='Amount of bullets, for example: 20'}, {name='weapon', help='Name of the weapon, for example: WEAPON_VINTAGEPISTOL'}}, false, function(source, args)
     local src = source
     local weapon = args[2]
     local amount = tonumber(args[1])

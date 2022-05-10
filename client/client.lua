@@ -19,7 +19,7 @@ local menu12 = MenuV:CreateMenu(false, Lang:t("menu.vehicle_options"), menuLocat
 local menu13 = MenuV:CreateMenu(false, Lang:t("menu.vehicle_categories"), menuLocation, 220, 20, 60, 'size-125', 'none', 'menuv', 'test12')
 local menu14 = MenuV:CreateMenu(false, Lang:t("menu.vehicle_models"), menuLocation, 220, 20, 60, 'size-125', 'none', 'menuv', 'test13')
 local menu15 = MenuV:CreateMenu(false, Lang:t("menu.entity_view_options"), menuLocation, 220, 20, 60, 'size-125', 'none', 'menuv', 'test15')
-
+local menu16 = MenuV:CreateMenu(false, Lang:t("menu.spawn_weapons"), menuLocation, 220, 20, 60, 'size-125', 'none', 'menuv', 'test16')
 
 RegisterNetEvent('qb-admin:client:openMenu', function()
     MenuV:OpenMenu(menu)
@@ -98,6 +98,12 @@ local menu_button11 = menu5:AddButton({
     label = Lang:t("menu.weather_options"),
     value = menu6,
     description = Lang:t("desc.weather_desc")
+})
+local menu_button12 = menu2:AddButton({
+    icon = '🔫',
+    label = Lang:t("menu.spawn_weapons"),
+    value = menu16,
+    description = Lang:t("desc.spawn_weapons_desc")
 })
 local menu_button13 = menu5:AddSlider({
     icon = '⏲️',
@@ -394,7 +400,12 @@ local menu12_button4 = menu12:AddButton({
     value = 'remove',
     description = Lang:t("desc.remove_vehicle_desc")
 })
-
+local menu12_button5 = menu12:AddButton({
+    icon = '🔧',
+    label = Lang:t("menu.max_mods"),
+    value = 'maxmods',
+    description = Lang:t("desc.max_mod_desc")
+})
 
 -- Entity View Buttons
 local entity_view_distance = menu15:AddSlider({
@@ -713,13 +724,32 @@ menu12_button4:On('Select', function(_)
     TriggerServerEvent('QBCore:CallCommand', "dv", {})
 end)
 
+menu12_button5:On('Select', function(_)
+    TriggerServerEvent('QBCore:CallCommand', "maxmods", {})
+end)
+
 names_button:On('change', function()
     TriggerEvent('qb-admin:client:toggleNames')
 end)
 blips_button:On('change', function()
     TriggerEvent('qb-admin:client:toggleBlips')
 end)
+RegisterNetEvent('qb-admin:client:giveWeapon', function(_)
+    GiveWeaponToPed(PlayerPedId(), GetHashKey(weapon), 1000, false, true)
+end)
+-- Weapons list
 
+
+for v in pairs(QBCore.Shared.Weapons) do
+  menu16:AddButton({icon = '🔫',
+                    label = v.label,
+                    value = v.value,
+                    description = Lang:t("desc.spawn_weapons_desc"),
+                    select = function(_)
+        TriggerServerEvent('qb-admin:giveWeapon', v.name)
+        QBCore.Functions.Notify(Lang:t("success.spawn_weapon"))
+    end})
+end
 -- Dealer List
 
 local function OpenDealerMenu(dealer)

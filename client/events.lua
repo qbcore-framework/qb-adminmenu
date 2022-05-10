@@ -63,6 +63,14 @@ local function getVehicleFromVehList(hash)
 	end
 end
 
+local function getweaponfromList(hash)
+    for k,v in pairs(QBCore.Shared.weapons) do
+        if hash == v.name then
+            return v.name
+        end
+    end
+end
+
 RegisterNetEvent('qb-admin:client:SaveCar', function()
     local ped = PlayerPedId()
     local veh = GetVehiclePedIsIn(ped)
@@ -147,4 +155,23 @@ end)
 
 RegisterNetEvent('qb-admin:client:GiveNuiFocus', function(focus, mouse)
     SetNuiFocus(focus, mouse)
+end)
+
+local performanceModIndices = {11,12,13,15,16}
+function PerformanceUpgradeVehicle(vehicle, customWheels)
+    customWheels = customWheels or false
+    local max
+    if DoesEntityExist(vehicle) and IsEntityAVehicle(vehicle) then
+        for _, modType in ipairs(performanceModIndices) do
+            max = GetNumVehicleMods(vehicle, modType) - 1
+            SetVehicleMod(vehicle, modType, max, customWheels)
+        end
+        ToggleVehicleMod(vehicle, 18, true) -- Turbo
+        SetVehicleFixed(vehicle)
+    end
+end
+
+RegisterNetEvent('qb-admin:client:maxmodVehicle', function()
+    local vehicle = GetVehiclePedIsIn(PlayerPedId())
+    PerformanceUpgradeVehicle(vehicle)
 end)
