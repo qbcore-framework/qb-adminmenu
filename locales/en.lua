@@ -27,6 +27,7 @@ local Translations = {
         ["receive_reports"] = "You are receiving reports",
         ["entity_copy"] = "Freeaim entity info copied to clipboard!",
         ["sucess.entered_vehicle"] = "success Entered vehicle",
+        ["spawn_weapon"] = "You have spawned a Weapon ",
     },
     info = {
         ["ped_coords"] = "Ped Coordinates:",
@@ -151,6 +152,8 @@ local Translations = {
         ["entity_view_vehicles"] = "Display Vehicles",
         ["entity_view_objects"] = "Display Objects",
         ["entity_view_freeaim_copy"] = "Copy Freeaim Entity Info",
+        ["spawn_weapons"] = "Spawn Weapons",
+        ["max_mods"] = "Max car mods",
     },
     desc = {
         ["admin_options_desc"] = "Misc. Admin Options",
@@ -192,6 +195,8 @@ local Translations = {
         ["entity_view_vehicles_desc"] = "Enable/Disable vehicle info in the world",
         ["entity_view_objects_desc"] = "Enable/Disable object info in the world",
         ["entity_view_freeaim_copy_desc"] = "Copies the Free Aim entity info to clipboard",
+        ["spawn_weapons_desc"] = "Spawn Any Weapon.",
+        ["max_mod_desc"] = "Max mod your current vehicle",
     },
     time = {
         ["ban_length"] = "Ban Length",
@@ -263,7 +268,6 @@ local Translations = {
         ["ammo_amount_set"] = "Set Your Ammo Amount (Admin Only)",
     }
 }
-
 Lang = Locale:new({
     phrases = Translations,
     warnOnMissing = true
