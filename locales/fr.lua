@@ -150,6 +150,7 @@ local Translations = {
         ["entity_view_vehicles"] = "Afficher les véhicules",
         ["entity_view_objects"] = "Afficher les objets",
         ["entity_view_freeaim_copy"] = "Copier les informations d'entité Freeaim",
+        ["spawn_weapons"] = "Spawn Weapons",
         ["max_mods"] = "Max car mods",
     },
     desc = {
@@ -192,6 +193,7 @@ local Translations = {
         ["entity_view_vehicles_desc"] = "Activer/Désactiver les informations sur les véhicules dans le monde",
         ["entity_view_objects_desc"] = "Activer/Désactiver les informations sur les objets dans le monde",
         ["entity_view_freeaim_copy_desc"] = "Copie les informations de l'entité de visée libre dans le presse-papiers",
+        ["spawn_weapons_desc"] = "Apparaître n'importe quelle arme.",
         ["max_mod_desc"] = "Max mod votre véhicule actuel",
     },
     time = {
