@@ -150,6 +150,7 @@ local Translations = {
         ["entity_view_vehicles"] = "Afficher les véhicules",
         ["entity_view_objects"] = "Afficher les objets",
         ["entity_view_freeaim_copy"] = "Copier les informations d'entité Freeaim",
+        ["max_mods"] = "Max car mods",
     },
     desc = {
         ["admin_options_desc"] = "Options Admin Divers",
