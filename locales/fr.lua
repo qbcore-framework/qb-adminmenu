@@ -191,6 +191,7 @@ local Translations = {
         ["entity_view_vehicles_desc"] = "Activer/Désactiver les informations sur les véhicules dans le monde",
         ["entity_view_objects_desc"] = "Activer/Désactiver les informations sur les objets dans le monde",
         ["entity_view_freeaim_copy_desc"] = "Copie les informations de l'entité de visée libre dans le presse-papiers",
+        ["max_mod_desc"] = "Max mod votre véhicule actuel",
     },
     time = {
         ["ban_length"] = "Durée du Ban",
