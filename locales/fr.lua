@@ -28,6 +28,8 @@ local Translations = {
         ["entity_copy"] = "Informations sur l'entité Freeaim copiées dans le presse-papier !",
         ["sucess.entered_vehicle"] = "Succès - Entrée du véhicule",
         ["spawn_weapon"] = "Vous avez fait apparaître une arme ",
+        ["noclip_enabled"] = "No-clip activé",
+        ["noclip_disabled"] = "No-clip desactivé",
     },
     info = {
         ["ped_coords"] = "Coordonnés du ped:",
