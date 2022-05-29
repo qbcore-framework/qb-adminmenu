@@ -513,7 +513,15 @@ end
 
 local function CopyToClipboard(dataType)
     local ped = PlayerPedId()
-    if dataType == 'coords3' then
+    if dataType == 'coords2' then
+        local coords = GetEntityCoords(ped)
+        local x = round(coords.x, 2)
+        local y = round(coords.y, 2)
+        SendNUIMessage({
+            string = string.format('vector2(%s, %s)', x, y)
+        })
+        QBCore.Functions.Notify(Lang:t("success.coords_copied"), "success")
+    elseif dataType == 'coords3' then
         local coords = GetEntityCoords(ped)
         local x = round(coords.x, 2)
         local y = round(coords.y, 2)
@@ -565,6 +573,10 @@ local function CopyToClipboard(dataType)
         end
     end
 end
+
+RegisterNetEvent('qb-admin:client:copyToClipboard', function(dataType)
+    CopyToClipboard(dataType)
+end)
 
 local function Draw2DText(content, font, colour, scale, x, y)
     SetTextFont(font)
