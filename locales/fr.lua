@@ -26,6 +26,10 @@ local Translations = {
         ["success_vehicle_owner"] = "Le véhicule vous appartients maintenant!",
         ["receive_reports"] = "Vous recevez des reports",
         ["entity_copy"] = "Informations sur l'entité Freeaim copiées dans le presse-papier !",
+        ["sucess.entered_vehicle"] = "Succès - Entrée du véhicule",
+        ["spawn_weapon"] = "Vous avez fait apparaître une arme ",
+        ["noclip_enabled"] = "No-clip activé",
+        ["noclip_disabled"] = "No-clip desactivé",
     },
     info = {
         ["ped_coords"] = "Coordonnés du ped:",
@@ -150,6 +154,8 @@ local Translations = {
         ["entity_view_vehicles"] = "Afficher les véhicules",
         ["entity_view_objects"] = "Afficher les objets",
         ["entity_view_freeaim_copy"] = "Copier les informations d'entité Freeaim",
+        ["spawn_weapons"] = "Spawn Armes",
+        ["max_mods"] = "Max mods véhicule",
     },
     desc = {
         ["admin_options_desc"] = "Options Admin Divers",
@@ -191,6 +197,8 @@ local Translations = {
         ["entity_view_vehicles_desc"] = "Activer/Désactiver les informations sur les véhicules dans le monde",
         ["entity_view_objects_desc"] = "Activer/Désactiver les informations sur les objets dans le monde",
         ["entity_view_freeaim_copy_desc"] = "Copie les informations de l'entité de visée libre dans le presse-papiers",
+        ["spawn_weapons_desc"] = "Faîtes apparaître n'importe quelle arme.",
+        ["max_mod_desc"] = "Ajoutez tous les mods disponibles à votre véhicule",
     },
     time = {
         ["ban_length"] = "Durée du Ban",
@@ -207,7 +215,6 @@ local Translations = {
         ["permenent"] = "Permanent",
         ["self"] = "sois-même",
         ["changed"] = "Temps Changé à %{time} hs 00 min",
-        ["placeholder"] = " hs 00 min",
     },
     weather = {
         ["extra_sunny"] = "Extra Ensoleillé",
@@ -239,6 +246,7 @@ local Translations = {
         ["heavy_snow"] = "Neige épaisse (Nôel)",
         ["heavy_snow_desc"] = "Combat de boule de neige!",
         ["halloween"] = "Halloween",
+        ["halloween_desc"] = "C'était Quoi Ce Bruit ?!",
         ["weather_changed"] = "Météo changée à: %{value}",
     },
     commands = {
@@ -262,7 +270,6 @@ local Translations = {
         ["ammo_amount_set"] = "Défini vos munitions (Admin Only)",
     }
 }
-
 Lang = Locale:new({
     phrases = Translations,
     warnOnMissing = true

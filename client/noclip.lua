@@ -255,7 +255,7 @@ ToggleNoClip = function(state)
         PlaySoundFromEntity(-1, "CANCEL", PlayerPed, "HUD_LIQUOR_STORE_SOUNDSET", 0, 0)
     end
     
-    QBCore.Functions.Notify(IsNoClipping and "No-clip enabled" or "No-clip disabled")
+    QBCore.Functions.Notify(IsNoClipping and Lang:t("success.noclip_enabled") or Lang:t("success.noclip_disabled"))
     SetUserRadioControlEnabled(not IsNoClipping)
    
     if IsNoClipping then
