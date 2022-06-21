@@ -495,11 +495,9 @@ menu_dev_button:On('change', function(_, _, _)
     dev = not dev
     TriggerEvent('qb-admin:client:ToggleDevmode')
     if dev then
-        while dev do
-            Wait(200)
-            SetPlayerInvincible(PlayerId(), true)
-        end
-            SetPlayerInvincible(PlayerId(), false)
+	SetPlayerInvincible(PlayerId(), true)
+    else
+	SetPlayerInvincible(PlayerId(), false)
     end
 end)
 
