@@ -46,7 +46,7 @@ local DisabledControls = function()
     EnableControlAction(0, 221, true)
     EnableControlAction(0, 245, true)
     if ESCEnable then
-        EnableControlAction(0, 322, true)
+        EnableControlAction(0, 200, true)
     end
 end
 
