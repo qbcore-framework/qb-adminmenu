@@ -15,6 +15,7 @@ local MinY, MaxY        = -89.0, 89.0
 -- Perspective values
 local PedFirstPersonNoClip      = true       -- No Clip in first person when not in a vehicle
 local VehFirstPersonNoClip      = false      -- No Clip in first person when in a vehicle
+local ESCEnable                 = false      -- Access Map during NoClip
 
 -- Speed settings
 local Speed                     = 1         -- Default: 1
@@ -44,6 +45,9 @@ local DisabledControls = function()
     EnableControlAction(0, 220, true)
     EnableControlAction(0, 221, true)
     EnableControlAction(0, 245, true)
+    if ESCEnable then
+        EnableControlAction(0, 200, true)
+    end
 end
 
 local IsControlAlwaysPressed = function(inputGroup, control)
