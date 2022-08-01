@@ -27,8 +27,10 @@ RegisterNetEvent('qb-admin:client:spectate', function(targetPed)
     local myPed = PlayerPedId()
     local targetplayer = GetPlayerFromServerId(targetPed)
     local target = GetPlayerPed(targetplayer)
+    local targetcoordsx,targetcoordsy,targetcoordsz = table.unpack(GetEntityCoords(targetPed, false))
     if not isSpectating then
         isSpectating = true
+        RequestCollisionAtCoord(targetcoordsx,targetcoordsy,targetcoordsz)
         SetEntityVisible(myPed, false) -- Set invisible
         SetEntityCollision(myPed, false, false) -- Set collision
         SetEntityInvincible(myPed, true) -- Set invincible
@@ -37,6 +39,7 @@ RegisterNetEvent('qb-admin:client:spectate', function(targetPed)
         NetworkSetInSpectatorMode(true, target) -- Enter Spectate Mode
     else
         isSpectating = false
+        RequestCollisionAtCoord(lastSpectateCoord.x, lastSpectateCoord.y, lastSpectateCoord.z)
         NetworkSetInSpectatorMode(false, target) -- Remove From Spectate Mode
         NetworkSetEntityInvisibleToNetwork(myPed, false) -- Set Visible
         SetEntityCollision(myPed, true, true) -- Set collision
