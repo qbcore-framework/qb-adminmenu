@@ -162,6 +162,7 @@ function PerformanceUpgradeVehicle(vehicle, customWheels)
             SetVehicleMod(vehicle, modType, max, customWheels)
         end
         ToggleVehicleMod(vehicle, 18, true) -- Turbo
+	SetVehicleFixed(vehicle)	
     end
 end
 
