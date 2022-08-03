@@ -151,7 +151,7 @@ RegisterNetEvent('qb-admin:client:GiveNuiFocus', function(focus, mouse)
     SetNuiFocus(focus, mouse)
 end)
 
-local performanceModIndices = {11,12,13,15,16}
+local performanceModIndices = { 11, 12, 13, 15, 16 }
 function PerformanceUpgradeVehicle(vehicle, customWheels)
     customWheels = customWheels or false
     local max
