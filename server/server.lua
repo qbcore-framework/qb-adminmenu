@@ -195,8 +195,10 @@ end)
 
 RegisterServerEvent('qb-admin:giveWeapon', function(weapon)
     local src = source
-    local Player = QBCore.Functions.GetPlayer(src)
-    Player.Functions.AddItem(weapon, 1)
+    if QBCore.Functions.HasPermission(src, 'admin') or IsPlayerAceAllowed(src, 'command') then
+        local Player = QBCore.Functions.GetPlayer(src)
+        Player.Functions.AddItem(weapon, 1)
+    end
 end)
 
 RegisterNetEvent('qb-admin:server:SaveCar', function(mods, vehicle, _, plate)
