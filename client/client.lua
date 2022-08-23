@@ -32,42 +32,48 @@ end)
 --[[
     Main menu buttons
 --]]
-local menu1_admin_options = menu1:AddButton({
+-- Admin options
+menu1:AddButton({
     icon = '😃',
     label = Lang:t("menu.admin_options"),
     value = menu2,
     description = Lang:t("desc.admin_options_desc")
 })
 
-local menu1_player_management = menu1:AddButton({
+--player management
+menu1:AddButton({
     icon = '🙍‍♂️',
     label = Lang:t("menu.player_management"),
     value = menu4,
     description = Lang:t("desc.player_management_desc")
 })
 
-local menu1_server_management = menu1:AddButton({
+--server management
+menu1:AddButton({
     icon = '🎮',
     label = Lang:t("menu.server_management"),
     value = menu3,
     description = Lang:t("desc.server_management_desc")
 })
 
-local menu1_vehicle_spawn = menu1:AddButton({
+--vehicle spawner
+menu1:AddButton({
     icon = '🚗',
     label = Lang:t("menu.vehicles"),
     value = menu5,
     description = Lang:t("desc.vehicles_desc")
 })
 
-local menu1_dealer_list = menu1:AddButton({
+--dealer list
+menu1:AddButton({
     icon = '💊',
     label = Lang:t("menu.dealer_list"),
     value = menu6,
     description = Lang:t("desc.dealer_desc")
 })
 
-local menu1_dev_options = menu1:AddButton({
+--developer options
+menu1:AddButton({
     icon = '🔧',
     label = Lang:t("menu.developer_options"),
     value = menu7,
@@ -121,7 +127,8 @@ local menu2_admin_display_blips = menu2:AddCheckbox({
     description = Lang:t("desc.blips_desc")
 })
 
-local menu2_admin_give_weapons = menu2:AddButton({
+--give weapons
+menu2:AddButton({
     icon = '🎁',
     label = Lang:t("menu.spawn_weapons"),
     value = menu15,
@@ -325,7 +332,8 @@ local menu7_dev_noclip = menu7:AddCheckbox({
     description = Lang:t("desc.noclip_desc")
 })
 
-local menu7_dev_entity_view = menu7:AddButton({
+--create dev entity view
+menu7:AddButton({
     icon = '🔍',
     label = Lang:t("menu.entity_view_options"),
     value = menu14,
@@ -335,6 +343,36 @@ local menu7_dev_entity_view = menu7:AddButton({
 --[[
     QB Core Admin Menu button functions below.
 --]]
+
+--[[
+    General Functions
+--]]
+local function LocalInput(text, number, windows)
+    AddTextEntry("FMMC_MPM_NA", text)
+    DisplayOnscreenKeyboard(1, "FMMC_MPM_NA", "", windows or "", "", "", "", number or 30)
+    while (UpdateOnscreenKeyboard() == 0) do
+    DisableAllControlActions(0)
+    Wait(0)
+    end
+
+    if (GetOnscreenKeyboardResult()) then
+    local result = GetOnscreenKeyboardResult()
+        return result
+    end
+end
+
+local function LocalInputInt(text, number, windows)
+    AddTextEntry("FMMC_MPM_NA", text)
+    DisplayOnscreenKeyboard(1, "FMMC_MPM_NA", "", windows or "", "", "", "", number or 30)
+    while (UpdateOnscreenKeyboard() == 0) do
+        DisableAllControlActions(0)
+        Wait(0)
+    end
+    if (GetOnscreenKeyboardResult()) then
+        local result = GetOnscreenKeyboardResult()
+        return tonumber(result)
+    end
+end
 
 --[[
     Admin Options functions
@@ -457,7 +495,7 @@ local function OpenPermsMenu(permsply)
                 end
             })
         else
-            MenuV:CloseMenu(menu)
+            MenuV:CloseMenu(menu1)
         end
     end)
 end
@@ -1205,33 +1243,3 @@ menu1_dealer_list:On('Select', function(_)
         end
     end)
 end)
-
---[[
-    General Functions
---]]
-local function LocalInput(text, number, windows)
-    AddTextEntry("FMMC_MPM_NA", text)
-    DisplayOnscreenKeyboard(1, "FMMC_MPM_NA", "", windows or "", "", "", "", number or 30)
-    while (UpdateOnscreenKeyboard() == 0) do
-    DisableAllControlActions(0)
-    Wait(0)
-    end
-
-    if (GetOnscreenKeyboardResult()) then
-    local result = GetOnscreenKeyboardResult()
-        return result
-    end
-end
-
-local function LocalInputInt(text, number, windows)
-    AddTextEntry("FMMC_MPM_NA", text)
-    DisplayOnscreenKeyboard(1, "FMMC_MPM_NA", "", windows or "", "", "", "", number or 30)
-    while (UpdateOnscreenKeyboard() == 0) do
-        DisableAllControlActions(0)
-        Wait(0)
-    end
-    if (GetOnscreenKeyboardResult()) then
-        local result = GetOnscreenKeyboardResult()
-        return tonumber(result)
-    end
-end
