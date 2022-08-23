@@ -65,7 +65,7 @@ menu1:AddButton({
 })
 
 --dealer list
-menu1:AddButton({
+local menu1_dealer_list = menu1:AddButton({
     icon = '💊',
     label = Lang:t("menu.dealer_list"),
     value = menu6,
@@ -721,7 +721,7 @@ local function OpenPlayerMenus(player)
     end
 end
 
-menu1_player_management:On('select', function(_)
+menu4:On('select', function(_)
     menu4:ClearItems()
     QBCore.Functions.TriggerCallback('test:getplayers', function(players)
         for _, v in pairs(players) do
