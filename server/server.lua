@@ -6,7 +6,7 @@ local permissions = {
     ['ban'] = 'admin',
     ['noclip'] = 'admin',
     ['kickall'] = 'admin',
-    ['kick'] = 'admin' }
+    ['kick'] = 'admin',
 }
 local players = {}
 
