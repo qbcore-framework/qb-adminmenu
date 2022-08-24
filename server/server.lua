@@ -2,13 +2,30 @@
 local QBCore = exports['qb-core']:GetCoreObject()
 local frozen = false
 local permissions = {
-    ['kill'] = 'god',
-    ['ban'] = 'admin',
-    ['noclip'] = 'admin',
-    ['kickall'] = 'admin',
-    ['kick'] = 'admin'
+    ['adminmenu'] = { 'god', 'admin'},
+    ['kill'] = { 'god' },
+    ['ban'] = { 'admin' },
+    ['noclip'] =  { 'admin' },
+    ['kickall'] = { 'admin' },
+    ['kick'] = { 'admin' }
 }
 local players = {}
+
+-- Function for checking permissions
+local function hasPermission(src, command)
+    if permissions[command] then
+        if IsPlayerAceAllowed(src, 'command') then return true end
+
+        for _, level in pairs(permissions) do
+            if QBCore.Functions.HasPermission(src, level) then
+                return true
+            end
+        end
+    else
+        print(command..' does not exist')
+    end
+    return false
+end
 
 -- Get Dealers
 QBCore.Functions.CreateCallback('test:getdealers', function(_, cb)
@@ -29,7 +46,6 @@ QBCore.Functions.CreateCallback('qb-admin:server:getrank', function(source, cb)
 end)
 
 -- Functions
-
 local function tablelength(table)
     local count = 0
     for _ in pairs(table) do
@@ -46,7 +62,11 @@ RegisterNetEvent('qb-admin:server:GetPlayersForBlips', function()
 end)
 
 RegisterNetEvent('qb-admin:server:kill', function(player)
-    TriggerClientEvent('hospital:client:KillPlayer', player.id)
+    if hasPermission(source, 'kill') then
+        TriggerClientEvent('hospital:client:KillPlayer', player.id)
+    else
+        TriggerClientEvent('QBCore:Notify', src, Lang:t("error.no_permissions"), 'error', 5000)
+    end
 end)
 
 RegisterNetEvent('qb-admin:server:revive', function(player)

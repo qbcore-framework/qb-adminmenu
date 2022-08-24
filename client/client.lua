@@ -41,7 +41,7 @@ menu1:AddButton({
 })
 
 --player management
-menu1:AddButton({
+local player_management = menu1:AddButton({
     icon = '🙍‍♂️',
     label = Lang:t("menu.player_management"),
     value = menu4,
@@ -721,7 +721,7 @@ local function OpenPlayerMenus(player)
     end
 end
 
-menu4:On('select', function(_)
+player_management:On('select', function(_)
     menu4:ClearItems()
     QBCore.Functions.TriggerCallback('test:getplayers', function(players)
         for _, v in pairs(players) do
