@@ -6,7 +6,7 @@ local permissions = {
     ['ban'] = 'admin',
     ['noclip'] = 'admin',
     ['kickall'] = 'admin',
-    ['kick'] = 'admin'
+    ['kick'] = 'admin',
 }
 local players = {}
 
@@ -29,7 +29,6 @@ QBCore.Functions.CreateCallback('qb-admin:server:getrank', function(source, cb)
 end)
 
 -- Functions
-
 local function tablelength(table)
     local count = 0
     for _ in pairs(table) do
@@ -39,7 +38,6 @@ local function tablelength(table)
 end
 
 -- Events
-
 RegisterNetEvent('qb-admin:server:GetPlayersForBlips', function()
     local src = source
     TriggerClientEvent('qb-admin:client:Show', src, players)
@@ -195,8 +193,10 @@ end)
 
 RegisterServerEvent('qb-admin:giveWeapon', function(weapon)
     local src = source
-    local Player = QBCore.Functions.GetPlayer(src)
-    Player.Functions.AddItem(weapon, 1)
+    if QBCore.Functions.HasPermission(src, 'admin') or IsPlayerAceAllowed(src, 'command') then
+        local Player = QBCore.Functions.GetPlayer(src)
+        Player.Functions.AddItem(weapon, 1)
+    end
 end)
 
 RegisterNetEvent('qb-admin:server:SaveCar', function(mods, vehicle, _, plate)
