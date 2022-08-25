@@ -728,7 +728,7 @@ player_management:On('select', function(_)
             menu4:AddButton({
                 label = Lang:t("info.id") .. v["id"] .. ' | ' .. v["name"],
                 value = v,
-                description = Lang:t("info.player_name"),
+                description = 'Player Online:' ..#players,
                 select = function(btn)
                     local select = btn.Value -- get all the values from v!
                     OpenPlayerMenus(select) -- only pass what i select nothing else
