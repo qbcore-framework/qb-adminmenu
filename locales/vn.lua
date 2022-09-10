@@ -270,7 +270,11 @@ local Translations = {
         ["ammo_amount_set"] = "Đặt số lượng đạn của bạn (Chỉ dành cho Admin)",
     }
 }
-Lang = Locale:new({
-    phrases = Translations,
-    warnOnMissing = true
-})
+
+if GetConvar('qb_locale', 'en') == 'vn' then
+    Lang = Locale:new({
+        phrases = Translations,
+        warnOnMissing = true,
+        fallbackLang = Lang,
+    })
+end
