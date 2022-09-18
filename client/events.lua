@@ -63,8 +63,6 @@ local function getVehicleFromVehList(hash)
 	end
 end
 
-
-
 RegisterNetEvent('qb-admin:client:SaveCar', function()
     local ped = PlayerPedId()
     local veh = GetVehiclePedIsIn(ped)
@@ -134,12 +132,33 @@ RegisterNetEvent('qb-weapons:client:SetWeaponAmmoManual', function(weapon, ammo)
     local ped = PlayerPedId()
     if weapon ~= "current" then
         weapon = weapon:upper()
-        SetPedAmmo(ped, GetHashKey(weapon), ammo)
+        local weaponHash = joaat(weapon)
+        local item = nil
+        for _, v in pairs(QBCore.Functions.GetPlayerData().items) do
+            if v and v.name == QBCore.Shared.Weapons[weaponHash]["name"] then
+                item = v
+                break
+            end
+        end
+        if not item then return end
+        SetPedAmmo(ped, weaponHash, ammo)
+        MakePedReload(ped)
+        TriggerServerEvent("weapons:server:UpdateWeaponAmmo", item, ammo)
         QBCore.Functions.Notify(Lang:t("info.ammoforthe", {value = ammo, weapon = QBCore.Shared.Weapons[weapon]["label"]}), 'success')
     else
         weapon = GetSelectedPedWeapon(ped)
-        if weapon ~= nil then
+        if weapon then
+            local item = nil
+            for _, v in pairs(QBCore.Functions.GetPlayerData().items) do
+                if v and v.name == QBCore.Shared.Weapons[weapon]["name"] then
+                    item = v
+                    break
+                end
+            end
+            if not item then return end
             SetPedAmmo(ped, weapon, ammo)
+            MakePedReload(ped)
+            TriggerServerEvent("weapons:server:UpdateWeaponAmmo", item, ammo)
             QBCore.Functions.Notify(Lang:t("info.ammoforthe", {value = ammo, weapon = QBCore.Shared.Weapons[weapon]["label"]}), 'success')
         else
             QBCore.Functions.Notify(Lang:t("error.no_weapon"), 'error')
@@ -170,4 +189,3 @@ RegisterNetEvent('qb-admin:client:maxmodVehicle', function()
     local vehicle = GetVehiclePedIsIn(PlayerPedId())
     PerformanceUpgradeVehicle(vehicle)
 end)
-
