@@ -456,6 +456,10 @@ local function OpenPermsMenu(permsply)
                     value = 'user',
                     description = 'Group'
                 }, {
+                    label = 'Mod',
+                    value = 'mod',
+                    description = 'Group'
+                }, {
                     label = 'Admin',
                     value = 'admin',
                     description = 'Group'
@@ -473,6 +477,9 @@ local function OpenPermsMenu(permsply)
                         selectedgroup = {}
                         selectedgroup[#selectedgroup+1] = {rank = "admin", label = "Admin"}
                     elseif vcal == 3 then
+                        selectedgroup = {}
+                        selectedgroup[#selectedgroup+1] = {rank = "admin", label = "Admin"}
+                    elseif vcal == 4 then
                         selectedgroup = {}
                         selectedgroup[#selectedgroup+1] = {rank = "god", label = "God"}
                     end
