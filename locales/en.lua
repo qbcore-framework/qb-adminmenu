@@ -26,7 +26,6 @@ local Translations = {
         ["success_vehicle_owner"] = "The vehicle is now yours!",
         ["receive_reports"] = "You are receiving reports",
         ["entity_copy"] = "Freeaim entity info copied to clipboard!",
-        ["sucess.entered_vehicle"] = "success Entered vehicle",
         ["spawn_weapon"] = "You have spawned a Weapon ",
         ["noclip_enabled"] = "No-clip enabled",
         ["noclip_disabled"] = "No-clip disabled",
