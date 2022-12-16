@@ -242,20 +242,6 @@ RegisterNetEvent('qb-admin:server:SendReport', function(name, targetSrc, msg)
     end
 end)
 
-RegisterNetEvent('qb-admin:server:Staffchat:addMessage', function(name, msg)
-    local src = source
-    if QBCore.Functions.HasPermission(src, 'admin') or IsPlayerAceAllowed(src, 'command') then
-        if QBCore.Functions.IsOptin(src) then
-            TriggerClientEvent('chat:addMessage', src, {
-                color = {255, 0, 0},
-                multiline = true,
-                args = {Lang:t("info.staffchat")..name, msg}
-            })
-        end
-    end
-end)
-
-
 RegisterServerEvent('qb-admin:giveWeapon', function(weapon)
     local src = source
     if QBCore.Functions.HasPermission(src, 'admin') or IsPlayerAceAllowed(src, 'command') then
@@ -339,7 +325,19 @@ end)
 
 QBCore.Commands.Add('staffchat', Lang:t("commands.staffchat_message"), {{name='message', help='Message'}}, true, function(source, args)
     local msg = table.concat(args, ' ')
-    TriggerClientEvent('qb-admin:client:SendStaffChat', -1, GetPlayerName(source), msg)
+    local name = GetPlayerName(source)
+
+    for i,v in pairs(QBCore.Functions.GetPlayers()) do
+        if QBCore.Functions.HasPermission(v, 'admin') or IsPlayerAceAllowed(v, 'command') then
+            if QBCore.Functions.IsOptin(v) then
+                TriggerClientEvent('chat:addMessage', v, {
+                    color = {255, 0, 0},
+                    multiline = true,
+                    args = {Lang:t("info.staffchat")..name, msg}
+                })
+            end
+        end
+    end
 end, 'admin')
 
 QBCore.Commands.Add('givenuifocus', Lang:t("commands.nui_focus"), {{name='id', help='Player id'}, {name='focus', help='Set focus on/off'}, {name='mouse', help='Set mouse on/off'}}, true, function(_, args)
