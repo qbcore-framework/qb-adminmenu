@@ -44,7 +44,10 @@ RegisterNetEvent('qb-admin:server:GetPlayersForBlips', function()
 end)
 
 RegisterNetEvent('qb-admin:server:kill', function(player)
-    TriggerClientEvent('hospital:client:KillPlayer', player.id)
+    local src = source
+    if QBCore.Functions.HasPermission(src, permissions['kill']) or IsPlayerAceAllowed(src, 'command')  then
+        TriggerClientEvent('hospital:client:KillPlayer', player.id)
+    end
 end)
 
 RegisterNetEvent('qb-admin:server:revive', function(player)
