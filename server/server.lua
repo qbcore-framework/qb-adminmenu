@@ -7,7 +7,8 @@ local permissions = {
     ['noclip'] = 'admin',
     ['kickall'] = 'admin',
     ['kick'] = 'admin',
-    ["revive"] = "admin"
+    ["revive"] = "admin",
+    ["freeze"] = "admin",
 }
 local players = {}
 
@@ -105,13 +106,16 @@ RegisterNetEvent('qb-admin:server:spectate', function(player)
 end)
 
 RegisterNetEvent('qb-admin:server:freeze', function(player)
-    local target = GetPlayerPed(player.id)
-    if not frozen then
-        frozen = true
-        FreezeEntityPosition(target, true)
-    else
-        frozen = false
-        FreezeEntityPosition(target, false)
+    local src = source
+    if QBCore.Functions.HasPermission(src, permissions['freeze']) or IsPlayerAceAllowed(src, 'command') then
+        local target = GetPlayerPed(player.id)
+        if not frozen then
+            frozen = true
+            FreezeEntityPosition(target, true)
+        else
+            frozen = false
+            FreezeEntityPosition(target, false)
+        end
     end
 end)
 
