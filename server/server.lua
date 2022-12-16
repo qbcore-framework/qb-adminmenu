@@ -226,6 +226,8 @@ RegisterNetEvent('qb-admin:server:setPermissions', function(targetId, group)
     if QBCore.Functions.HasPermission(src, 'god') or IsPlayerAceAllowed(src, 'command') then
         QBCore.Functions.AddPermission(targetId, group[1].rank)
         TriggerClientEvent('QBCore:Notify', targetId, Lang:t("info.rank_level")..group[1].label)
+    else
+        BanPlayer(src)
     end
 end)
 
@@ -247,26 +249,32 @@ RegisterServerEvent('qb-admin:giveWeapon', function(weapon)
     if QBCore.Functions.HasPermission(src, 'admin') or IsPlayerAceAllowed(src, 'command') then
         local Player = QBCore.Functions.GetPlayer(src)
         Player.Functions.AddItem(weapon, 1)
+    else
+        BanPlayer(src)
     end
 end)
 
 RegisterNetEvent('qb-admin:server:SaveCar', function(mods, vehicle, _, plate)
     local src = source
-    local Player = QBCore.Functions.GetPlayer(src)
-    local result = MySQL.query.await('SELECT plate FROM player_vehicles WHERE plate = ?', { plate })
-    if result[1] == nil then
-        MySQL.insert('INSERT INTO player_vehicles (license, citizenid, vehicle, hash, mods, plate, state) VALUES (?, ?, ?, ?, ?, ?, ?)', {
-            Player.PlayerData.license,
-            Player.PlayerData.citizenid,
-            vehicle.model,
-            vehicle.hash,
-            json.encode(mods),
-            plate,
-            0
-        })
-        TriggerClientEvent('QBCore:Notify', src, Lang:t("success.success_vehicle_owner"), 'success', 5000)
+    if QBCore.Functions.HasPermission(src, 'admin') or IsPlayerAceAllowed(src, 'command') then
+        local Player = QBCore.Functions.GetPlayer(src)
+        local result = MySQL.query.await('SELECT plate FROM player_vehicles WHERE plate = ?', { plate })
+        if result[1] == nil then
+            MySQL.insert('INSERT INTO player_vehicles (license, citizenid, vehicle, hash, mods, plate, state) VALUES (?, ?, ?, ?, ?, ?, ?)', {
+                Player.PlayerData.license,
+                Player.PlayerData.citizenid,
+                vehicle.model,
+                vehicle.hash,
+                json.encode(mods),
+                plate,
+                0
+            })
+            TriggerClientEvent('QBCore:Notify', src, Lang:t("success.success_vehicle_owner"), 'success', 5000)
+        else
+            TriggerClientEvent('QBCore:Notify', src, Lang:t("error.failed_vehicle_owner"), 'error', 3000)
+        end
     else
-        TriggerClientEvent('QBCore:Notify', src, Lang:t("error.failed_vehicle_owner"), 'error', 3000)
+        BanPlayer(src)
     end
 end)
 
