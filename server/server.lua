@@ -10,6 +10,11 @@ local permissions = {
     ["revive"] = "admin",
     ["freeze"] = "admin",
     ["goto"] = "admin",
+    ["spectate"] = "admin",
+    ["intovehicle"] = "admin",
+    ["bring"] = "admin",
+    ["inventory"] = "admin",
+    ["clothing"] = "admin"
 }
 local players = {}
 
@@ -123,9 +128,13 @@ end)
 
 RegisterNetEvent('qb-admin:server:spectate', function(player)
     local src = source
-    local targetped = GetPlayerPed(player.id)
-    local coords = GetEntityCoords(targetped)
-    TriggerClientEvent('qb-admin:client:spectate', src, player.id, coords)
+    if QBCore.Functions.HasPermission(src, permissions['spectate']) or IsPlayerAceAllowed(src, 'command') then
+        local targetped = GetPlayerPed(player.id)
+        local coords = GetEntityCoords(targetped)
+        TriggerClientEvent('qb-admin:client:spectate', src, player.id, coords)
+    else
+        BanPlayer(src)
+    end
 end)
 
 RegisterNetEvent('qb-admin:server:freeze', function(player)
@@ -147,7 +156,6 @@ end)
 RegisterNetEvent('qb-admin:server:goto', function(player)
     local src = source
     if QBCore.Functions.HasPermission(src, permissions['goto']) or IsPlayerAceAllowed(src, 'command') then
-        local src = source
         local admin = GetPlayerPed(src)
         local coords = GetEntityCoords(GetPlayerPed(player.id))
         SetEntityCoords(admin, coords)
@@ -158,43 +166,59 @@ end)
 
 RegisterNetEvent('qb-admin:server:intovehicle', function(player)
     local src = source
-    local admin = GetPlayerPed(src)
-    -- local coords = GetEntityCoords(GetPlayerPed(player.id))
-    local targetPed = GetPlayerPed(player.id)
-    local vehicle = GetVehiclePedIsIn(targetPed,false)
-    local seat = -1
-    if vehicle ~= 0 then
-        for i=0,8,1 do
-            if GetPedInVehicleSeat(vehicle,i) == 0 then
-                seat = i
-                break
+    if QBCore.Functions.HasPermission(src, permissions['intovehicle']) or IsPlayerAceAllowed(src, 'command') then
+        local admin = GetPlayerPed(src)
+        local targetPed = GetPlayerPed(player.id)
+        local vehicle = GetVehiclePedIsIn(targetPed,false)
+        local seat = -1
+        if vehicle ~= 0 then
+            for i=0,8,1 do
+                if GetPedInVehicleSeat(vehicle,i) == 0 then
+                    seat = i
+                    break
+                end
+            end
+            if seat ~= -1 then
+                SetPedIntoVehicle(admin,vehicle,seat)
+                TriggerClientEvent('QBCore:Notify', src, Lang:t("sucess.entered_vehicle"), 'success', 5000)
+            else
+                TriggerClientEvent('QBCore:Notify', src, Lang:t("error.no_free_seats"), 'danger', 5000)
             end
         end
-        if seat ~= -1 then
-            SetPedIntoVehicle(admin,vehicle,seat)
-            TriggerClientEvent('QBCore:Notify', src, Lang:t("sucess.entered_vehicle"), 'success', 5000)
-        else
-            TriggerClientEvent('QBCore:Notify', src, Lang:t("error.no_free_seats"), 'danger', 5000)
-        end
+    else
+        BanPlayer(src)
     end
 end)
 
 
 RegisterNetEvent('qb-admin:server:bring', function(player)
     local src = source
-    local admin = GetPlayerPed(src)
-    local coords = GetEntityCoords(admin)
-    local target = GetPlayerPed(player.id)
-    SetEntityCoords(target, coords)
+    if QBCore.Functions.HasPermission(src, permissions['bring']) or IsPlayerAceAllowed(src, 'command') then
+        local admin = GetPlayerPed(src)
+        local coords = GetEntityCoords(admin)
+        local target = GetPlayerPed(player.id)
+        SetEntityCoords(target, coords)
+    else
+        BanPlayer(src)
+    end
 end)
 
 RegisterNetEvent('qb-admin:server:inventory', function(player)
     local src = source
-    TriggerClientEvent('qb-admin:client:inventory', src, player.id)
+    if QBCore.Functions.HasPermission(src, permissions['inventory']) or IsPlayerAceAllowed(src, 'command') then
+        TriggerClientEvent('qb-admin:client:inventory', src, player.id)
+    else
+        BanPlayer(src)
+    end
 end)
 
 RegisterNetEvent('qb-admin:server:cloth', function(player)
-    TriggerClientEvent('qb-clothing:client:openMenu', player.id)
+    local src = source
+    if QBCore.Functions.HasPermission(src, permissions['clothing']) or IsPlayerAceAllowed(src, 'command') then
+        TriggerClientEvent('qb-clothing:client:openMenu', player.id)
+    else
+        BanPlayer(src)
+    end
 end)
 
 RegisterNetEvent('qb-admin:server:setPermissions', function(targetId, group)
