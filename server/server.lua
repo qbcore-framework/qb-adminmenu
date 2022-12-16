@@ -2,11 +2,12 @@
 local QBCore = exports['qb-core']:GetCoreObject()
 local frozen = false
 local permissions = {
-    ['kill'] = 'god',
+    ['kill'] = 'admin',
     ['ban'] = 'admin',
     ['noclip'] = 'admin',
     ['kickall'] = 'admin',
     ['kick'] = 'admin',
+    ["revive"] = "admin"
 }
 local players = {}
 
@@ -51,7 +52,10 @@ RegisterNetEvent('qb-admin:server:kill', function(player)
 end)
 
 RegisterNetEvent('qb-admin:server:revive', function(player)
-    TriggerClientEvent('hospital:client:Revive', player.id)
+    local src = source
+    if QBCore.Functions.HasPermission(src, permissions['revive']) or IsPlayerAceAllowed(src, 'command')  then
+        TriggerClientEvent('hospital:client:Revive', player.id)
+    end
 end)
 
 RegisterNetEvent('qb-admin:server:kick', function(player, reason)
