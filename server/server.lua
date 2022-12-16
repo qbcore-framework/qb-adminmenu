@@ -9,6 +9,7 @@ local permissions = {
     ['kick'] = 'admin',
     ["revive"] = "admin",
     ["freeze"] = "admin",
+    ["goto"] = "admin",
 }
 local players = {}
 
@@ -39,6 +40,20 @@ local function tablelength(table)
     return count
 end
 
+local function BanPlayer(src)
+    MySQL.insert('INSERT INTO bans (name, license, discord, ip, reason, expire, bannedby) VALUES (?, ?, ?, ?, ?, ?, ?)', {
+        GetPlayerName(src),
+        QBCore.Functions.GetIdentifier(src, 'license'),
+        QBCore.Functions.GetIdentifier(src, 'discord'),
+        QBCore.Functions.GetIdentifier(src, 'ip'),
+        "Trying to revive theirselves or other players",
+        2147483647,
+        'qb-adminmenu'
+    })
+    TriggerEvent('qb-log:server:CreateLog', 'adminmenu', 'Player Banned', 'red', string.format('%s was banned by %s for %s', GetPlayerName(src), 'qb-adminmenu', "Trying to trigger admin options which they dont have permission for"), true)
+    DropPlayer(src, 'You were permanently banned by the server for: Exploiting')
+end
+
 -- Events
 RegisterNetEvent('qb-admin:server:GetPlayersForBlips', function()
     local src = source
@@ -49,6 +64,8 @@ RegisterNetEvent('qb-admin:server:kill', function(player)
     local src = source
     if QBCore.Functions.HasPermission(src, permissions['kill']) or IsPlayerAceAllowed(src, 'command')  then
         TriggerClientEvent('hospital:client:KillPlayer', player.id)
+    else
+        BanPlayer(src)
     end
 end)
 
@@ -56,6 +73,8 @@ RegisterNetEvent('qb-admin:server:revive', function(player)
     local src = source
     if QBCore.Functions.HasPermission(src, permissions['revive']) or IsPlayerAceAllowed(src, 'command')  then
         TriggerClientEvent('hospital:client:Revive', player.id)
+    else
+        BanPlayer(src)
     end
 end)
 
@@ -64,6 +83,8 @@ RegisterNetEvent('qb-admin:server:kick', function(player, reason)
     if QBCore.Functions.HasPermission(src, permissions['kick']) or IsPlayerAceAllowed(src, 'command')  then
         TriggerEvent('qb-log:server:CreateLog', 'bans', 'Player Kicked', 'red', string.format('%s was kicked by %s for %s', GetPlayerName(player.id), GetPlayerName(src), reason), true)
         DropPlayer(player.id, Lang:t("info.kicked_server") .. ':\n' .. reason .. '\n\n' .. Lang:t("info.check_discord") .. QBCore.Config.Server.Discord)
+    else
+        BanPlayer(src)
     end
 end)
 
@@ -95,6 +116,8 @@ RegisterNetEvent('qb-admin:server:ban', function(player, time, reason)
         else
             DropPlayer(player.id, Lang:t("info.banned") .. '\n' .. reason .. Lang:t("info.ban_expires") .. timeTable['day'] .. '/' .. timeTable['month'] .. '/' .. timeTable['year'] .. ' ' .. timeTable['hour'] .. ':' .. timeTable['min'] .. '\n🔸 Check our Discord for more information: ' .. QBCore.Config.Server.Discord)
         end
+    else
+        BanPlayer(src)
     end
 end)
 
@@ -116,14 +139,21 @@ RegisterNetEvent('qb-admin:server:freeze', function(player)
             frozen = false
             FreezeEntityPosition(target, false)
         end
+    else
+        BanPlayer(src)
     end
 end)
 
 RegisterNetEvent('qb-admin:server:goto', function(player)
     local src = source
-    local admin = GetPlayerPed(src)
-    local coords = GetEntityCoords(GetPlayerPed(player.id))
-    SetEntityCoords(admin, coords)
+    if QBCore.Functions.HasPermission(src, permissions['goto']) or IsPlayerAceAllowed(src, 'command') then
+        local src = source
+        local admin = GetPlayerPed(src)
+        local coords = GetEntityCoords(GetPlayerPed(player.id))
+        SetEntityCoords(admin, coords)
+    else
+        BanPlayer(src)
+    end
 end)
 
 RegisterNetEvent('qb-admin:server:intovehicle', function(player)
