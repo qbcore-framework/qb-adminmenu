@@ -335,13 +335,13 @@ QBCore.Commands.Add('staffchat', Lang:t("commands.staffchat_message"), {{name='m
     local msg = table.concat(args, ' ')
     local name = GetPlayerName(source)
 
-    local players = QBCore.Functions.GetPlayers()
+    local plrs = QBCore.Functions.GetPlayers()
 
-    for i = 1, #players, 1 do
-        local player = players[i]
-        if QBCore.Functions.HasPermission(player, 'admin') or IsPlayerAceAllowed(player, 'command') then
-            if QBCore.Functions.IsOptin(player) then
-                TriggerClientEvent('chat:addMessage', player, {
+    for i = 1, #plrs, 1 do
+        local plr = plrs[i]
+        if QBCore.Functions.HasPermission(plr, 'admin') or IsPlayerAceAllowed(plr, 'command') then
+            if QBCore.Functions.IsOptin(plr) then
+                TriggerClientEvent('chat:addMessage', plr, {
                     color = {255, 0, 0},
                     multiline = true,
                     args = {Lang:t("info.staffchat")..name, msg}
