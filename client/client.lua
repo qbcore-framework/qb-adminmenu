@@ -724,10 +724,16 @@ end
 player_management:On('select', function(_)
     menu4:ClearItems()
     QBCore.Functions.TriggerCallback('test:getplayers', function(players)
-        playerTable = {}
-        for _, v in pairs(players) do playerTable[v["id"]] = v end
-        table.sort(playerTable)
-        for _, v in ipairs(playerTable) do
+        keysList = {}
+        playersTable = {}
+        for _, v in pairs(players) do 
+            table.insert(keysList, v["id"])
+            playersTable[v["id"]] = v
+        end
+        table.sort(keysList)
+        for _, id in pairs(keysList) do
+            v = playersTable[id]
+            print(type(v["id"]), v["name"])
             menu4:AddButton({
                 label = Lang:t("info.id") .. v["id"] .. ' | ' .. v["name"],
                 value = v,
