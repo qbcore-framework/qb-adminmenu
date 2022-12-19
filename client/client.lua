@@ -726,7 +726,7 @@ player_management:On('select', function(_)
     QBCore.Functions.TriggerCallback('test:getplayers', function(players)
         local keysList = {}
         local playersTable = {}
-        for _, v in pairs(players) do 
+        for _, v in pairs(players) do
             keysList[#keysList + 1] = v["id"]
             playersTable[v["id"]] = v
         end
