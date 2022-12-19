@@ -727,7 +727,7 @@ player_management:On('select', function(_)
         keysList = {}
         playersTable = {}
         for _, v in pairs(players) do 
-            table.insert(keysList, v["id"])
+            keysList[#keysList + 1] = v["id"]
             playersTable[v["id"]] = v
         end
         table.sort(keysList)
