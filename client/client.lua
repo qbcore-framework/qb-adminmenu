@@ -860,8 +860,10 @@ end)
 
 -- Set vehicle Categories
 local vehicles = {}
+local category
 for k, v in pairs(QBCore.Shared.Vehicles) do
-    local category = v["category"]
+    category = v.category
+    if v.categoryLabel then category = v.categoryLabel end
     if vehicles[category] == nil then
         vehicles[category] = { }
     end
