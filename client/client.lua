@@ -1,4 +1,4 @@
-local banlength = nil
+local banlength, category
 local developermode = false
 local showCoords = false
 local vehicleDevMode = false
@@ -860,7 +860,6 @@ end)
 
 -- Set vehicle Categories
 local vehicles = {}
-local category
 for k, v in pairs(QBCore.Shared.Vehicles) do
     category = v.category
     if v.categoryLabel then category = v.categoryLabel end
