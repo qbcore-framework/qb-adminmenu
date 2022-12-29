@@ -1,4 +1,4 @@
-local banlength, category
+local banlength
 local developermode = false
 local showCoords = false
 local vehicleDevMode = false
@@ -859,14 +859,18 @@ end)
 --]]
 
 -- Set vehicle Categories
-local vehicles = {}
-for k, v in pairs(QBCore.Shared.Vehicles) do
-    category = v.category
-    if v.categoryLabel then category = v.categoryLabel end
-    if vehicles[category] == nil then
-        vehicles[category] = { }
+local function setVehicleCategories()
+    local vehicles = {}
+    local category
+    for k, v in pairs(QBCore.Shared.Vehicles) do
+        category = v.category
+        if v.categoryLabel then category = v.categoryLabel end
+        if vehicles[category] == nil then
+            vehicles[category] = { }
+        end
+        vehicles[category][k] = v
     end
-    vehicles[category][k] = v
+    return vehicles
 end
 
 -- Car Categories
@@ -886,6 +890,7 @@ local function OpenCarModelsMenu(category)
 end
 
 menu5_vehicles_spawn:On('Select', function(_)
+    local vehicles = setVehicleCategories()
     menu12:ClearItems()
     for k, v in pairs(vehicles) do
         menu12:AddButton({
