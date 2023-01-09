@@ -58,7 +58,7 @@ local function BanPlayer(src)
     TriggerEvent('qb-log:server:CreateLog', 'adminmenu', 'Player Banned', 'red', string.format('%s was banned by %s for %s', GetPlayerName(src), 'qb-adminmenu', "Trying to trigger admin options which they dont have permission for"), true)
     DropPlayer(src, 'You were permanently banned by the server for: Exploiting')
 end
-
+exports("BanPlayer",BanPlayer)
 -- Events
 RegisterNetEvent('qb-admin:server:GetPlayersForBlips', function()
     local src = source
