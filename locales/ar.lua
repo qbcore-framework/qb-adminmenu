@@ -26,17 +26,21 @@ local Translations = {
         ["success_vehicle_owner"] = "السيارة الآن لك",
         ["receive_reports"] = "أنت تتلقى تقارير",
         ["entity_copy"] = "تم نسخ معلومات الكيان المجانية إلى الحافظة!",
+        ["sucess.entered_vehicle"] = "نجح الدخول في السيارة",
+        ["spawn_weapon"] = "لقد رسبنت سلاح ",
+        ["noclip_enabled"] = "تم تفعيل الطياران",
+        ["noclip_disabled"] = "تم الغاء الطيران",
     },
-    info = { -- you need font arabic --
-        ["ped_coords"] = "ﺕﺎﻴﺛﺍﺪﺣﺇ:",
-        ["vehicle_dev_data"] = "ﺓﺭﺎﻴﺴﻟﺍ ﺕﺎﻧﺎﻴﺑ",
-        ["ent_id"] = "ﻑﺮﻌﻤﻟﺍ: ",
-        ["net_id"] = "ﻱﺪﻳﻻﺍ: ",
+    info = { -- you need font arabic -- for exmple im using space font
+        ["ped_coords"] = "<FONT FACE='space'>ﺕﺎﻴﺛﺍﺪﺣﺇ:",
+        ["vehicle_dev_data"] = "<FONT FACE='space'>ﺓﺭﺎﻴﺴﻟﺍ ﺕﺎﻧﺎﻴﺑ",
+        ["ent_id"] = "<FONT FACE='space'>ﻑﺮﻌﻤﻟﺍ: ",
+        ["net_id"] = "<FONT FACE='space'>ﻱﺪﻳﻻﺍ: ",
         ["net_id_not_registered"] = "غير مسجل",
-        ["model"] = "ﻉﻮﻨﻟﺍ: ",
-        ["hash"] = "ﺵﺎﻬﻟﺍ: ",
-        ["eng_health"] = "ﻙﺮﺤﻤﻟﺍ ﺔﺤﺻ: ",
-        ["body_health"] = "ﻢﺴﺠﻟﺍ ﺔﺤﺻ: ",
+        ["model"] = "<FONT FACE='space'>ﻉﻮﻨﻟﺍ: ",
+        ["hash"] = "<FONT FACE='space'>ﺵﺎﻬﻟﺍ: ",
+        ["eng_health"] = "<FONT FACE='space'>ﻙﺮﺤﻤﻟﺍ ﺔﺤﺻ: ",
+        ["body_health"] = "<FONT FACE='space'>ﻢﺴﺠﻟﺍ ﺔﺤﺻ: ",
         ["goto"] = "الانتفال اليه",
         ["remove"] = "حدف",
         ["confirm"] = "تأكيد",
@@ -142,6 +146,7 @@ local Translations = {
         ["sit_in_vehicle"] = "ضع في السيارة",
         ["open_inv"] = "فتح الحقيبة",
         ["give_clothing_menu"] = "فتح قائمة الملابس",
+        ["hud_dev_mode"] = "(qb-hud) وضع المطور",
         ["entity_view_options"] = "وضع طريقة عرض الكيان",
         ["entity_view_distance"] = "تعيين مسافة العرض",
         ["entity_view_freeaim"] = "وضع الهدف الحر",
@@ -149,6 +154,8 @@ local Translations = {
         ["entity_view_vehicles"] = "عرض المركبات",
         ["entity_view_objects"] = "عرض الكائنات",
         ["entity_view_freeaim_copy"] = "نسخ معلومات الكيان المجانية",
+        ["spawn_weapons"] = "رسبنت سلاح",
+        ["max_mods"] = "تطبيق افضل التغطويرات",
     },
     desc = {
         ["admin_options_desc"] = "خيارات المسؤول",
@@ -183,12 +190,15 @@ local Translations = {
         ["sit_in_veh_desc"] = "اجلس في",
         ["sit_in_veh_desc2"] = " سيارة",
         ["clothing_menu_desc"] = "امنح قائمة الملابس لـ ",
+        ["hud_dev_mode_desc"] = "تشغيل/الغاء وضع المبرمج",
         ["entity_view_desc"] = "عرض معلومات حول الكيانات",
         ["entity_view_freeaim_desc"] = "تمكين / تعطيل معلومات الكيان عبر مجانية",
         ["entity_view_peds_desc"] = "تمكين / تعطيل معلومات البدن في العالم",
         ["entity_view_vehicles_desc"] = "تمكين / تعطيل معلومات السيارة في العالم",
         ["entity_view_objects_desc"] = "تمكين / تعطيل معلومات الكائن في العالم",
         ["entity_view_freeaim_copy_desc"] = "نسخ معلومات كيان الهدف المجاني",
+        ["spawn_weapons_desc"] = "رسبن اي سلاح",
+        ["max_mod_desc"] = "ماكس وزارة الدفاع سيارتك الحالية",
     },
     time = {
         ["ban_length"] = "وقت الباند",
@@ -261,10 +271,7 @@ local Translations = {
     }
 }
 
-if GetConvar('qb_locale', 'en') == 'ar' then
-    Lang = Locale:new({
-        phrases = Translations,
-        warnOnMissing = true,
-        fallbackLang = Lang,
-    })
-end
+Lang = Lang or Locale:new({
+    phrases = Translations,
+    warnOnMissing = true
+})
