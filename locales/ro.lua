@@ -274,7 +274,11 @@ local Translations = {
         ["ammo_amount_set"] = "Setezi cantitatea de munitie detinuta (Doar pt. admini)",
     }
 }
-Lang = Locale:new({
-    phrases = Translations,
-    warnOnMissing = true
-})
+
+if GetConvar('qb_locale', 'en') == 'ro' then
+    Lang = Locale:new({
+        phrases = Translations,
+        warnOnMissing = true,
+        fallbackLang = Lang,
+    })
+end

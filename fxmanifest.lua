@@ -2,13 +2,14 @@ fx_version 'cerulean'
 game 'gta5'
 
 description 'QB-AdminMenu'
-version '1.0.0'
+version '1.2.0'
 
 ui_page 'html/index.html'
 
 shared_scripts {
     '@qb-core/shared/locale.lua',
-    'locales/en.lua', -- Change to the language you want
+    'locales/en.lua',
+    'locales/*.lua'
 }
 
 client_scripts {

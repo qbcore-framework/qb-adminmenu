@@ -270,7 +270,8 @@ local Translations = {
         ["ammo_amount_set"] = "Set Your Ammo Amount (Admin Only)",
     }
 }
-Lang = Locale:new({
+
+Lang = Lang or Locale:new({
     phrases = Translations,
     warnOnMissing = true
 })
