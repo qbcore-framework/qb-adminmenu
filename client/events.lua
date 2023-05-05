@@ -27,17 +27,33 @@ RegisterNetEvent('qb-admin:client:spectate', function(targetPed)
     local myPed = PlayerPedId()
     local targetplayer = GetPlayerFromServerId(targetPed)
     local target = GetPlayerPed(targetplayer)
-    local targetcoordsx,targetcoordsy,targetcoordsz = table.unpack(GetEntityCoords(targetPed, false))
+    local TargetCoords = GetEntityCoords(targetPed, false)
+    local RoutingBucket = 0
+    if not DoesEntityExist(target) then
+        QBCore.Functions.TriggerCallback('oneSync:get:Spectate', function(ped, coords, routing)
+            if ped then
+                target = ped
+                TargetCoords = coords
+                RoutingBucket = routing
+            else
+                QBCore.Functions.Notify(Lang:t("error.no_player"), 'error')
+                return
+            end
+        end, targetPed)
+    end
+
     if not isSpectating then
+        TriggerServerEvent('qb-admin:server:SpectateRouting', RoutingBucket)
         isSpectating = true
-        RequestCollisionAtCoord(targetcoordsx,targetcoordsy,targetcoordsz)
+        RequestCollisionAtCoord(TargetCoords.x,TargetCoords.y,TargetCoords.z)
+        NetworkSetInSpectatorMode(true, target) -- Enter Spectate Mode
+        SetEntityInvincible(myPed, true) -- Set invincible
         SetEntityVisible(myPed, false) -- Set invisible
         SetEntityCollision(myPed, false, false) -- Set collision
-        SetEntityInvincible(myPed, true) -- Set invincible
         NetworkSetEntityInvisibleToNetwork(myPed, true) -- Set invisibility
         lastSpectateCoord = GetEntityCoords(myPed) -- save my last coords
-        NetworkSetInSpectatorMode(true, target) -- Enter Spectate Mode
     else
+        TriggerServerEvent('qb-admin:server:SpectateRouting', 0)
         isSpectating = false
         RequestCollisionAtCoord(lastSpectateCoord.x, lastSpectateCoord.y, lastSpectateCoord.z)
         NetworkSetInSpectatorMode(false, target) -- Remove From Spectate Mode

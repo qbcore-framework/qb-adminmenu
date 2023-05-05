@@ -283,6 +283,13 @@ local menu5_vehicles_max_upgrades = menu5:AddButton({
 })
 
 -- Developer Options Menu Buttons
+local menu7_dev_copy_vec2 = menu7:AddButton({
+    icon = '📋',
+    label = Lang:t("menu.copy_vector2"),
+    value = 'coords',
+    description = Lang:t("desc.vector2_desc")
+})
+
 local menu7_dev_copy_vec3 = menu7:AddButton({
     icon = '📋',
     label = Lang:t("menu.copy_vector3"),
@@ -1139,6 +1146,10 @@ end
 
 RegisterNetEvent('qb-admin:client:ToggleCoords', function()
     ToggleShowCoordinates()
+end)
+
+menu7_dev_copy_vec2:On("select", function()
+    CopyToClipboard('coords2')
 end)
 
 menu7_dev_copy_vec3:On("select", function()

@@ -23,6 +23,18 @@ QBCore.Functions.CreateCallback('test:getdealers', function(_, cb)
     cb(exports['qb-drugs']:GetDealers())
 end)
 
+QBCore.Functions.CreateCallback('oneSync:get:Spectate', function(_, cb, TargetID)
+    local Target = QBCore.Functions.GetPlayer(TargetID)
+    local targetRouting = GetPlayerRoutingBucket(TargetID)
+    if Target then
+        local TargetPed = GetPlayerPed(Target.PlayerData.source)
+        local TargetCoords = GetEntityCoords(TargetPed)
+        cb(TargetPed, TargetCoords, targetRouting)
+    else
+        cb(nil)
+    end
+end)
+
 -- Get Players
 QBCore.Functions.CreateCallback('test:getplayers', function(_, cb) -- WORKS
     cb(players)
@@ -60,6 +72,11 @@ local function BanPlayer(src)
 end
 
 -- Events
+RegisterNetEvent('qb-admin:server:SpectateRouting', function(routingBucket)
+    local src = source
+    SetPlayerRoutingBucket(src, routingBucket)
+end)
+
 RegisterNetEvent('qb-admin:server:GetPlayersForBlips', function()
     local src = source
     TriggerClientEvent('qb-admin:client:Show', src, players)
