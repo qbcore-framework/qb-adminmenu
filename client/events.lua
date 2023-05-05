@@ -23,24 +23,12 @@ RegisterNetEvent('qb-admin:client:inventory', function(targetPed)
     TriggerServerEvent("inventory:server:OpenInventory", "otherplayer", targetPed)
 end)
 
-RegisterNetEvent('qb-admin:client:spectate', function(targetPed)
+RegisterNetEvent('qb-admin:client:spectate', function(targetPed, coords, routingBucket)
     local myPed = PlayerPedId()
     local targetplayer = GetPlayerFromServerId(targetPed)
     local target = GetPlayerPed(targetplayer)
-    local TargetCoords = GetEntityCoords(targetPed, false)
-    local RoutingBucket = 0
-    if not DoesEntityExist(target) then
-        QBCore.Functions.TriggerCallback('oneSync:get:Spectate', function(ped, coords, routing)
-            if ped then
-                target = ped
-                TargetCoords = coords
-                RoutingBucket = routing
-            else
-                QBCore.Functions.Notify(Lang:t("error.no_player"), 'error')
-                return
-            end
-        end, targetPed)
-    end
+    local TargetCoords = coords
+    local RoutingBucket = routingBucket
 
     if not isSpectating then
         TriggerServerEvent('qb-admin:server:SpectateRouting', RoutingBucket)
