@@ -15,7 +15,7 @@ local Translations = {
         ["failed_set_speed"] = "You did not set a speed.. (`fast` for super-run, `normal` for normal)",
         ["failed_set_model"] = "You did not set a model..",
         ["failed_entity_copy"] = "No freeaim entity info to copy to clipboard!",
-        ["no_player"] = 'Player Doesn\'t exist in server anymore',
+        ["no_player"] = 'Player doesn\'t exist in server anymore',
     },
     success = {
         ["blips_activated"] = "Blips activated",
