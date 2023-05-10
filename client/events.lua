@@ -51,10 +51,6 @@ RegisterNetEvent('qb-admin:client:SendReport', function(name, src, msg)
     TriggerServerEvent('qb-admin:server:SendReport', name, src, msg)
 end)
 
-RegisterNetEvent('qb-admin:client:SendStaffChat', function(name, msg)
-    TriggerServerEvent('qb-admin:server:Staffchat:addMessage', name, msg)
-end)
-
 local function getVehicleFromVehList(hash)
 	for _, v in pairs(QBCore.Shared.Vehicles) do
 		if hash == v.hash then
