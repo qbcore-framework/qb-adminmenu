@@ -191,6 +191,8 @@ local Translations = {
         ["entity_view_vehicles_desc"] = "Aktiver/deaktiver køretøjsoplysninger i verden",
         ["entity_view_objects_desc"] = "Aktiver/deaktiver objektinfo i verden",
         ["entity_view_freeaim_copy_desc"] = "Kopierer oplysningerne om Free Aim-enheden til udklipsholder",
+        ["spawn_weapons_desc"] = "Giv hvilket som helst våben.", 
+        ["max_mod_desc"] = "Max mod dit nuværende køretøj",
     },
     time = {
         ["ban_length"] = "Udelukkelse Længde",
