@@ -106,9 +106,9 @@ local CheckInputRotation = function()
 end
 
 RunNoClipThread = function()
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while IsNoClipping do
-            Citizen.Wait(0)
+            Wait(0)
             CheckInputRotation()
             DisabledControls()
 
@@ -243,18 +243,18 @@ ToggleNoClip = function(state)
         if not PlayerIsInVehicle then
             ClearPedTasksImmediately(PlayerPed)
             if PedFirstPersonNoClip then
-                Citizen.Wait(1000) -- Wait for the cinematic effect of the camera transitioning into first person 
+                Wait(1000) -- Wait for the cinematic effect of the camera transitioning into first person 
             end
         else
             if VehFirstPersonNoClip then
-                Citizen.Wait(1000) -- Wait for the cinematic effect of the camera transitioning into first person 
+                Wait(1000) -- Wait for the cinematic effect of the camera transitioning into first person 
             end
         end
 
     else
         local groundCoords      = GetGroundCoords(GetEntityCoords(NoClipEntity))
         SetEntityCoords(NoClipEntity, groundCoords.x, groundCoords.y, groundCoords.z)
-        Citizen.Wait(50)
+        Wait(50)
         DestroyCamera()
         PlaySoundFromEntity(-1, "CANCEL", PlayerPed, "HUD_LIQUOR_STORE_SOUNDSET", 0, 0)
     end
