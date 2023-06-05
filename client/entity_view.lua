@@ -388,9 +388,9 @@ end
 
 RunEntityViewThread = function()
     EntityViewEnabled = true
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while EntityViewEnabled do
-            Citizen.Wait(0)
+            Wait(0)
             local playerPed     = PlayerPedId()
             local playerCoords  = GetEntityCoords(playerPed)
 
