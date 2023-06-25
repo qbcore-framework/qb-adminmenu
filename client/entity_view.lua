@@ -184,11 +184,12 @@ local GetEntityInfo = function(entity)
 
     if entityType == 1 then
         local pedRelationshipGroup = GetPedRelationshipGroupHash(entity)
+	local ped = GetPedIndexFromEntityIndex(entity)
         table.insert(entityData, Lang:t("info.cur_health")..' ~y~'..GetEntityHealth(entity))
         table.insert(entityData, Lang:t("info.max_health")..' ~y~'..GetPedMaxHealth(entity))
         table.insert(entityData, Lang:t("info.armour")..' ~y~'..GetPedArmour(entity))
         table.insert(entityData, Lang:t("info.rel_group")..' ~y~'.. (Entities[pedRelationshipGroup] or Lang:t("info.rel_group_custom")))
-        table.insert(entityData, Lang:t("info.rel_to_player")..' ~y~'..GetPedRelationshipType(GetRelationshipBetweenPeds(pedRelationshipGroup, PlayerPedId())))
+        table.insert(entityData, Lang:t("info.rel_to_player")..' ~y~'..GetPedRelationshipType(GetRelationshipBetweenPeds(ped, PlayerPedId())))
     elseif entityType == 2 then
         table.insert(entityData, Lang:t("info.veh_rpm")..' ~y~'..RoundFloat(GetVehicleCurrentRpm(entity), 2))
         table.insert(entityData, (useKph and Lang:t("info.veh_speed_kph") or Lang:t("info.veh_speed_mph"))..' ~y~'..RoundFloat((GetEntitySpeed(entity)*(useKph and 3.6 or 2.23694)), 0))
