@@ -23,9 +23,12 @@ local Translations = {
         ["heading_copied"] = "Heading in Zwischenablage kopiert!",
         ["changed_perm"] = "Gruppenrechte geändert",
         ["entered_vehicle"] = "Ins Fahrzeug gestiegen",
-        ["success_vehicle_owner"] = "Das Fahrzeug ist nicht deins!",
+        ["success_vehicle_owner"] = "Das Fahrzeug ist nun deins!",
+        ["success_entered_vehicle"] = "Ins Fahrzeug teleportiert"
         ["receive_reports"] = "Du erhälst Reports",
         ["entity_copy"] = "Freeaim-Entitätsinfo in die Zwischenablage kopiert!",
+        ["noclip_enabled"] = "NoClip aktiviert",
+        ["noclip_disabled"] = "NoClip deaktiviert"
     },
     info = {
         ["ped_coords"] = "Ped Koordinaten:",
@@ -149,12 +152,16 @@ local Translations = {
         ["entity_view_vehicles"] = "Fahrzeuge anzeigen",
         ["entity_view_objects"] = "Objekte anzeigen",
         ["entity_view_freeaim_copy"] = "Freeaim-Entitätsinformationen kopieren",
+		["spawn_weapons"] = "Spawne Waffen",
+		["max_mods"] = "Full Tuned",
+        ["hud_dev_mode"] = "HUD Entw. Modus"
     },
     desc = {
         ["admin_options_desc"] = "Verschiedene. Admin Optionen",
         ["player_management_desc"] = "Siehe Spieler Optionen",
         ["server_management_desc"] = "Verschiedene Server Optionen",
         ["vehicles_desc"] = "Fahrzeug Optionen",
+		["max_mod_desc"] = "Fahrzeug auf max tunen",
         ["dealer_desc"] = "Liste Existierender Dealer",
         ["noclip_desc"] = "An/Aus NoClip",
         ["revive_desc"] = "Wiederbelebe dich selbst",
@@ -189,6 +196,8 @@ local Translations = {
         ["entity_view_vehicles_desc"] = "Fahrzeuginformationen in der Welt aktivieren/deaktivieren",
         ["entity_view_objects_desc"] = "Objektinformationen in der Welt aktivieren/deaktivieren",
         ["entity_view_freeaim_copy_desc"] = "Kopiert die Free Aim Entitätsinfo in die Zwischenablage",
+        ["spawn_weapons_desc"] = "Spawne eine Waffe",
+        ["hud_dev_mode_desc"] = "HUD Entw. Modus ein/aus"
     },
     time = {
         ["ban_length"] = "Ban Länge",
@@ -261,10 +270,7 @@ local Translations = {
     }
 }
 
-if GetConvar('qb_locale', 'en') == 'de' then
-    Lang = Locale:new({
-        phrases = Translations,
-        warnOnMissing = true,
-        fallbackLang = Lang,
-    })
-end
+Lang = Locale:new({
+    phrases = Translations,
+    warnOnMissing = true
+})
