@@ -940,7 +940,7 @@ local function OpenCarModelsMenu(category)
 	            description = 'Spawn ' .. v["name"] .. ' (' .. v['model'] .. ')',
 	            select = function(_)
 			if sortVehiclesAndCategories then
-	                	TriggerServerEvent('QBCore:CallCommand', "car", { v['model'] })
+				TriggerServerEvent('QBCore:CallCommand', "car", { v['model'] })
                         else
 				TriggerServerEvent('QBCore:CallCommand', "car", { k })
 			end
