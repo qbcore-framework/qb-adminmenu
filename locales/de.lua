@@ -149,6 +149,9 @@ local Translations = {
         ["entity_view_vehicles"] = "Fahrzeuge anzeigen",
         ["entity_view_objects"] = "Objekte anzeigen",
         ["entity_view_freeaim_copy"] = "Freeaim-Entitätsinformationen kopieren",
+        ["spawn_weapons"] = "Waffen spawnen",
+        ["max_mods"] = "Fahrzeug tunen",
+        ["hud_dev_mode"] = "Entwicklermodus (qb-hud)"
     },
     desc = {
         ["admin_options_desc"] = "Verschiedene. Admin Optionen",
@@ -189,6 +192,9 @@ local Translations = {
         ["entity_view_vehicles_desc"] = "Fahrzeuginformationen in der Welt aktivieren/deaktivieren",
         ["entity_view_objects_desc"] = "Objektinformationen in der Welt aktivieren/deaktivieren",
         ["entity_view_freeaim_copy_desc"] = "Kopiert die Free Aim Entitätsinfo in die Zwischenablage",
+        ["spawn_weapons_desc"] = "Spawne jede Waffe",
+        ["max_mod_desc"] = "Tune das Fahrzeug maximal",
+        ["hud_dev_mode_desc"] = "An/Aus Entwicklermodus"
     },
     time = {
         ["ban_length"] = "Ban Länge",
