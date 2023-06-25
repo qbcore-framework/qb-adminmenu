@@ -26,6 +26,8 @@ local Translations = {
         ["success_vehicle_owner"] = "Das Fahrzeug ist nicht deins!",
         ["receive_reports"] = "Du erhälst Reports",
         ["entity_copy"] = "Freeaim-Entitätsinfo in die Zwischenablage kopiert!",
+        ["noclip_enabled"] = "NoClip aktiviert!",
+        ["noclip_disabled"] = "NoClip deaktiviert!"
     },
     info = {
         ["ped_coords"] = "Ped Koordinaten:",
