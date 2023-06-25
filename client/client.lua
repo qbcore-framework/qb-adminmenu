@@ -871,25 +871,25 @@ end
 
 -- Sort Vehicles and Categories if enabled
 if sortVehiclesAndCategories then
-    local i = 1 
+    local i = 1
     local vehicleCategories = {}
     
-    for k,v in pairs(vehicles) do
+    for k,_ in pairs(vehicles) do
         vehicleCategories[k] = {}
-        for a,b in pairs(vehicles[k]) do
+        for _,b in pairs(vehicles[k]) do
             vehicleCategories[k][i] = {}
             vehicleCategories[k][i] = b
             i = i+1
         end
-    end  
+    end
 
-    for k,v in pairs(vehicleCategories) do
+    for k,_ in pairs(vehicleCategories) do
         for _,_ in pairs(vehicleCategories[k]) do
-            for a,b in pairs(vehicleCategories[k]) do
+            for a,_ in pairs(vehicleCategories[k]) do
                 local c1 = string.sub(vehicleCategories[k][a]['name'],1,1)
 
                 if vehicleCategories[k][a+1] then
-                    local c2 = string.sub(vehicleCategories[k][a+1]['name'],1,1) 
+                    local c2 = string.sub(vehicleCategories[k][a+1]['name'],1,1)
 
                     if c1 > c2 then
                         local VehiclesAndCatsSorted = vehicleCategories[k][a]
@@ -902,7 +902,6 @@ if sortVehiclesAndCategories then
     end
 
     local VehiclesAndCatsSorted = {}
-    local l = 1
     for key,value in pairs(vehicleCategories) do
         VehiclesAndCatsSorted[i] = {}
         VehiclesAndCatsSorted[i]['name'] = key
@@ -942,7 +941,7 @@ local function OpenCarModelsMenu(category)
 	            select = function(_)
 			if sortVehiclesAndCategories then
 	                	TriggerServerEvent('QBCore:CallCommand', "car", { v['model'] })
-			else
+                        else
 				TriggerServerEvent('QBCore:CallCommand', "car", { k })
 			end
 	            end
