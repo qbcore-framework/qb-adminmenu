@@ -5,6 +5,7 @@ local vehicleDevMode = false
 local banreason = 'Unknown'
 local kickreason = 'Unknown'
 local menuLocation = 'topright' -- e.g. topright (default), topleft, bottomright, bottomleft
+local sortVehiclesAndCategories = true
 
 -- Main Menus
 local menu1 = MenuV:CreateMenu(false, Lang:t("menu.admin_menu"), menuLocation, 220, 20, 60, 'size-125', 'none', 'menuv', 'test1')
@@ -868,34 +869,112 @@ for k, v in pairs(QBCore.Shared.Vehicles) do
     vehicles[category][k] = v
 end
 
+-- Sort Vehicles and Categories if enabled
+if sortVehiclesAndCategories then
+    local i = 1 
+    local vehicleCategories = {}
+    
+    for k,v in pairs(vehicles) do
+        vehicleCategories[k] = {}
+        for a,b in pairs(vehicles[k]) do
+            vehicleCategories[k][i] = {}
+            vehicleCategories[k][i] = b
+            i = i+1
+        end
+    end  
+
+    for k,v in pairs(vehicleCategories) do
+        for _,_ in pairs(vehicleCategories[k]) do
+            for a,b in pairs(vehicleCategories[k]) do
+                local c1 = string.sub(vehicleCategories[k][a]['name'],1,1)
+
+                if vehicleCategories[k][a+1] then
+                    local c2 = string.sub(vehicleCategories[k][a+1]['name'],1,1) 
+
+                    if c1 > c2 then
+                        local VehiclesAndCatsSorted = vehicleCategories[k][a]
+                        vehicleCategories[k][a] = vehicleCategories[k][a+1]
+                        vehicleCategories[k][a+1] = VehiclesAndCatsSorted
+                    end
+                end
+            end
+        end
+    end
+
+    local VehiclesAndCatsSorted = {}
+    local l = 1
+    for key,value in pairs(vehicleCategories) do
+        VehiclesAndCatsSorted[i] = {}
+        VehiclesAndCatsSorted[i]['name'] = key
+        VehiclesAndCatsSorted[i]['data'] = value
+        i = i+1
+    end
+
+    for _,_ in pairs(VehiclesAndCatsSorted) do
+        for key, value in pairs(VehiclesAndCatsSorted) do
+            local cat1 = string.sub(value['name'],1,1)
+            if VehiclesAndCatsSorted[key+1] then
+                local cat2 = string.sub(VehiclesAndCatsSorted[key+1]['name'],1,1)
+
+                if cat1 > cat2 then
+                    local bubblesortTemp = VehiclesAndCatsSorted[key]
+                    VehiclesAndCatsSorted[key] = VehiclesAndCatsSorted[key+1]
+                    VehiclesAndCatsSorted[key+1] = bubblesortTemp
+                end
+            end
+        end
+    end
+	
+    vehicles = VehiclesAndCatsSorted
+end
+
+
 -- Car Categories
 local function OpenCarModelsMenu(category)
     menu13:ClearItems()
     MenuV:OpenMenu(menu13)
     for k, v in pairs(category) do
-        menu13:AddButton({
-            label = v["name"],
-            value = k,
-            description = 'Spawn ' .. v["name"],
-            select = function(_)
-                TriggerServerEvent('QBCore:CallCommand', "car", { k })
-            end
-        })
+	if sortVehiclesAndCategories then
+	        menu13:AddButton({
+	            label = v["name"],
+	            value = k,
+	            description = 'Spawn ' .. v["name"],
+	            select = function(_)
+			if sortVehiclesAndCategories then
+	                	TriggerServerEvent('QBCore:CallCommand', "car", { v['model'] })
+			else
+				TriggerServerEvent('QBCore:CallCommand', "car", { k })
+			end
+	            end
+	        })
+	end
     end
 end
 
 menu5_vehicles_spawn:On('Select', function(_)
     menu12:ClearItems()
     for k, v in pairs(vehicles) do
-        menu12:AddButton({
-            label = QBCore.Shared.FirstToUpper(k),
-            value = v,
-            description = Lang:t("menu.category_name"),
-            select = function(btn)
-                local select = btn.Value
-                OpenCarModelsMenu(select)
-            end
-        })
+	if sortVehiclesAndCategories then
+		menu12:AddButton({
+	            label = QBCore.Shared.FirstToUpper(v['name']),
+	            value = v['data'],
+	            description = Lang:t("menu.category_name"),
+	            select = function(btn)
+	                local select = btn.Value
+	                OpenCarModelsMenu(select)
+	            end
+	        })
+	else
+	        menu12:AddButton({
+	            label = QBCore.Shared.FirstToUpper(k),
+	            value = v,
+	            description = Lang:t("menu.category_name"),
+	            select = function(btn)
+	                local select = btn.Value
+	                OpenCarModelsMenu(select)
+	            end
+	        })
+	end
     end
 end)
 
