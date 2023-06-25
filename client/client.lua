@@ -938,7 +938,7 @@ local function OpenCarModelsMenu(category)
 	        menu13:AddButton({
 	            label = v["name"],
 	            value = k,
-	            description = 'Spawn ' .. v["name"],
+	            description = 'Spawn ' .. v["name"] .. '(' .. v['model'] .. ')',
 	            select = function(_)
 			if sortVehiclesAndCategories then
 	                	TriggerServerEvent('QBCore:CallCommand', "car", { v['model'] })
