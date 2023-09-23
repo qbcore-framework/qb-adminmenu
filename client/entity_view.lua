@@ -41,10 +41,9 @@ local DrawTitle = function(text, width, height)
     SetTextEdge(1, 0, 0, 0, 255)
     SetTextColour(255, 255, 255, 215)
     SetTextJustification(0)
-    SetTextEntry("STRING")
-    AddTextComponentString(text)
-    DrawText(0.5, 0.02)
-
+    BeginTextCommandDisplayText("STRING")
+    AddTextComponentSubstringPlayerName(text)
+    EndTextCommandDisplayText(0.5, 0.02)
     DrawRect(0.425+(width/2), 0.01+(height/2), width, height, 11, 11, 11, 200)
 end
 
@@ -170,43 +169,33 @@ local GetEntityInfo = function(entity)
     local entityType    = GetEntityType(entity)
     local entityHash    = GetEntityModel(entity)
     local entityName    = Entities[entityHash] or Lang:t("info.obj_unknown")
-    local entityData    = {
-        '~y~'..Lang:t("info.entity_view_info"),
-        '',
-        Lang:t("info.model_hash")..' ~y~'..entityHash,
-        ' ',
-        Lang:t("info.ent_id")..' ~y~'..entity,
-        Lang:t("info.obj_name")..' ~y~'.. entityName,
-        Lang:t("info.net_id")..' ~y~'..(NetworkGetEntityIsNetworked(entity) and NetworkGetNetworkIdFromEntity(entity) or Lang:t("info.net_id_not_registered")),
-        Lang:t("info.ent_owner")..' ~y~'..GetPlayerServerId(NetworkGetEntityOwner(entity)),
-        ' '
-    }
+    local entityData    = {'~y~'..Lang:t("info.entity_view_info"),'',Lang:t("info.model_hash")..' ~y~'..entityHash,' ',Lang:t("info.ent_id")..' ~y~'..entity,Lang:t("info.obj_name")..' ~y~'.. entityName,Lang:t("info.net_id")..' ~y~'..(NetworkGetEntityIsNetworked(entity) and NetworkGetNetworkIdFromEntity(entity) or Lang:t("info.net_id_not_registered")),Lang:t("info.ent_owner")..' ~y~'..GetPlayerServerId(NetworkGetEntityOwner(entity)),' '}
 
     if entityType == 1 then
         local pedRelationshipGroup = GetPedRelationshipGroupHash(entity)
-        table.insert(entityData, Lang:t("info.cur_health")..' ~y~'..GetEntityHealth(entity))
-        table.insert(entityData, Lang:t("info.max_health")..' ~y~'..GetPedMaxHealth(entity))
-        table.insert(entityData, Lang:t("info.armour")..' ~y~'..GetPedArmour(entity))
-        table.insert(entityData, Lang:t("info.rel_group")..' ~y~'.. (Entities[pedRelationshipGroup] or Lang:t("info.rel_group_custom")))
-        table.insert(entityData, Lang:t("info.rel_to_player")..' ~y~'..GetPedRelationshipType(GetRelationshipBetweenPeds(pedRelationshipGroup, PlayerPedId())))
+        entityData[#entityData+1] = Lang:t("info.cur_health")..' ~y~'..GetEntityHealth(entity)
+        entityData[#entityData+1] = Lang:t("info.max_health")..' ~y~'..GetPedMaxHealth(entity)
+        entityData[#entityData+1] = Lang:t("info.armour")..' ~y~'..GetPedArmour(entity)
+        entityData[#entityData+1] = Lang:t("info.rel_group")..' ~y~'.. (Entities[pedRelationshipGroup] or Lang:t("info.rel_group_custom"))
+        entityData[#entityData+1] = Lang:t("info.rel_to_player")..' ~y~'..GetPedRelationshipType(GetRelationshipBetweenPeds(pedRelationshipGroup, PlayerPedId()))
     elseif entityType == 2 then
-        table.insert(entityData, Lang:t("info.veh_rpm")..' ~y~'..RoundFloat(GetVehicleCurrentRpm(entity), 2))
-        table.insert(entityData, (useKph and Lang:t("info.veh_speed_kph") or Lang:t("info.veh_speed_mph"))..' ~y~'..RoundFloat((GetEntitySpeed(entity)*(useKph and 3.6 or 2.23694)), 0))
-        table.insert(entityData, Lang:t("info.veh_cur_gear")..' ~y~'..GetVehicleCurrentGear(entity))
-        table.insert(entityData, Lang:t("info.veh_acceleration")..' ~y~'..RoundFloat(GetVehicleAcceleration(entity), 2))
-        table.insert(entityData, Lang:t("info.body_health")..' ~y~'..GetVehicleBodyHealth(entity))
-        table.insert(entityData, Lang:t("info.eng_health")..' ~y~'..GetVehicleEngineHealth(entity))
+        entityData[#entityData+1] = Lang:t("info.veh_rpm")..' ~y~'..RoundFloat(GetVehicleCurrentRpm(entity), 2)
+        entityData[#entityData+1] = (useKph and Lang:t("info.veh_speed_kph") or Lang:t("info.veh_speed_mph"))..' ~y~'..RoundFloat((GetEntitySpeed(entity)*(useKph and 3.6 or 2.23694)), 0)
+        entityData[#entityData+1] = Lang:t("info.veh_cur_gear")..' ~y~'..GetVehicleCurrentGear(entity)
+        entityData[#entityData+1] = Lang:t("info.veh_acceleration")..' ~y~'..RoundFloat(GetVehicleAcceleration(entity), 2)
+        entityData[#entityData+1] = Lang:t("info.body_health")..' ~y~'..GetVehicleBodyHealth(entity)
+        entityData[#entityData+1] = Lang:t("info.eng_health")..' ~y~'..GetVehicleEngineHealth(entity)
     elseif entityType == 3 then
-        table.insert(entityData, Lang:t("info.cur_health")..' ~y~'..GetEntityHealth(entity))
+        entityData[#entityData+1] = Lang:t("info.cur_health")..' ~y~'..GetEntityHealth(entity)
     end
     local entityCoords = GetEntityCoords(entity)
 
-    table.insert(entityData, ' ')
-    table.insert(entityData, Lang:t("info.dist_to_obj")..' ~y~'.. RoundFloat(#(playerCoords-entityCoords), 2))
-    table.insert(entityData, Lang:t("info.obj_heading")..' ~y~'.. RoundFloat(GetEntityHeading(entity), 2))
-    table.insert(entityData, Lang:t("info.obj_coords")..' ~y~'.. RoundVector3(entityCoords, 2))
-    table.insert(entityData, Lang:t("info.obj_rot")..' ~y~'.. RoundVector3(GetEntityRotation(entity), 2))
-    table.insert(entityData, Lang:t("info.obj_velocity")..' ~y~'.. RoundVector3(GetEntityVelocity(entity), 2))
+    entityData[#entityData+1] = ' '
+    entityData[#entityData+1] = Lang:t("info.dist_to_obj")..' ~y~'.. RoundFloat(#(playerCoords-entityCoords), 2)
+    entityData[#entityData+1] = Lang:t("info.obj_heading")..' ~y~'.. RoundFloat(GetEntityHeading(entity), 2)
+    entityData[#entityData+1] = Lang:t("info.obj_coords")..' ~y~'.. RoundVector3(entityCoords, 2)
+    entityData[#entityData+1] = Lang:t("info.obj_rot")..' ~y~'.. RoundVector3(GetEntityRotation(entity), 2)
+    entityData[#entityData+1] = Lang:t("info.obj_velocity")..' ~y~'.. RoundVector3(GetEntityVelocity(entity), 2)
 
     return entityData
 end
@@ -235,15 +224,15 @@ local DrawEntityViewText = function(entity)
         SetTextEdge(1, 0, 0, 0, 255)
         SetTextColour(255, 255, 255, 215)
         SetTextJustification(1)
-        SetTextEntry("STRING")
-        AddTextComponentString(v)
+        BeginTextCommandDisplayText("STRING")
+        AddTextComponentSubstringPlayerName(v)
         if k == 1 then
             SetTextScale(0.50, 0.50)
-            DrawText(posX+titeLeftMargin, posY)
+            EndTextCommandDisplayText(posX+titeLeftMargin, posY)
             posY = posY + titleSpacing
         else
             SetTextScale(0.35, 0.35)
-            DrawText(posX+paddingLeft, posY)
+            EndTextCommandDisplayText(posX+paddingLeft, posY)
             posY = posY + textSpacing
         end
     end
@@ -272,9 +261,9 @@ local DrawEntityViewTextInWorld = function(entity, coords)
                 SetTextEdge(1, 0, 0, 0, 255)
                 SetTextColour(255, 255, 255, 215)
                 SetTextJustification(1)
-                SetTextEntry("STRING")
-                AddTextComponentString(v)
-                DrawText(posX-rectWidth/2+leftPadding, posY-rectHeight/2+topPadding)
+                BeginTextCommandDisplayText("STRING")
+                AddTextComponentSubstringPlayerName(v)
+                EndTextCommandDisplayText(posX-rectWidth/2+leftPadding, posY-rectHeight/2+topPadding)
                 posY = posY + textOffsetY
             end
         end
