@@ -1,6 +1,6 @@
 fx_version 'cerulean'
 game 'gta5'
-
+lua54 'yes'
 description 'QB-AdminMenu'
 version '1.2.0'
 
@@ -27,11 +27,9 @@ server_scripts {
     'server/server.lua'
 }
 
-files { -- Credits to https://github.com/LVRP-BEN/bl_coords for clipboard copy method
+files {
     'html/index.html',
     'html/index.js'
 }
 
 dependency 'menuv'
-
-lua54 'yes'
