@@ -151,7 +151,6 @@ RegisterNetEvent('qb-admin:client:maxmodVehicle', function()
 end)
 
 RegisterNetEvent('qb-admin:client:sendtoswim',function(id,reason)
-    local src = source
     local ped = PlayerPedId(id)
     local coords = vector3(-4915.85, -3057.73, -0.94)
     QBCore.Functions.Notify(reason, 'error')
