@@ -522,6 +522,12 @@ QBCore.Commands.Add('heading', 'Copy heading to clipboard (Admin only)', {}, fal
     TriggerClientEvent('qb-admin:client:copyToClipboard', src, 'heading')
 end, 'admin')
 
+QBCore.Commands.Add('sendtoswim', Lang:t('commands.sendtoswim'), { { name = 'id', help = 'Player id' }, { name = 'Reason', help = 'Reason to send to swim' }, }, true, function(_, args)
+    local playerid = tonumber(args[1])
+    local reason = table.concat(args, " ",2)
+    TriggerClientEvent('qb-admin:client:sendtoswim', playerid,playerid, reason)
+end, 'admin')
+
 CreateThread(function()
     while true do
         local tempPlayers = {}
