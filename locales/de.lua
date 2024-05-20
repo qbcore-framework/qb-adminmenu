@@ -189,6 +189,8 @@ local Translations = {
         entity_view_vehicles_desc = 'Fahrzeuginformationen in der Welt aktivieren/deaktivieren',
         entity_view_objects_desc = 'Objektinformationen in der Welt aktivieren/deaktivieren',
         entity_view_freeaim_copy_desc = 'Kopiert die Free Aim Entitätsinfo in die Zwischenablage',
+        spawn_weapons_desc = 'Spawn eine beliebige Waffe',
+        max_mod_desc = 'Aktuelles Fahrzeug maximal Modifizieren',
     },
     time = {
         ban_length = 'Ban Länge',
