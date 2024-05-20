@@ -19,10 +19,6 @@ local isSpectating = false
 
 -- Events
 
-RegisterNetEvent('qb-admin:client:inventory', function(targetPed)
-    TriggerServerEvent('inventory:server:OpenInventory', 'otherplayer', targetPed)
-end)
-
 RegisterNetEvent('qb-admin:client:spectate', function(targetPed)
     local myPed = PlayerPedId()
     local targetplayer = GetPlayerFromServerId(targetPed)
