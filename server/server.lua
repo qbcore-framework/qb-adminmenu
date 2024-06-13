@@ -223,6 +223,7 @@ end)
 RegisterNetEvent('qb-admin:server:setPermissions', function(targetId, group)
     local src = source
     if QBCore.Functions.HasPermission(src, 'god') or IsPlayerAceAllowed(src, 'command') then
+        QBCore.Functions.RemovePermission(targetId)
         QBCore.Functions.AddPermission(targetId, group[1].rank)
         TriggerClientEvent('QBCore:Notify', targetId, Lang:t('info.rank_level') .. group[1].label)
     else
