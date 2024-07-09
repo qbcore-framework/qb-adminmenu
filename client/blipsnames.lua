@@ -38,6 +38,9 @@ end)
 RegisterNetEvent('qb-admin:client:Show', function(players)
     for _, player in pairs(players) do
         local playeridx = GetPlayerFromServerId(player.id)
+        if playeridx == -1 and player.id ~= PlayerId() then
+            return
+        end
         local ped = GetPlayerPed(playeridx)
         local blip = GetBlipFromEntity(ped)
         local name = 'ID: ' .. player.id .. ' | ' .. player.name
