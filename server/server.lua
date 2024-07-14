@@ -16,7 +16,26 @@ local permissions = {
     ['inventory'] = 'admin',
     ['clothing'] = 'admin'
 }
-local players = {}
+
+function GetPlayers()
+    local playerReturn = {}
+    local players = QBCore.Functions.GetQBPlayers()
+    
+    for id, player in pairs(players) do
+        local playerPed = GetPlayerPed(id)
+        local name = (player.PlayerData.charinfo.firstname or '') .. ' ' .. (player.PlayerData.charinfo.lastname or '')
+        playerReturn[#playerReturn + 1] = {
+            name = name .. ' | (' .. (player.PlayerData.name or '') .. ')',
+            id = id,
+            coords = GetEntityCoords(playerPed),
+            cid = name,
+            citizenid = player.PlayerData.citizenid,
+            sources = playerPed,
+            sourceplayer = id
+        }
+    end
+    return playerReturn
+end
 
 -- Get Dealers
 QBCore.Functions.CreateCallback('test:getdealers', function(_, cb)
@@ -25,6 +44,7 @@ end)
 
 -- Get Players
 QBCore.Functions.CreateCallback('test:getplayers', function(_, cb) -- WORKS
+    local players =  GetPlayers()
     cb(players)
 end)
 
@@ -62,6 +82,7 @@ end
 -- Events
 RegisterNetEvent('qb-admin:server:GetPlayersForBlips', function()
     local src = source
+    local players = GetPlayers()
     TriggerClientEvent('qb-admin:client:Show', src, players)
 end)
 
@@ -520,29 +541,3 @@ QBCore.Commands.Add('heading', 'Copy heading to clipboard (Admin only)', {}, fal
     local src = source
     TriggerClientEvent('qb-admin:client:copyToClipboard', src, 'heading')
 end, 'admin')
-
-CreateThread(function()
-    while true do
-        local tempPlayers = {}
-        for _, v in pairs(QBCore.Functions.GetPlayers()) do
-            local targetped = GetPlayerPed(v)
-            local ped = QBCore.Functions.GetPlayer(v)
-            tempPlayers[#tempPlayers + 1] = {
-                name = (ped.PlayerData.charinfo.firstname or '') .. ' ' .. (ped.PlayerData.charinfo.lastname or '') .. ' | (' .. (GetPlayerName(v) or '') .. ')',
-                id = v,
-                coords = GetEntityCoords(targetped),
-                cid = ped.PlayerData.charinfo.firstname .. ' ' .. ped.PlayerData.charinfo.lastname,
-                citizenid = ped.PlayerData.citizenid,
-                sources = GetPlayerPed(ped.PlayerData.source),
-                sourceplayer = ped.PlayerData.source
-
-            }
-        end
-        -- Sort players list by source ID (1,2,3,4,5, etc) --
-        table.sort(tempPlayers, function(a, b)
-            return a.id < b.id
-        end)
-        players = tempPlayers
-        Wait(1500)
-    end
-end)
