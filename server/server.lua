@@ -17,7 +17,7 @@ local permissions = {
     ['clothing'] = 'admin'
 }
 
-function GetPlayers()
+function GetQBPlayers()
     local playerReturn = {}
     local players = QBCore.Functions.GetQBPlayers()
     
@@ -44,7 +44,7 @@ end)
 
 -- Get Players
 QBCore.Functions.CreateCallback('test:getplayers', function(_, cb) -- WORKS
-    local players =  GetPlayers()
+    local players =  GetQBPlayers()
     cb(players)
 end)
 
@@ -82,7 +82,7 @@ end
 -- Events
 RegisterNetEvent('qb-admin:server:GetPlayersForBlips', function()
     local src = source
-    local players = GetPlayers()
+    local players = GetQBPlayers()
     TriggerClientEvent('qb-admin:client:Show', src, players)
 end)
 
@@ -355,10 +355,9 @@ QBCore.Commands.Add('staffchat', Lang:t('commands.staffchat_message'), { { name 
     local msg = table.concat(args, ' ')
     local name = GetPlayerName(source)
 
-    local plrs = QBCore.Functions.GetPlayers()
+    local plrs = GetPlayers()
 
-    for i = 1, #plrs, 1 do
-        local plr = plrs[i]
+    for _, plr in ipairs(plrs) do
         if QBCore.Functions.HasPermission(plr, 'admin') or IsPlayerAceAllowed(plr, 'command') then
             if QBCore.Functions.IsOptin(plr) then
                 TriggerClientEvent('chat:addMessage', plr, {
@@ -491,22 +490,18 @@ QBCore.Commands.Add('kickall', Lang:t('commands.kick_all'), {}, false, function(
         local reason = table.concat(args, ' ')
         if QBCore.Functions.HasPermission(src, 'god') or IsPlayerAceAllowed(src, 'command') then
             if reason and reason ~= '' then
-                for _, v in pairs(QBCore.Functions.GetPlayers()) do
-                    local Player = QBCore.Functions.GetPlayer(v)
-                    if Player then
-                        DropPlayer(Player.PlayerData.source, reason)
-                    end
+                local players = GetPlayers()
+                for _, playerId in ipairs(players) do
+                    DropPlayer(playerId, reason)
                 end
             else
                 TriggerClientEvent('QBCore:Notify', src, Lang:t('info.no_reason_specified'), 'error')
             end
         end
     else
-        for _, v in pairs(QBCore.Functions.GetPlayers()) do
-            local Player = QBCore.Functions.GetPlayer(v)
-            if Player then
-                DropPlayer(Player.PlayerData.source, Lang:t('info.server_restart') .. QBCore.Config.Server.Discord)
-            end
+        local players = GetPlayers()
+        for _, playerId in ipairs(players) do
+            DropPlayer(playerId, Lang:t('info.server_restart') .. QBCore.Config.Server.Discord)
         end
     end
 end, 'god')
