@@ -23,6 +23,9 @@ RegisterNetEvent('qb-admin:client:spectate', function(targetPed)
     local myPed = PlayerPedId()
     local targetplayer = GetPlayerFromServerId(targetPed)
     local target = GetPlayerPed(targetplayer)
+    if target == myPed then
+        return
+    end
     if not isSpectating then
         isSpectating = true
         SetEntityVisible(myPed, false)                  -- Set invisible
