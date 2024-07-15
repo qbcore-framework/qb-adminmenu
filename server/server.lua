@@ -28,6 +28,10 @@ QBCore.Functions.CreateCallback('test:getplayers', function(_, cb) -- WORKS
     cb(players)
 end)
 
+QBCore.Functions.CreateCallback('qb-admin:isAdmin', function(src, cb) -- WORKS
+    cb(QBCore.Functions.HasPermission(src, 'admin') or IsPlayerAceAllowed(src, 'command'))
+end)
+
 QBCore.Functions.CreateCallback('qb-admin:server:getrank', function(source, cb)
     if QBCore.Functions.HasPermission(source, 'god') or IsPlayerAceAllowed(source, 'command') then
         cb(true)

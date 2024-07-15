@@ -266,7 +266,10 @@ ToggleNoClip = function(state)
 end
 
 RegisterNetEvent('qb-admin:client:ToggleNoClip', function()
-    ToggleNoClip(not IsNoClipping)
+    QBCore.Functions.TriggerCallback('qb-admin:isAdmin', function(isAdmin)
+        if not isAdmin then return end
+        ToggleNoClip(not IsNoClipping)
+    end)
 end)
 
 AddEventHandler('onResourceStop', function(resourceName)
