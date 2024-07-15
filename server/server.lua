@@ -358,13 +358,16 @@ QBCore.Commands.Add('staffchat', Lang:t('commands.staffchat_message'), { { name 
     local plrs = GetPlayers()
 
     for _, plr in ipairs(plrs) do
-        if QBCore.Functions.HasPermission(plr, 'admin') or IsPlayerAceAllowed(plr, 'command') then
-            if QBCore.Functions.IsOptin(plr) then
-                TriggerClientEvent('chat:addMessage', plr, {
-                    color = { 255, 0, 0 },
-                    multiline = true,
-                    args = { Lang:t('info.staffchat') .. name, msg }
-                })
+        plr = tonumber(plr)
+        if plr then
+            if QBCore.Functions.HasPermission(plr, 'admin') or IsPlayerAceAllowed(plr, 'command') then
+                if QBCore.Functions.IsOptin(plr) then
+                    TriggerClientEvent('chat:addMessage', plr, {
+                        color = { 255, 0, 0 },
+                        multiline = true,
+                        args = { Lang:t('info.staffchat') .. name, msg }
+                    })
+                end
             end
         end
     end
