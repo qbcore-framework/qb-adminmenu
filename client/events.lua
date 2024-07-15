@@ -20,27 +20,30 @@ local isSpectating = false
 -- Events
 
 RegisterNetEvent('qb-admin:client:spectate', function(targetPed)
-    local myPed = PlayerPedId()
-    local targetplayer = GetPlayerFromServerId(targetPed)
-    local target = GetPlayerPed(targetplayer)
-    if not isSpectating then
-        isSpectating = true
-        SetEntityVisible(myPed, false)                  -- Set invisible
-        SetEntityCollision(myPed, false, false)         -- Set collision
-        SetEntityInvincible(myPed, true)                -- Set invincible
-        NetworkSetEntityInvisibleToNetwork(myPed, true) -- Set invisibility
-        lastSpectateCoord = GetEntityCoords(myPed)      -- save my last coords
-        NetworkSetInSpectatorMode(true, target)         -- Enter Spectate Mode
-    else
-        isSpectating = false
-        NetworkSetInSpectatorMode(false, target)         -- Remove From Spectate Mode
-        NetworkSetEntityInvisibleToNetwork(myPed, false) -- Set Visible
-        SetEntityCollision(myPed, true, true)            -- Set collision
-        SetEntityCoords(myPed, lastSpectateCoord)        -- Return Me To My Coords
-        SetEntityVisible(myPed, true)                    -- Remove invisible
-        SetEntityInvincible(myPed, false)                -- Remove godmode
-        lastSpectateCoord = nil                          -- Reset Last Saved Coords
-    end
+    QBCore.Functions.TriggerCallback('qb-admin:isAdmin', function(isAdmin)
+        if not isAdmin then return end
+        local myPed = PlayerPedId()
+        local targetplayer = GetPlayerFromServerId(targetPed)
+        local target = GetPlayerPed(targetplayer)
+        if not isSpectating then
+            isSpectating = true
+            SetEntityVisible(myPed, false)                  -- Set invisible
+            SetEntityCollision(myPed, false, false)         -- Set collision
+            SetEntityInvincible(myPed, true)                -- Set invincible
+            NetworkSetEntityInvisibleToNetwork(myPed, true) -- Set invisibility
+            lastSpectateCoord = GetEntityCoords(myPed)      -- save my last coords
+            NetworkSetInSpectatorMode(true, target)         -- Enter Spectate Mode
+        else
+            isSpectating = false
+            NetworkSetInSpectatorMode(false, target)         -- Remove From Spectate Mode
+            NetworkSetEntityInvisibleToNetwork(myPed, false) -- Set Visible
+            SetEntityCollision(myPed, true, true)            -- Set collision
+            SetEntityCoords(myPed, lastSpectateCoord)        -- Return Me To My Coords
+            SetEntityVisible(myPed, true)                    -- Remove invisible
+            SetEntityInvincible(myPed, false)                -- Remove godmode
+            lastSpectateCoord = nil                          -- Reset Last Saved Coords
+        end
+    end)
 end)
 
 RegisterNetEvent('qb-admin:client:SendReport', function(name, src, msg)
@@ -58,22 +61,25 @@ end
 
 
 RegisterNetEvent('qb-admin:client:SaveCar', function()
-    local ped = PlayerPedId()
-    local veh = GetVehiclePedIsIn(ped)
+    QBCore.Functions.TriggerCallback('qb-admin:isAdmin', function(isAdmin)
+        if not isAdmin then return end
+        local ped = PlayerPedId()
+        local veh = GetVehiclePedIsIn(ped)
 
-    if veh ~= nil and veh ~= 0 then
-        local plate = QBCore.Functions.GetPlate(veh)
-        local props = QBCore.Functions.GetVehicleProperties(veh)
-        local hash = props.model
-        local vehname = getVehicleFromVehList(hash)
-        if QBCore.Shared.Vehicles[vehname] ~= nil and next(QBCore.Shared.Vehicles[vehname]) ~= nil then
-            TriggerServerEvent('qb-admin:server:SaveCar', props, QBCore.Shared.Vehicles[vehname], GetHashKey(veh), plate)
+        if veh ~= nil and veh ~= 0 then
+            local plate = QBCore.Functions.GetPlate(veh)
+            local props = QBCore.Functions.GetVehicleProperties(veh)
+            local hash = props.model
+            local vehname = getVehicleFromVehList(hash)
+            if QBCore.Shared.Vehicles[vehname] ~= nil and next(QBCore.Shared.Vehicles[vehname]) ~= nil then
+                TriggerServerEvent('qb-admin:server:SaveCar', props, QBCore.Shared.Vehicles[vehname], GetHashKey(veh), plate)
+            else
+                QBCore.Functions.Notify(Lang:t('error.no_store_vehicle_garage'), 'error')
+            end
         else
-            QBCore.Functions.Notify(Lang:t('error.no_store_vehicle_garage'), 'error')
+            QBCore.Functions.Notify(Lang:t('error.no_vehicle'), 'error')
         end
-    else
-        QBCore.Functions.Notify(Lang:t('error.no_vehicle'), 'error')
-    end
+    end)
 end)
 
 local function LoadPlayerModel(skin)
@@ -94,32 +100,38 @@ local function isPedAllowedRandom(skin)
 end
 
 RegisterNetEvent('qb-admin:client:SetModel', function(skin)
-    local ped = PlayerPedId()
-    local model = GetHashKey(skin)
-    SetEntityInvincible(ped, true)
+    QBCore.Functions.TriggerCallback('qb-admin:isAdmin', function(isAdmin)
+        if not isAdmin then return end
+        local ped = PlayerPedId()
+        local model = GetHashKey(skin)
+        SetEntityInvincible(ped, true)
 
-    if IsModelInCdimage(model) and IsModelValid(model) then
-        LoadPlayerModel(model)
-        SetPlayerModel(PlayerId(), model)
+        if IsModelInCdimage(model) and IsModelValid(model) then
+            LoadPlayerModel(model)
+            SetPlayerModel(PlayerId(), model)
 
-        if isPedAllowedRandom(skin) then
-            SetPedRandomComponentVariation(ped, true)
+            if isPedAllowedRandom(skin) then
+                SetPedRandomComponentVariation(ped, true)
+            end
+
+            SetModelAsNoLongerNeeded(model)
         end
-
-        SetModelAsNoLongerNeeded(model)
-    end
-    SetEntityInvincible(ped, false)
+        SetEntityInvincible(ped, false)
+    end)
 end)
 
 RegisterNetEvent('qb-admin:client:SetSpeed', function(speed)
-    local ped = PlayerId()
-    if speed == 'fast' then
-        SetRunSprintMultiplierForPlayer(ped, 1.49)
-        SetSwimMultiplierForPlayer(ped, 1.49)
-    else
-        SetRunSprintMultiplierForPlayer(ped, 1.0)
-        SetSwimMultiplierForPlayer(ped, 1.0)
-    end
+    QBCore.Functions.TriggerCallback('qb-admin:isAdmin', function(isAdmin)
+        if not isAdmin then return end
+        local ped = PlayerId()
+        if speed == 'fast' then
+            SetRunSprintMultiplierForPlayer(ped, 1.49)
+            SetSwimMultiplierForPlayer(ped, 1.49)
+        else
+            SetRunSprintMultiplierForPlayer(ped, 1.0)
+            SetSwimMultiplierForPlayer(ped, 1.0)
+        end
+    end)
 end)
 
 RegisterNetEvent('qb-admin:client:GiveNuiFocus', function(focus, mouse)
@@ -142,6 +154,9 @@ function PerformanceUpgradeVehicle(vehicle, customWheels)
 end
 
 RegisterNetEvent('qb-admin:client:maxmodVehicle', function()
-    local vehicle = GetVehiclePedIsIn(PlayerPedId())
-    PerformanceUpgradeVehicle(vehicle)
+    QBCore.Functions.TriggerCallback('qb-admin:isAdmin', function(isAdmin)
+        if not isAdmin then return end
+        local vehicle = GetVehiclePedIsIn(PlayerPedId())
+        PerformanceUpgradeVehicle(vehicle)
+    end)
 end)
