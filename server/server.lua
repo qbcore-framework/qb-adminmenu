@@ -16,7 +16,26 @@ local permissions = {
     ['inventory'] = 'admin',
     ['clothing'] = 'admin'
 }
-local players = {}
+
+function GetQBPlayers()
+    local playerReturn = {}
+    local players = QBCore.Functions.GetQBPlayers()
+    
+    for id, player in pairs(players) do
+        local playerPed = GetPlayerPed(id)
+        local name = (player.PlayerData.charinfo.firstname or '') .. ' ' .. (player.PlayerData.charinfo.lastname or '')
+        playerReturn[#playerReturn + 1] = {
+            name = name .. ' | (' .. (player.PlayerData.name or '') .. ')',
+            id = id,
+            coords = GetEntityCoords(playerPed),
+            cid = name,
+            citizenid = player.PlayerData.citizenid,
+            sources = playerPed,
+            sourceplayer = id
+        }
+    end
+    return playerReturn
+end
 
 -- Get Dealers
 QBCore.Functions.CreateCallback('test:getdealers', function(_, cb)
@@ -25,6 +44,7 @@ end)
 
 -- Get Players
 QBCore.Functions.CreateCallback('test:getplayers', function(_, cb) -- WORKS
+    local players =  GetQBPlayers()
     cb(players)
 end)
 
@@ -66,6 +86,7 @@ end
 -- Events
 RegisterNetEvent('qb-admin:server:GetPlayersForBlips', function()
     local src = source
+    local players = GetQBPlayers()
     TriggerClientEvent('qb-admin:client:Show', src, players)
 end)
 
@@ -338,17 +359,19 @@ QBCore.Commands.Add('staffchat', Lang:t('commands.staffchat_message'), { { name 
     local msg = table.concat(args, ' ')
     local name = GetPlayerName(source)
 
-    local plrs = QBCore.Functions.GetPlayers()
+    local plrs = GetPlayers()
 
-    for i = 1, #plrs, 1 do
-        local plr = plrs[i]
-        if QBCore.Functions.HasPermission(plr, 'admin') or IsPlayerAceAllowed(plr, 'command') then
-            if QBCore.Functions.IsOptin(plr) then
-                TriggerClientEvent('chat:addMessage', plr, {
-                    color = { 255, 0, 0 },
-                    multiline = true,
-                    args = { Lang:t('info.staffchat') .. name, msg }
-                })
+    for _, plr in ipairs(plrs) do
+        plr = tonumber(plr)
+        if plr then
+            if QBCore.Functions.HasPermission(plr, 'admin') or IsPlayerAceAllowed(plr, 'command') then
+                if QBCore.Functions.IsOptin(plr) then
+                    TriggerClientEvent('chat:addMessage', plr, {
+                        color = { 255, 0, 0 },
+                        multiline = true,
+                        args = { Lang:t('info.staffchat') .. name, msg }
+                    })
+                end
             end
         end
     end
@@ -474,22 +497,18 @@ QBCore.Commands.Add('kickall', Lang:t('commands.kick_all'), {}, false, function(
         local reason = table.concat(args, ' ')
         if QBCore.Functions.HasPermission(src, 'god') or IsPlayerAceAllowed(src, 'command') then
             if reason and reason ~= '' then
-                for _, v in pairs(QBCore.Functions.GetPlayers()) do
-                    local Player = QBCore.Functions.GetPlayer(v)
-                    if Player then
-                        DropPlayer(Player.PlayerData.source, reason)
-                    end
+                local players = GetPlayers()
+                for _, playerId in ipairs(players) do
+                    DropPlayer(playerId, reason)
                 end
             else
                 TriggerClientEvent('QBCore:Notify', src, Lang:t('info.no_reason_specified'), 'error')
             end
         end
     else
-        for _, v in pairs(QBCore.Functions.GetPlayers()) do
-            local Player = QBCore.Functions.GetPlayer(v)
-            if Player then
-                DropPlayer(Player.PlayerData.source, Lang:t('info.server_restart') .. QBCore.Config.Server.Discord)
-            end
+        local players = GetPlayers()
+        for _, playerId in ipairs(players) do
+            DropPlayer(playerId, Lang:t('info.server_restart') .. QBCore.Config.Server.Discord)
         end
     end
 end, 'god')
@@ -524,29 +543,3 @@ QBCore.Commands.Add('heading', 'Copy heading to clipboard (Admin only)', {}, fal
     local src = source
     TriggerClientEvent('qb-admin:client:copyToClipboard', src, 'heading')
 end, 'admin')
-
-CreateThread(function()
-    while true do
-        local tempPlayers = {}
-        for _, v in pairs(QBCore.Functions.GetPlayers()) do
-            local targetped = GetPlayerPed(v)
-            local ped = QBCore.Functions.GetPlayer(v)
-            tempPlayers[#tempPlayers + 1] = {
-                name = (ped.PlayerData.charinfo.firstname or '') .. ' ' .. (ped.PlayerData.charinfo.lastname or '') .. ' | (' .. (GetPlayerName(v) or '') .. ')',
-                id = v,
-                coords = GetEntityCoords(targetped),
-                cid = ped.PlayerData.charinfo.firstname .. ' ' .. ped.PlayerData.charinfo.lastname,
-                citizenid = ped.PlayerData.citizenid,
-                sources = GetPlayerPed(ped.PlayerData.source),
-                sourceplayer = ped.PlayerData.source
-
-            }
-        end
-        -- Sort players list by source ID (1,2,3,4,5, etc) --
-        table.sort(tempPlayers, function(a, b)
-            return a.id < b.id
-        end)
-        players = tempPlayers
-        Wait(1500)
-    end
-end)
