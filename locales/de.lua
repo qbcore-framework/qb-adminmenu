@@ -269,7 +269,7 @@ local Translations = {
         report_toggle                 = 'Durchsuche eingehende Reports (nur Admin)',
         kick_all                      = 'Kicke alle Spieler',
         ammo_amount_set               = 'Setze Munitionsstückzahl (nur Admin)',
-    }    
+    }
 }
 
 if GetConvar('qb_locale', 'en') == 'de' then
