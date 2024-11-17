@@ -691,18 +691,17 @@ vehicleoptions_vehrelated_mod:On("select", function()
                 select = function(i)
                     ped = PlayerPedId()
                     veh = GetVehiclePedIsIn(ped, false)
-                    local vehcolors, vehcolorp = nil, nil
                     if veh ~= 0 then
-                        _, vehcolors = GetVehicleColours(veh)
                         if isPrimary then
+                            local _, vehcolors = GetVehicleColours(veh)
                             SetVehicleColours(veh, v.colorindex, vehcolors)
                         end
                         if isSecondary then
-                            vehcolorp, _ = GetVehicleColours(veh)
+                            local vehcolorp, _ = GetVehicleColours(veh)
                             SetVehicleColours(veh, vehcolorp, v.colorindex)
                         end
                         if isWheel then
-                            vehcolorp, _ = GetVehicleColours(veh)
+                            local vehcolorp, _ = GetVehicleColours(veh)
                             SetVehicleExtraColours(veh, vehcolorp, v.colorindex)
                         end
                         if isDash then
@@ -712,7 +711,7 @@ vehicleoptions_vehrelated_mod:On("select", function()
                             SetVehicleInteriorColor(veh, v.colorindex)
                         end
                         if isPearlescent then
-                            _, vehcolorwheel = GetVehicleExtraColours(veh)
+                            local _, vehcolorwheel = GetVehicleExtraColours(veh)
                             SetVehicleExtraColours(veh, v.colorindex, vehcolorwheel)
                         end
                     end
