@@ -693,19 +693,16 @@ vehicleoptions_vehrelated_mod:On("select", function()
                     veh = GetVehiclePedIsIn(ped, false)
                     local vehcolors, vehcolorp = nil, nil
                     if veh ~= 0 then
-                        vehcolorp, vehcolors = GetVehicleColours(veh)
-                        local _, vehcolorwheel = GetVehicleExtraColours(veh)
+                        _, vehcolors = GetVehicleColours(veh)
                         if isPrimary then
                             SetVehicleColours(veh, v.colorindex, vehcolors)
                         end
                         if isSecondary then
-                            vehcolorp, vehcolors = GetVehicleColours(veh)
-                            _, vehcolorwheel = GetVehicleExtraColours(veh)
+                            vehcolorp, _ = GetVehicleColours(veh)
                             SetVehicleColours(veh, vehcolorp, v.colorindex)
                         end
                         if isWheel then
-                            vehcolorp, vehcolors = GetVehicleColours(veh)
-                            _, vehcolorwheel = GetVehicleExtraColours(veh)
+                            vehcolorp, _ = GetVehicleColours(veh)
                             SetVehicleExtraColours(veh, vehcolorp, v.colorindex)
                         end
                         if isDash then
@@ -715,7 +712,6 @@ vehicleoptions_vehrelated_mod:On("select", function()
                             SetVehicleInteriorColor(veh, v.colorindex)
                         end
                         if isPearlescent then
-                            vehcolorp, vehcolors = GetVehicleColours(veh)
                             _, vehcolorwheel = GetVehicleExtraColours(veh)
                             SetVehicleExtraColours(veh, v.colorindex, vehcolorwheel)
                         end
