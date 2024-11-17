@@ -730,7 +730,7 @@ vehicleoptions_vehrelated_mod:On("select", function()
                 value = 'tyr',
                 description = 'Apply ' .. v.name .. ' Color to Tyre Smoke',
                 select = function(i)
-                    local ped = PlayerPedId()
+                    ped = PlayerPedId()
                     veh = GetVehiclePedIsIn(ped, false)
                     if veh ~= 0 then
                         ToggleVehicleMod(veh, 20, true)
@@ -746,7 +746,7 @@ vehicleoptions_vehrelated_mod:On("select", function()
                 value = v.colorindex,
                 description = 'Apply ' .. v.name .. ' Color to vehicle',
                 select = function(i)
-                    local ped = PlayerPedId()
+                    ped = PlayerPedId()
                     veh = GetVehiclePedIsIn(ped, false)
                     if veh ~= 0 then
                         local vehcolorp, vehcolors = GetVehicleColours(veh)
