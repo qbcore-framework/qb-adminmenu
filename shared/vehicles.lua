@@ -639,386 +639,299 @@ VehicleMods.vehmods = {
 		label = "Turbo",
 		parent = "upgrades",
 		modType = 17,
-		price = {
-			55.81
-		}
 	},
 	modEngine = {
 		label = "Engine",
 		parent = "upgrades",
 		modType = 11,
-		price = {
-			13.95,
-			32.56,
-			65.12,
-			139.53
-		}
 	},
 	modBrakes = {
 		label = "Brakes",
 		parent = "upgrades",
 		modType = 12,
-		price = {
-			4.65,
-			9.3,
-			18.6,
-			13.95
-		}
 	},
 	modTransmission = {
 		label = "Transmission",
 		parent = "upgrades",
 		modType = 13,
-		price = {
-			13.95,
-			20.93,
-			46.51
-		}
 	},
 	modSuspension = {
 		label = "Suspension",
 		parent = "upgrades",
 		modType = 15,
-		price = {
-			3.72,
-			7.44,
-			14.88,
-			29.77,
-			40.2
-		}
 	},
 	modArmor = {
 		label = "Armor",
 		parent = "upgrades",
 		modType = 16,
-		price = {
-			69.77,
-			116.28,
-			130,
-			150,
-			180,
-			190
-		}
 	},
 	modPlateHolder = {
 		label = "Plate - Back",
 		parent = "cosmetics",
 		modType = 25,
-		price = 3.49
 	},
 	modVanityPlate = {
 		label = "Plate - Front",
 		parent = "cosmetics",
 		modType = 26,
-		price = 1.1
 	},
 	modTrimA = {
 		label = "Interior",
 		parent = "cosmetics",
 		modType = 27,
-		price = 6.98
 	},
 	modOrnaments = {
 		label = "Trim",
 		parent = "cosmetics",
 		modType = 28,
-		price = 0.9
 	},
 	modDashboard = {
 		label = "Dashboard",
 		parent = "cosmetics",
 		modType = 29,
-		price = 4.65
 	},
 	modDial = {
 		label = "Speedometer",
 		parent = "cosmetics",
 		modType = 30,
-		price = 4.19
 	},
 	modDoorSpeaker = {
 		label = "Door Speakers",
 		parent = "cosmetics",
 		modType = 31,
-		price = 5.58
 	},
 	modSeats = {
 		label = "Seats",
 		parent = "cosmetics",
 		modType = 32,
-		price = 4.65
 	},
 	modSteeringWheel = {
 		label = "Steering Wheel",
 		parent = "cosmetics",
 		modType = 33,
-		price = 4.19
 	},
 	modShifterLeavers = {
 		label = "Gear Lever",
 		parent = "cosmetics",
 		modType = 34,
-		price = 3.26
 	},
 	modAPlate = {
 		label = "Quarter-Deck",
 		parent = "cosmetics",
 		modType = 35,
-		price = 4.19
 	},
 	modSpeakers = {
 		label = "Speakers",
 		parent = "cosmetics",
 		modType = 36,
-		price = 6.98
 	},
 	modTrunk = {
 		label = "Trunk",
 		parent = "cosmetics",
 		modType = 37,
-		price = 5.58
 	},
 	modHydrolic = {
 		label = "Hydraulic",
 		parent = "cosmetics",
 		modType = 38,
-		price = 5.12
 	},
 	modEngineBlock = {
 		label = "Engine Block",
 		parent = "cosmetics",
 		modType = 39,
-		price = 5.12
 	},
 	modAirFilter = {
 		label = "Air Filter",
 		parent = "cosmetics",
 		modType = 40,
-		price = 3.72
 	},
 	modStruts = {
 		label = "Struts",
 		parent = "cosmetics",
 		modType = 41,
-		price = 6.51
 	},
 	modArchCover = {
 		label = "Arch Cover",
 		parent = "cosmetics",
 		modType = 42,
-		price = 4.19
 	},
 	modAerials = {
 		label = "Aerials",
 		parent = "cosmetics",
 		modType = 43,
-		price = 1.12
 	},
 	modTrimB = {
 		label = "Wings",
 		parent = "cosmetics",
 		modType = 44,
-		price = 6.05
 	},
 	modTank = {
 		label = "Fuel Tank",
 		parent = "cosmetics",
 		modType = 45,
-		price = 4.19
 	},
 	modWindows = {
 		label = "Windows",
 		parent = "cosmetics",
 		modType = 46,
-		price = 4.19
 	},
 	modLivery = {
 		label = "Stickers",
 		parent = "cosmetics",
 		modType = 48,
-		price = 9.3
 	},
 	modFrontWheelsType0 = {
 		label = "Sport",
 		parent = "modFrontWheelsTypes",
 		modType = 23,
 		wheelType = 0,
-		price = 4.65
 	},
 	modFrontWheelsType1 = {
 		label = "Muscle",
 		parent = "modFrontWheelsTypes",
 		modType = 23,
 		wheelType = 1,
-		price = 4.19
 	},
 	modFrontWheelsType2 = {
 		label = "Low Rider",
 		parent = "modFrontWheelsTypes",
 		modType = 23,
 		wheelType = 2,
-		price = 4.65
 	},
 	modFrontWheelsType3 = {
 		label = "SUV",
 		parent = "modFrontWheelsTypes",
 		modType = 23,
 		wheelType = 3,
-		price = 4.19
 	},
 	modFrontWheelsType4 = {
 		label = "All Terrain",
 		parent = "modFrontWheelsTypes",
 		modType = 23,
 		wheelType = 4,
-		price = 4.19
 	},
 	modFrontWheelsType5 = {
 		label = "Tuning",
 		parent = "modFrontWheelsTypes",
 		modType = 23,
 		wheelType = 5,
-		price = 5.12
 	},
 	modFrontWheelsType6 = {
 		label = "Motorcycle",
 		parent = "modFrontWheelsTypes",
 		modType = 23,
 		wheelType = 6,
-		price = 3.26
 	},
 	modFrontWheelsType7 = {
 		label = "Highend",
 		parent = "modFrontWheelsTypes",
 		modType = 23,
 		wheelType = 7,
-		price = 5.12
 	},
 	wheelColor = {
 		label = "Wheel Color",
 		parent = "modFrontWheelsColor",
 		modType = "wheelColor",
-		price = 0.66
 	},
 	plateIndex = {
 		label = "License Plates",
 		parent = "cosmetics",
 		modType = "plateIndex",
-		price = 1.1
 	},
 	color1 = {
 		label = "Primary Color",
 		parent = "primaryRespray",
 		modType = "color1",
-		price = 1.12
 	},
 	color2 = {
 		label = "Secondary Color",
 		parent = "secondaryRespray",
 		modType = "color2",
-		price = 0.66
 	},
 	pearlescentColor = {
 		label = "Pearlescent Color",
 		parent = "pearlescentRespray",
 		modType = "pearlescentColor",
-		price = 0.88
 	},
 	modXenon = {
 		label = "Headlight",
 		parent = "cosmetics",
 		modType = 22,
-		price = 3.72
 	},
 	modSpoilers = {
 		label = "Spoilers",
 		parent = "bodyparts",
 		modType = 0,
-		price = 4.65
 	},
 	modFrontBumper = {
 		label = "Front Bumper",
 		parent = "bodyparts",
 		modType = 1,
-		price = 5.12
 	},
 	modRearBumper = {
 		label = "Rear Bumper",
 		parent = "bodyparts",
 		modType = 2,
-		price = 5.12
 	},
 	modSideSkirt = {
 		label = "Sideskirt",
 		parent = "bodyparts",
 		modType = 3,
-		price = 4.65
 	},
 	modExhaust = {
 		label = "Exhaust",
 		parent = "bodyparts",
 		modType = 4,
-		price = 5.12
 	},
 	modFrame = {
 		label = "Cage",
 		parent = "bodyparts",
 		modType = 5,
-		price = 5.12
 	},
 	modGrille = {
 		label = "Grille",
 		parent = "bodyparts",
 		modType = 6,
-		price = 3.72
 	},
 	modHood = {
 		label = "Hood",
 		parent = "bodyparts",
 		modType = 7,
-		price = 4.88
 	},
 	modFender = {
 		label = "Left Fender",
 		parent = "bodyparts",
 		modType = 8,
-		price = 5.12
 	},
 	modRightFender = {
 		label = "Right Fender",
 		parent = "bodyparts",
 		modType = 9,
-		price = 5.12
 	},
 	modRoof = {
 		label = "Roof",
 		parent = "bodyparts",
 		modType = 10,
-		price = 5.58
 	},
 	modHorns = {
 		label = "Horns",
 		parent = "cosmetics",
 		modType = 14,
-		price = 1.12
 	},
 	neonColor = {
 		label = "Neon",
 		parent = "cosmetics",
 		modType = "neonColor",
-		price = 1.12
 	},
 	tyreSmokeColor = {
 		label = "Tiresmoke",
 		parent = "wheels",
 		modType = "tyreSmokeColor",
-		price = 1.12
 	},
 	modSticker = {
 		label = "Livery 2",
 		parent = "cosmetics",
 		modType = "livery2",
-		price = 9.3
 	}
 };
 VehicleMods.vehicledoors = {

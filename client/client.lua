@@ -576,36 +576,37 @@ vehicleoptions_vehrelated_mod:On("select", function()
                     modbuttons[k]:On('uncheck', function()
                         ToggleVehicleMod(veh, 18, false)
                     end)
-                    goto continue
-                end
-                SetVehicleModKit(veh, 0)
-                local max = GetNumVehicleMods(veh, v.modType)
-                if max ~= 0 then
-                    local vehiclemod = GetVehicleMod(veh, v.modType)
-                    if vehiclemod == -1 then
-                        vehiclemod = 0
-                    else
-                        vehiclemod = vehiclemod + 1
-                    end
-                    modbuttons[k] = vehicleoptions_mod_menu:AddRange({
-                        icon = '',
-                        label = v.label,
-                        description = v.label,
-                        min = 0,
-                        max = max,
-                        value = vehiclemod,
-                        saveOnUpdate = true
-                    })
-                    modbuttons[k]:On('select', function(item, newValue, oldValue)
-                        veh = GetVehiclePedIsIn(PlayerPedId(), false)
-                        if veh ~= 0 then
-                            if newValue == 0 then
-                                SetVehicleMod(veh, v.modType, max, false)
-                            else
-                                SetVehicleMod(veh, v.modType, newValue - 1, false)
-                            end
+                else
+                    SetVehicleModKit(veh, 0)
+                    local max = GetNumVehicleMods(veh, v.modType)
+                    if max ~= 0 then
+                        local vehiclemod = GetVehicleMod(veh, v.modType)
+                        if vehiclemod == -1 then
+                            vehiclemod = 0
+                        else
+                            vehiclemod = vehiclemod + 1
                         end
-                    end)
+                        modbuttons[k] = vehicleoptions_mod_menu:AddRange({
+                            icon = '',
+                            label = v.label,
+                            description = v.label,
+                            min = 0,
+                            max = max,
+                            value = vehiclemod,
+                            saveOnUpdate = true
+                        })
+                        modbuttons[k]:On('select', function(item, newValue, oldValue)
+                            veh = GetVehiclePedIsIn(PlayerPedId(), false)
+                            SetVehicleWheelType(veh, v.wheelType)
+                            if veh ~= 0 then
+                                if newValue == 0 then
+                                    SetVehicleMod(veh, v.modType, max, false)
+                                else
+                                    SetVehicleMod(veh, v.modType, newValue - 1, false)
+                                end
+                            end
+                        end)
+                    end
                 end
             elseif v.modType and v.modType == 'plateIndex' then
                 SetVehicleModKit(veh, 0)
@@ -646,7 +647,6 @@ vehicleoptions_vehrelated_mod:On("select", function()
                     end)
                 end
             end
-            ::continue::
         end
 
         modbuttons['xenon'] = vehicleoptions_mod_menu:AddRange({
