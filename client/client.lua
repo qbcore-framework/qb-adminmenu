@@ -493,6 +493,7 @@ neonright:On('uncheck', function(item)
     local veh = GetVehiclePedIsIn(ped, false)
     SetVehicleNeonLightEnabled(veh, 1, false)
 end)
+local isPrimary, isSecondary, isPearlescent = nil, nil, nil
 cp:On('check', function(item)
     isPrimary = true
 end)
@@ -690,8 +691,9 @@ vehicleoptions_vehrelated_mod:On("select", function()
                 select = function(i)
                     ped = PlayerPedId()
                     veh = GetVehiclePedIsIn(ped, false)
+                    local vehcolors, vehcolorp = nil, nil
                     if veh ~= 0 then
-                        local vehcolorp, vehcolors = GetVehicleColours(veh)
+                        vehcolorp, vehcolors = GetVehicleColours(veh)
                         local _, vehcolorwheel = GetVehicleExtraColours(veh)
                         if isPrimary then
                             SetVehicleColours(veh, v.colorindex, vehcolors)
