@@ -596,7 +596,7 @@ vehicleoptions_vehrelated_mod:On("select", function()
                         saveOnUpdate = true
                     })
                     modbuttons[k]:On('select', function(item, newValue, oldValue)
-                        local veh = GetVehiclePedIsIn(PlayerPedId(), false)
+                        veh = GetVehiclePedIsIn(PlayerPedId(), false)
                         if veh ~= 0 then
                             if newValue == 0 then
                                 SetVehicleMod(veh, v.modType, max, false)
@@ -619,7 +619,7 @@ vehicleoptions_vehrelated_mod:On("select", function()
                     saveOnUpdate = true
                 })
                 modbuttons[k]:On('select', function(item, newValue, oldValue)
-                    local veh = GetVehiclePedIsIn(PlayerPedId(), false)
+                    veh = GetVehiclePedIsIn(PlayerPedId(), false)
                     if veh ~= 0 then
                         SetVehicleNumberPlateTextIndex(veh, newValue)
                     end
@@ -638,7 +638,7 @@ vehicleoptions_vehrelated_mod:On("select", function()
                         saveOnUpdate = true
                     })
                     modbuttons[k]:On('select', function(item, newValue, oldValue)
-                        local veh = GetVehiclePedIsIn(PlayerPedId(), false)
+                        veh = GetVehiclePedIsIn(PlayerPedId(), false)
                         if veh ~= 0 then
                             SetVehicleLivery(veh, newValue)
                         end
@@ -658,7 +658,7 @@ vehicleoptions_vehrelated_mod:On("select", function()
             saveOnUpdate = true
         })
         modbuttons['xenon']:On('select', function(item, newValue, oldValue)
-            local veh = GetVehiclePedIsUsing(PlayerPedId())
+            veh = GetVehiclePedIsUsing(PlayerPedId())
 
             if veh ~= 0 then
                 ToggleVehicleMod(veh, 22, true)     -- toggle xenon
@@ -675,35 +675,35 @@ vehicleoptions_vehrelated_mod:On("select", function()
             saveOnUpdate = true
         })
         modbuttons['windowtint']:On('select', function(item, newValue, oldValue)
-            local veh = GetVehiclePedIsUsing(PlayerPedId())
+            veh = GetVehiclePedIsUsing(PlayerPedId())
 
             if veh ~= 0 then
                 SetVehicleWindowTint(veh, newValue)
             end
         end)
-        for k, v in ipairs(VehicleMods.colors) do
+        for _, v in ipairs(VehicleMods.colors) do
             classic_colors_mod_menu:AddButton({
                 icon = '',
                 label = v.name,
                 value = v.colorindex,
                 description = 'Apply ' .. v.name .. ' Color to vehicle',
                 select = function(i)
-                    local ped = PlayerPedId()
+                    ped = PlayerPedId()
                     veh = GetVehiclePedIsIn(ped, false)
                     if veh ~= 0 then
                         local vehcolorp, vehcolors = GetVehicleColours(veh)
-                        local vehcolorperl, vehcolorwheel = GetVehicleExtraColours(veh)
+                        local _, vehcolorwheel = GetVehicleExtraColours(veh)
                         if isPrimary then
                             SetVehicleColours(veh, v.colorindex, vehcolors)
                         end
                         if isSecondary then
                             vehcolorp, vehcolors = GetVehicleColours(veh)
-                            vehcolorperl, vehcolorwheel = GetVehicleExtraColours(veh)
+                            _, vehcolorwheel = GetVehicleExtraColours(veh)
                             SetVehicleColours(veh, vehcolorp, v.colorindex)
                         end
                         if isWheel then
                             vehcolorp, vehcolors = GetVehicleColours(veh)
-                            vehcolorperl, vehcolorwheel = GetVehicleExtraColours(veh)
+                            _, vehcolorwheel = GetVehicleExtraColours(veh)
                             SetVehicleExtraColours(veh, vehcolorp, v.colorindex)
                         end
                         if isDash then
@@ -714,14 +714,14 @@ vehicleoptions_vehrelated_mod:On("select", function()
                         end
                         if isPearlescent then
                             vehcolorp, vehcolors = GetVehicleColours(veh)
-                            vehcolorperl, vehcolorwheel = GetVehicleExtraColours(veh)
+                            _, vehcolorwheel = GetVehicleExtraColours(veh)
                             SetVehicleExtraColours(veh, v.colorindex, vehcolorwheel)
                         end
                     end
                 end
             })
         end
-        for k, v in ipairs(VehicleMods.tyrecolors) do
+        for _, v in ipairs(VehicleMods.tyrecolors) do
             tyre_smoke_color_options:AddButton({
                 icon = '',
                 label = v.name,
@@ -737,7 +737,7 @@ vehicleoptions_vehrelated_mod:On("select", function()
                 end
             })
         end
-        for k, v in ipairs(VehicleMods.mattecolors) do
+        for _, v in ipairs(VehicleMods.mattecolors) do
             matte_color_options:AddButton({
                 icon = '',
                 label = v.name,
