@@ -560,7 +560,7 @@ vehicleoptions_vehrelated_mod:On("select", function()
             description = Lang:t('desc.vehicle.vehicle_color'),
         })
 
-        for k, v in pairs(VehicleMods.vehmods) do
+        for k, v in ipairs(VehicleMods.vehmods) do
             if v.modType and type(v.modType) == 'number' then
                 if v.modType == 17 then
                     modbuttons[k] = vehicleoptions_mod_menu:AddCheckbox({
@@ -586,9 +586,13 @@ vehicleoptions_vehrelated_mod:On("select", function()
                         else
                             vehiclemod = vehiclemod + 1
                         end
+                        local labelPrefix = ''
+                        if v.modType == 23 then
+                            labelPrefix = 'Wheel - '
+                        end
                         modbuttons[k] = vehicleoptions_mod_menu:AddRange({
                             icon = '',
-                            label = v.label,
+                            label = labelPrefix .. v.label,
                             description = v.label,
                             min = 0,
                             max = max,

@@ -635,300 +635,330 @@ VehicleMods.neoncolors = {
 	}
 };
 VehicleMods.vehmods = {
-	modTurbo = {
+	{
 		label = "Turbo",
 		parent = "upgrades",
 		modType = 17,
 	},
-	modEngine = {
+	{
 		label = "Engine",
 		parent = "upgrades",
 		modType = 11,
 	},
-	modBrakes = {
+	{
 		label = "Brakes",
 		parent = "upgrades",
 		modType = 12,
 	},
-	modTransmission = {
+	{
 		label = "Transmission",
 		parent = "upgrades",
 		modType = 13,
 	},
-	modSuspension = {
+	{
 		label = "Suspension",
 		parent = "upgrades",
 		modType = 15,
 	},
-	modArmor = {
+	{
 		label = "Armor",
 		parent = "upgrades",
 		modType = 16,
 	},
-	modPlateHolder = {
+	{
 		label = "Plate - Back",
 		parent = "cosmetics",
 		modType = 25,
 	},
-	modVanityPlate = {
+	{
 		label = "Plate - Front",
 		parent = "cosmetics",
 		modType = 26,
 	},
-	modTrimA = {
+	{
 		label = "Interior",
 		parent = "cosmetics",
 		modType = 27,
 	},
-	modOrnaments = {
+	{
 		label = "Trim",
 		parent = "cosmetics",
 		modType = 28,
 	},
-	modDashboard = {
+	{
 		label = "Dashboard",
 		parent = "cosmetics",
 		modType = 29,
 	},
-	modDial = {
+	{
 		label = "Speedometer",
 		parent = "cosmetics",
 		modType = 30,
 	},
-	modDoorSpeaker = {
+	{
 		label = "Door Speakers",
 		parent = "cosmetics",
 		modType = 31,
 	},
-	modSeats = {
+	{
 		label = "Seats",
 		parent = "cosmetics",
 		modType = 32,
 	},
-	modSteeringWheel = {
+	{
 		label = "Steering Wheel",
 		parent = "cosmetics",
 		modType = 33,
 	},
-	modShifterLeavers = {
+	{
 		label = "Gear Lever",
 		parent = "cosmetics",
 		modType = 34,
 	},
-	modAPlate = {
+	{
 		label = "Quarter-Deck",
 		parent = "cosmetics",
 		modType = 35,
 	},
-	modSpeakers = {
+	{
 		label = "Speakers",
 		parent = "cosmetics",
 		modType = 36,
 	},
-	modTrunk = {
+	{
 		label = "Trunk",
 		parent = "cosmetics",
 		modType = 37,
 	},
-	modHydrolic = {
+	{
 		label = "Hydraulic",
 		parent = "cosmetics",
 		modType = 38,
 	},
-	modEngineBlock = {
+	{
 		label = "Engine Block",
 		parent = "cosmetics",
 		modType = 39,
 	},
-	modAirFilter = {
+	{
 		label = "Air Filter",
 		parent = "cosmetics",
 		modType = 40,
 	},
-	modStruts = {
+	{
 		label = "Struts",
 		parent = "cosmetics",
 		modType = 41,
 	},
-	modArchCover = {
+	{
 		label = "Arch Cover",
 		parent = "cosmetics",
 		modType = 42,
 	},
-	modAerials = {
+	{
 		label = "Aerials",
 		parent = "cosmetics",
 		modType = 43,
 	},
-	modTrimB = {
+	{
 		label = "Wings",
 		parent = "cosmetics",
 		modType = 44,
 	},
-	modTank = {
+	{
 		label = "Fuel Tank",
 		parent = "cosmetics",
 		modType = 45,
 	},
-	modWindows = {
+	{
 		label = "Windows",
 		parent = "cosmetics",
 		modType = 46,
 	},
-	modLivery = {
+	{
 		label = "Stickers",
 		parent = "cosmetics",
 		modType = 48,
 	},
-	modFrontWheelsType0 = {
+	{
 		label = "Sport",
 		parent = "modFrontWheelsTypes",
 		modType = 23,
 		wheelType = 0,
 	},
-	modFrontWheelsType1 = {
+	{
 		label = "Muscle",
 		parent = "modFrontWheelsTypes",
 		modType = 23,
 		wheelType = 1,
 	},
-	modFrontWheelsType2 = {
+	{
 		label = "Low Rider",
 		parent = "modFrontWheelsTypes",
 		modType = 23,
 		wheelType = 2,
 	},
-	modFrontWheelsType3 = {
+	{
 		label = "SUV",
 		parent = "modFrontWheelsTypes",
 		modType = 23,
 		wheelType = 3,
 	},
-	modFrontWheelsType4 = {
+	{
 		label = "All Terrain",
 		parent = "modFrontWheelsTypes",
 		modType = 23,
 		wheelType = 4,
 	},
-	modFrontWheelsType5 = {
+	{
 		label = "Tuning",
 		parent = "modFrontWheelsTypes",
 		modType = 23,
 		wheelType = 5,
 	},
-	modFrontWheelsType6 = {
+	{
 		label = "Motorcycle",
 		parent = "modFrontWheelsTypes",
 		modType = 23,
 		wheelType = 6,
 	},
-	modFrontWheelsType7 = {
+	{
 		label = "Highend",
 		parent = "modFrontWheelsTypes",
 		modType = 23,
 		wheelType = 7,
 	},
-	wheelColor = {
+	{
+		label = "Original",
+		parent = "modFrontWheelsTypes",
+		modType = 23,
+		wheelType = 8,
+	},
+	{
+		label = "Bespoke",
+		parent = "modFrontWheelsTypes",
+		modType = 23,
+		wheelType = 9,
+	},
+	{
+		label = "Open Wheel",
+		parent = "modFrontWheelsTypes",
+		modType = 23,
+		wheelType = 10,
+	},
+	{
+		label = "Street",
+		parent = "modFrontWheelsTypes",
+		modType = 23,
+		wheelType = 11,
+	},
+	{
+		label = "Track",
+		parent = "modFrontWheelsTypes",
+		modType = 23,
+		wheelType = 12,
+	},
+	{
 		label = "Wheel Color",
 		parent = "modFrontWheelsColor",
 		modType = "wheelColor",
 	},
-	plateIndex = {
+	{
 		label = "License Plates",
 		parent = "cosmetics",
 		modType = "plateIndex",
 	},
-	color1 = {
+	{
 		label = "Primary Color",
 		parent = "primaryRespray",
 		modType = "color1",
 	},
-	color2 = {
+	{
 		label = "Secondary Color",
 		parent = "secondaryRespray",
 		modType = "color2",
 	},
-	pearlescentColor = {
+	{
 		label = "Pearlescent Color",
 		parent = "pearlescentRespray",
 		modType = "pearlescentColor",
 	},
-	modXenon = {
+	{
 		label = "Headlight",
 		parent = "cosmetics",
 		modType = 22,
 	},
-	modSpoilers = {
+	{
 		label = "Spoilers",
 		parent = "bodyparts",
 		modType = 0,
 	},
-	modFrontBumper = {
+	{
 		label = "Front Bumper",
 		parent = "bodyparts",
 		modType = 1,
 	},
-	modRearBumper = {
+	{
 		label = "Rear Bumper",
 		parent = "bodyparts",
 		modType = 2,
 	},
-	modSideSkirt = {
+	{
 		label = "Sideskirt",
 		parent = "bodyparts",
 		modType = 3,
 	},
-	modExhaust = {
+	{
 		label = "Exhaust",
 		parent = "bodyparts",
 		modType = 4,
 	},
-	modFrame = {
+	{
 		label = "Cage",
 		parent = "bodyparts",
 		modType = 5,
 	},
-	modGrille = {
+	{
 		label = "Grille",
 		parent = "bodyparts",
 		modType = 6,
 	},
-	modHood = {
+	{
 		label = "Hood",
 		parent = "bodyparts",
 		modType = 7,
 	},
-	modFender = {
+	{
 		label = "Left Fender",
 		parent = "bodyparts",
 		modType = 8,
 	},
-	modRightFender = {
+	{
 		label = "Right Fender",
 		parent = "bodyparts",
 		modType = 9,
 	},
-	modRoof = {
+	{
 		label = "Roof",
 		parent = "bodyparts",
 		modType = 10,
 	},
-	modHorns = {
+	{
 		label = "Horns",
 		parent = "cosmetics",
 		modType = 14,
 	},
-	neonColor = {
+	{
 		label = "Neon",
 		parent = "cosmetics",
 		modType = "neonColor",
 	},
-	tyreSmokeColor = {
+	{
 		label = "Tiresmoke",
 		parent = "wheels",
 		modType = "tyreSmokeColor",
 	},
-	modSticker = {
+	{
 		label = "Livery 2",
 		parent = "cosmetics",
 		modType = "livery2",
