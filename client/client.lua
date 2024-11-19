@@ -8,55 +8,34 @@ local menuLocation = 'topright' -- e.g. topright (default), topleft, bottomright
 
 -- Main Menus
 local menu1 = MenuV:CreateMenu(false, Lang:t('menu.admin_menu'), menuLocation, 220, 20, 60, 'size-125', 'none', 'menuv',
-    'test1')
-local menu2 = MenuV:CreateMenu(false, Lang:t('menu.admin_options'), menuLocation, 220, 20, 60, 'size-125', 'none',
-    'menuv', 'test2')
-local menu3 = MenuV:CreateMenu(false, Lang:t('menu.manage_server'), menuLocation, 220, 20, 60, 'size-125', 'none',
-    'menuv', 'test3')
-local menu4 = MenuV:CreateMenu(false, Lang:t('menu.online_players'), menuLocation, 220, 20, 60, 'size-125', 'none',
-    'menuv', 'test4')
-local menu5 = MenuV:CreateMenu(false, Lang:t('menu.vehicle_options'), menuLocation, 220, 20, 60, 'size-125', 'none',
-    'menuv', 'test5')
-local menu6 = MenuV:CreateMenu(false, Lang:t('menu.dealer_list'), menuLocation, 220, 20, 60, 'size-125', 'none', 'menuv',
-    'test6')
-local menu7 = MenuV:CreateMenu(false, Lang:t('menu.developer_options'), menuLocation, 220, 20, 60, 'size-125', 'none',
-    'menuv', 'test7')
+ 'test1')
+local menu2 = MenuV:CreateMenu(false, Lang:t('menu.admin_options'), menuLocation, 220, 20, 60, 'size-125', 'none', 'menuv', 'test2')
+local menu3 = MenuV:CreateMenu(false, Lang:t('menu.manage_server'), menuLocation, 220, 20, 60, 'size-125', 'none', 'menuv', 'test3')
+local menu4 = MenuV:CreateMenu(false, Lang:t('menu.online_players'), menuLocation, 220, 20, 60, 'size-125', 'none', 'menuv', 'test4')
+local menu5 = MenuV:CreateMenu(false, Lang:t('menu.vehicle_options'), menuLocation, 220, 20, 60, 'size-125', 'none', 'menuv', 'test5')
+local menu6 = MenuV:CreateMenu(false, Lang:t('menu.dealer_list'), menuLocation, 220, 20, 60, 'size-125', 'none', 'menuv', 'test6')
+local menu7 = MenuV:CreateMenu(false, Lang:t('menu.developer_options'), menuLocation, 220, 20, 60, 'size-125', 'none', 'menuv', 'test7')
 
 --Sub Menus
-local menu8 = MenuV:CreateMenu(false, Lang:t('menu.weather_conditions'), menuLocation, 220, 20, 60, 'size-125', 'none',
-    'menuv', 'test8')
+local menu8 = MenuV:CreateMenu(false, Lang:t('menu.weather_conditions'), menuLocation, 220, 20, 60, 'size-125', 'none', 'menuv', 'test8')
 local menu9 = MenuV:CreateMenu(false, Lang:t('menu.ban'), menuLocation, 220, 20, 60, 'size-125', 'none', 'menuv', 'test9')
-local menu10 = MenuV:CreateMenu(false, Lang:t('menu.kick'), menuLocation, 220, 20, 60, 'size-125', 'none', 'menuv',
-    'test10')
-local menu11 = MenuV:CreateMenu(false, Lang:t('menu.permissions'), menuLocation, 220, 20, 60, 'size-125', 'none', 'menuv',
-    'test11')
-local menu12 = MenuV:CreateMenu(false, Lang:t('menu.vehicle_categories'), menuLocation, 220, 20, 60, 'size-125', 'none',
-    'menuv', 'test12')
-local menu13 = MenuV:CreateMenu(false, Lang:t('menu.vehicle_models'), menuLocation, 220, 20, 60, 'size-125', 'none',
-    'menuv', 'test13')
-local menu14 = MenuV:CreateMenu(false, Lang:t('menu.entity_view_options'), menuLocation, 220, 20, 60, 'size-125', 'none',
-    'menuv', 'test14')
-local menu15 = MenuV:CreateMenu(false, Lang:t('menu.spawn_weapons'), menuLocation, 220, 20, 60, 'size-125', 'none',
-    'menuv', 'test15')
+local menu10 = MenuV:CreateMenu(false, Lang:t('menu.kick'), menuLocation, 220, 20, 60, 'size-125', 'none', 'menuv', 'test10')
+local menu11 = MenuV:CreateMenu(false, Lang:t('menu.permissions'), menuLocation, 220, 20, 60, 'size-125', 'none', 'menuv', 'test11')
+local menu12 = MenuV:CreateMenu(false, Lang:t('menu.vehicle_categories'), menuLocation, 220, 20, 60, 'size-125', 'none', 'menuv', 'test12')
+local menu13 = MenuV:CreateMenu(false, Lang:t('menu.vehicle_models'), menuLocation, 220, 20, 60, 'size-125', 'none', 'menuv', 'test13')
+local menu14 = MenuV:CreateMenu(false, Lang:t('menu.entity_view_options'), menuLocation, 220, 20, 60, 'size-125', 'none', 'menuv', 'test14')
+local menu15 = MenuV:CreateMenu(false, Lang:t('menu.spawn_weapons'), menuLocation, 220, 20, 60, 'size-125', 'none', 'menuv', 'test15')
 
 -- Vehicle Options Menu
-local vehicleoptions_menu = MenuV:CreateMenu(false, Lang:t('menu.vehicle.vehicle_options'), menuLocation, 220, 20, 60, 'size-125',
-    'template1', 'menuv', 'vehiclerelatedoption')
-local vehicleoptions_mod_menu = MenuV:CreateMenu(false, Lang:t('menu.vehicle.modifications'), menuLocation, 220, 20, 60, 'size-125',
-    'template1',
+local vehicleoptions_menu = MenuV:CreateMenu(false, Lang:t('menu.vehicle.vehicle_options'), menuLocation, 220, 20, 60, 'size-125', 'template1', 'menuv', 'vehiclerelatedoption')
+local vehicleoptions_mod_menu = MenuV:CreateMenu(false, Lang:t('menu.vehicle.modifications'), menuLocation, 220, 20, 60, 'size-125', 'template1',
     'menuv', 'vehmodmenu')
-local color_options_mod_menu = MenuV:CreateMenu(false, Lang:t('menu.vehicle.color_menu'), menuLocation, 220, 20, 60, 'size-125',
-    'template1', 'menuv', 'vehmodmenucolor')
-local classic_colors_mod_menu = MenuV:CreateMenu(false, Lang:t('menu.vehicle.classic_colors'), menuLocation, 220, 20, 60, 'size-125',
-    'template1', 'menuv', 'vehmodmenuclasiccol')
-local tyre_smoke_color_options = MenuV:CreateMenu(false, Lang:t('menu.vehicle.tyre_smoke_colors'), menuLocation, 255, 0, 0,
-    'size-125', 'template1', 'menuv', 'vehmodmenutyrsmok')
-local metal_color_options = MenuV:CreateMenu(false, Lang:t('menu.vehicle.metal_colors'), menuLocation, 220, 20, 60, 'size-125',
-    'template1', 'menuv', 'vehmodmenumetalcol')
-local matte_color_options = MenuV:CreateMenu(false, Lang:t('menu.vehicle.matte_colors'), menuLocation, 220, 20, 60, 'size-125',
-    'template1', 'menuv', 'vehmodmenumattecol')
-local neon_color_options = MenuV:CreateMenu(false, Lang:t('menu.vehicle.neon_options'), menuLocation, 220, 20, 60, 'size-125',
-    'template1', 'menuv', 'vehmodmenuneon')
+local color_options_mod_menu = MenuV:CreateMenu(false, Lang:t('menu.vehicle.color_menu'), menuLocation, 220, 20, 60, 'size-125', 'template1', 'menuv', 'vehmodmenucolor')
+local classic_colors_mod_menu = MenuV:CreateMenu(false, Lang:t('menu.vehicle.classic_colors'), menuLocation, 220, 20, 60, 'size-125', 'template1', 'menuv', 'vehmodmenuclasiccol')
+local tyre_smoke_color_options = MenuV:CreateMenu(false, Lang:t('menu.vehicle.tyre_smoke_colors'), menuLocation, 255, 0, 0, 'size-125', 'template1', 'menuv', 'vehmodmenutyrsmok')
+local metal_color_options = MenuV:CreateMenu(false, Lang:t('menu.vehicle.metal_colors'), menuLocation, 220, 20, 60, 'size-125', 'template1', 'menuv', 'vehmodmenumetalcol')
+local matte_color_options = MenuV:CreateMenu(false, Lang:t('menu.vehicle.matte_colors'), menuLocation, 220, 20, 60, 'size-125', 'template1', 'menuv', 'vehmodmenumattecol')
+local neon_color_options = MenuV:CreateMenu(false, Lang:t('menu.vehicle.neon_options'), menuLocation, 220, 20, 60, 'size-125', 'template1', 'menuv', 'vehmodmenuneon')
 
 RegisterNetEvent('qb-admin:client:openMenu', function()
     QBCore.Functions.TriggerCallback('qb-admin:isAdmin', function(isAdmin)
