@@ -25,6 +25,17 @@ local menu13 = MenuV:CreateMenu(false, Lang:t('menu.vehicle_models'), menuLocati
 local menu14 = MenuV:CreateMenu(false, Lang:t('menu.entity_view_options'), menuLocation, 220, 20, 60, 'size-125', 'none', 'menuv', 'test14')
 local menu15 = MenuV:CreateMenu(false, Lang:t('menu.spawn_weapons'), menuLocation, 220, 20, 60, 'size-125', 'none', 'menuv', 'test15')
 
+-- Vehicle Options Menu
+local vehicleoptions_menu = MenuV:CreateMenu(false, Lang:t('menu.vehicle.vehicle_options'), menuLocation, 220, 20, 60, 'size-125', 'template1', 'menuv', 'vehiclerelatedoption')
+local vehicleoptions_mod_menu = MenuV:CreateMenu(false, Lang:t('menu.vehicle.modifications'), menuLocation, 220, 20, 60, 'size-125', 'template1',
+    'menuv', 'vehmodmenu')
+local color_options_mod_menu = MenuV:CreateMenu(false, Lang:t('menu.vehicle.color_menu'), menuLocation, 220, 20, 60, 'size-125', 'template1', 'menuv', 'vehmodmenucolor')
+local classic_colors_mod_menu = MenuV:CreateMenu(false, Lang:t('menu.vehicle.classic_colors'), menuLocation, 220, 20, 60, 'size-125', 'template1', 'menuv', 'vehmodmenuclasiccol')
+local tyre_smoke_color_options = MenuV:CreateMenu(false, Lang:t('menu.vehicle.tyre_smoke_colors'), menuLocation, 255, 0, 0, 'size-125', 'template1', 'menuv', 'vehmodmenutyrsmok')
+local metal_color_options = MenuV:CreateMenu(false, Lang:t('menu.vehicle.metal_colors'), menuLocation, 220, 20, 60, 'size-125', 'template1', 'menuv', 'vehmodmenumetalcol')
+local matte_color_options = MenuV:CreateMenu(false, Lang:t('menu.vehicle.matte_colors'), menuLocation, 220, 20, 60, 'size-125', 'template1', 'menuv', 'vehmodmenumattecol')
+local neon_color_options = MenuV:CreateMenu(false, Lang:t('menu.vehicle.neon_options'), menuLocation, 220, 20, 60, 'size-125', 'template1', 'menuv', 'vehmodmenuneon')
+
 RegisterNetEvent('qb-admin:client:openMenu', function()
     QBCore.Functions.TriggerCallback('qb-admin:isAdmin', function(isAdmin)
         if not isAdmin then return end
@@ -283,6 +294,648 @@ local menu5_vehicles_max_upgrades = menu5:AddButton({
     label = Lang:t('menu.max_mods'),
     value = 'maxmods',
     description = Lang:t('desc.max_mod_desc')
+})
+
+if VehicleMods.enabled then
+    menu5:AddButton({
+        icon = '🚙',
+        label = Lang:t('menu.vehicle_moddings'),
+        value = 'vehicleoptions_menu',
+        description = Lang:t('desc.vehicle_moddings_desc'),
+        select = function(i)
+            local ped = PlayerPedId()
+            local veh = GetVehiclePedIsIn(ped, false)
+            if veh ~= 0 then
+                MenuV:OpenMenu(vehicleoptions_menu)
+            else
+                QBCore.Functions.Notify(Lang:t('error.no_vehicle'), 'error', 5000)
+            end
+        end
+    })
+end
+
+--[[
+    Vehicle Options
+--]]
+
+color_options_mod_menu:AddButton({
+    icon = '',
+    label = Lang:t('menu.vehicle.tyre_smoke_colors'),
+    value = tyre_smoke_color_options,
+    description = Lang:t('desc.vehicle.tyre_smoke_colors'),
+})
+
+color_options_mod_menu:AddButton({
+    icon = '',
+    label = Lang:t('menu.vehicle.neon_options'),
+    value = neon_color_options,
+    description = Lang:t('desc.vehicle.neon_options'),
+})
+color_options_mod_menu:AddButton({
+    icon = '',
+    label = Lang:t('menu.vehicle.classic_colors'),
+    value = classic_colors_mod_menu,
+    description = Lang:t('desc.vehicle.classic_colors'),
+})
+color_options_mod_menu:AddButton({
+    icon = '',
+    label = Lang:t('menu.vehicle.matte_colors'),
+    value = matte_color_options,
+    description = Lang:t('desc.vehicle.matte_colors'),
+})
+
+color_options_mod_menu:AddButton({
+    icon = '',
+    label = Lang:t('menu.vehicle.metal_colors'),
+    value = metal_color_options,
+    description = Lang:t('desc.vehicle.metal_colors'),
+})
+local cp = color_options_mod_menu:AddCheckbox({
+    icon = '',
+    label = Lang:t('menu.vehicle.primary_color'),
+    value = 'y',
+    description = Lang:t('desc.vehicle.primary_color'),
+})
+local cs = color_options_mod_menu:AddCheckbox({
+    icon = '',
+    label = Lang:t('menu.vehicle.secondary_color'),
+    value = 'n',
+    description = Lang:t('desc.vehicle.secondary_color'),
+})
+local pearlescentc = color_options_mod_menu:AddCheckbox({
+    icon = '',
+    label = Lang:t('menu.vehicle.pearlescent_color'),
+    value = 'n',
+    description = Lang:t('desc.vehicle.pearlescent_color'),
+})
+local wheelc = color_options_mod_menu:AddCheckbox({
+    icon = '',
+    label = Lang:t('menu.vehicle.wheel_color'),
+    value = 'n',
+    description = Lang:t('desc.vehicle.wheel_color'),
+})
+
+local dashc = color_options_mod_menu:AddCheckbox({
+    icon = '',
+    label = Lang:t('menu.vehicle.dashboard_color'),
+    value = 'n',
+    description = Lang:t('desc.vehicle.dashboard_color'),
+})
+local intc = color_options_mod_menu:AddCheckbox({
+    icon = '',
+    label = Lang:t('menu.vehicle.interior_color'),
+    value = 'n',
+    description = Lang:t('desc.vehicle.interior_color'),
+})
+
+local neonfront = neon_color_options:AddCheckbox({
+    icon = '',
+    label = Lang:t('menu.vehicle.enable_front_neon'),
+    value = 'n',
+    description = Lang:t('desc.vehicle.enable_front_neon'),
+})
+local neonback = neon_color_options:AddCheckbox({
+    icon = '',
+    label = Lang:t('menu.vehicle.enable_back_neon'),
+    value = 'n',
+    description = Lang:t('desc.vehicle.enable_back_neon'),
+})
+local neonleft = neon_color_options:AddCheckbox({
+    icon = '',
+    label = Lang:t('menu.vehicle.enable_left_neon'),
+    value = 'n',
+    description = Lang:t('desc.vehicle.enable_left_neon'),
+})
+local neonright = neon_color_options:AddCheckbox({
+    icon = '',
+    label = Lang:t('menu.vehicle.enable_right_neon'),
+    value = 'n',
+    description = Lang:t('desc.vehicle.enable_right_neon'),
+})
+
+local neoncolor = neon_color_options:AddSlider({
+    icon = '',
+    label = Lang:t('menu.vehicle.neon_color'),
+    value = 'demo',
+    values = VehicleMods.neoncolors,
+    description = Lang:t('desc.vehicle.neon_color'),
+})
+
+neoncolor:On('select', function(item, value)
+    local ped = PlayerPedId()
+    local veh = GetVehiclePedIsIn(ped, false)
+    SetVehicleNeonLightsColour(veh, value[1], value[2], value[3])
+end)
+local modbuttons = {}
+neonfront:On('check', function(item)
+    local ped = PlayerPedId()
+    local veh = GetVehiclePedIsIn(ped, false)
+    SetVehicleNeonLightEnabled(veh, 2, true)
+end)
+
+neonfront:On('uncheck', function(item)
+    local ped = PlayerPedId()
+    local veh = GetVehiclePedIsIn(ped, false)
+    SetVehicleNeonLightEnabled(veh, 2, false)
+end)
+neonback:On('check', function(item)
+    local ped = PlayerPedId()
+    local veh = GetVehiclePedIsIn(ped, false)
+    SetVehicleNeonLightEnabled(veh, 3, true)
+end)
+
+neonback:On('uncheck', function(item)
+    local ped = PlayerPedId()
+    local veh = GetVehiclePedIsIn(ped, false)
+    SetVehicleNeonLightEnabled(veh, 3, false)
+end)
+neonleft:On('check', function(item)
+    local ped = PlayerPedId()
+    local veh = GetVehiclePedIsIn(ped, false)
+    SetVehicleNeonLightEnabled(veh, 0, true)
+end)
+
+neonleft:On('uncheck', function(item)
+    local ped = PlayerPedId()
+    local veh = GetVehiclePedIsIn(ped, false)
+    SetVehicleNeonLightEnabled(veh, 0, false)
+end)
+neonright:On('check', function(item)
+    local ped = PlayerPedId()
+    local veh = GetVehiclePedIsIn(ped, false)
+    SetVehicleNeonLightEnabled(veh, 1, true)
+end)
+
+neonright:On('uncheck', function(item)
+    local ped = PlayerPedId()
+    local veh = GetVehiclePedIsIn(ped, false)
+    SetVehicleNeonLightEnabled(veh, 1, false)
+end)
+local isPrimary, isSecondary, isPearlescent, isWheel, isDash, isInt = nil, nil, nil, nil, nil, nil
+cp:On('check', function(item)
+    isPrimary = true
+end)
+
+cp:On('uncheck', function(item)
+    isPrimary = false
+end)
+cs:On('check', function(item)
+    isSecondary = true
+end)
+
+cs:On('uncheck', function(item)
+    isSecondary = false
+end)
+pearlescentc:On('check', function(item)
+    isPearlescent = true
+end)
+
+pearlescentc:On('uncheck', function(item)
+    isPearlescent = false
+end)
+wheelc:On('check', function(item)
+    isWheel = true
+end)
+
+wheelc:On('uncheck', function(item)
+    isWheel = false
+end)
+dashc:On('check', function(item)
+    isDash = true
+end)
+
+dashc:On('uncheck', function(item)
+    isDash = false
+end)
+intc:On('check', function(item)
+    isInt = true
+end)
+
+intc:On('uncheck', function(item)
+    isInt = false
+end)
+
+local vehicleoptions_vehrelated_mod = vehicleoptions_menu:AddButton({
+
+    icon = '🚙',
+    label = Lang:t('menu.vehicle.modifications'),
+    value = 'vehicleoptions_menu',
+    description = Lang:t('desc.vehicle.modifications'),
+})
+vehicleoptions_vehrelated_mod:On("select", function()
+    local ped = PlayerPedId()
+    local veh = GetVehiclePedIsIn(ped, false)
+    if veh ~= 0 then
+        tyre_smoke_color_options:ClearItems()
+        classic_colors_mod_menu:ClearItems()
+        matte_color_options:ClearItems()
+        metal_color_options:ClearItems()
+        vehicleoptions_mod_menu:ClearItems()
+        vehicleoptions_mod_menu:AddButton({
+            icon = '',
+            label = Lang:t('menu.vehicle.vehicle_color'),
+            value = color_options_mod_menu,
+            description = Lang:t('desc.vehicle.vehicle_color'),
+        })
+
+        for k, v in ipairs(VehicleMods.vehmods) do
+            if v.modType and type(v.modType) == 'number' then
+                if v.modType == 17 then
+                    modbuttons[k] = vehicleoptions_mod_menu:AddCheckbox({
+                        icon = '',
+                        label = v.label,
+                        value = 'n',
+                        description = v.label
+                    })
+                    modbuttons[k]:On('check', function()
+                        ToggleVehicleMod(veh, 18, true)
+                    end)
+
+                    modbuttons[k]:On('uncheck', function()
+                        ToggleVehicleMod(veh, 18, false)
+                    end)
+                else
+                    SetVehicleModKit(veh, 0)
+                    local max = GetNumVehicleMods(veh, v.modType)
+                    if max ~= 0 then
+                        local vehiclemod = GetVehicleMod(veh, v.modType)
+                        if vehiclemod == -1 then
+                            vehiclemod = 0
+                        else
+                            vehiclemod = vehiclemod + 1
+                        end
+                        local labelPrefix = ''
+                        if v.modType == 23 then
+                            labelPrefix = 'Wheel - '
+                        end
+                        modbuttons[k] = vehicleoptions_mod_menu:AddRange({
+                            icon = '',
+                            label = labelPrefix .. v.label,
+                            description = v.label,
+                            min = 0,
+                            max = max,
+                            value = vehiclemod,
+                            saveOnUpdate = true
+                        })
+                        modbuttons[k]:On('select', function(item, newValue, oldValue)
+                            veh = GetVehiclePedIsIn(PlayerPedId(), false)
+                            SetVehicleWheelType(veh, v.wheelType)
+                            if veh ~= 0 then
+                                if newValue == 0 then
+                                    SetVehicleMod(veh, v.modType, max, false)
+                                else
+                                    SetVehicleMod(veh, v.modType, newValue - 1, false)
+                                end
+                            end
+                        end)
+                    end
+                end
+            elseif v.modType and v.modType == 'plateIndex' then
+                SetVehicleModKit(veh, 0)
+                local vehiclemod = GetVehicleNumberPlateTextIndex(veh)
+                modbuttons[k] = vehicleoptions_mod_menu:AddRange({
+                    icon = '',
+                    label = v.label,
+                    description = v.label,
+                    min = 0,
+                    max = 4,
+                    value = vehiclemod,
+                    saveOnUpdate = true
+                })
+                modbuttons[k]:On('select', function(item, newValue, oldValue)
+                    veh = GetVehiclePedIsIn(PlayerPedId(), false)
+                    if veh ~= 0 then
+                        SetVehicleNumberPlateTextIndex(veh, newValue)
+                    end
+                end)
+            elseif v.modType and v.modType == 'livery2' then
+                SetVehicleLivery(veh, 0)
+                local vehiclemod = GetVehicleLiveryCount(veh)
+                if vehiclemod ~= -1 then
+                    modbuttons[k] = vehicleoptions_mod_menu:AddRange({
+                        icon = '',
+                        label = v.label,
+                        description = v.label,
+                        min = 1,
+                        max = vehiclemod,
+                        value = 0,
+                        saveOnUpdate = true
+                    })
+                    modbuttons[k]:On('select', function(item, newValue, oldValue)
+                        veh = GetVehiclePedIsIn(PlayerPedId(), false)
+                        if veh ~= 0 then
+                            SetVehicleLivery(veh, newValue)
+                        end
+                    end)
+                end
+            end
+        end
+
+        modbuttons['xenon'] = vehicleoptions_mod_menu:AddRange({
+            icon = '',
+            label = Lang:t('menu.vehicle.headlights_color'),
+            description = Lang:t('desc.vehicle.headlights_color'),
+            min = 0,
+            max = 12,
+            value = 0,
+            saveOnUpdate = true
+        })
+        modbuttons['xenon']:On('select', function(item, newValue, oldValue)
+            veh = GetVehiclePedIsUsing(PlayerPedId())
+
+            if veh ~= 0 then
+                ToggleVehicleMod(veh, 22, true)     -- toggle xenon
+                SetVehicleHeadlightsColour(veh, newValue)
+            end
+        end)
+        modbuttons['windowtint'] = vehicleoptions_mod_menu:AddRange({
+            icon = '',
+            label = Lang:t('menu.vehicle.window_tint'),
+            description = Lang:t('desc.vehicle.window_tint'),
+            min = 0,
+            max = GetNumVehicleWindowTints(),
+            value = GetVehicleWindowTint(GetVehiclePedIsUsing(PlayerPedId())),
+            saveOnUpdate = true
+        })
+        modbuttons['windowtint']:On('select', function(item, newValue, oldValue)
+            veh = GetVehiclePedIsUsing(PlayerPedId())
+
+            if veh ~= 0 then
+                SetVehicleWindowTint(veh, newValue)
+            end
+        end)
+        for _, v in ipairs(VehicleMods.colors) do
+            classic_colors_mod_menu:AddButton({
+                icon = '',
+                label = v.name,
+                value = v.colorindex,
+                description = 'Apply ' .. v.name .. ' Color to vehicle',
+                select = function(i)
+                    ped = PlayerPedId()
+                    veh = GetVehiclePedIsIn(ped, false)
+                    if veh ~= 0 then
+                        if isPrimary then
+                            local _, vehcolors = GetVehicleColours(veh)
+                            SetVehicleColours(veh, v.colorindex, vehcolors)
+                        end
+                        if isSecondary then
+                            local vehcolorp, _ = GetVehicleColours(veh)
+                            SetVehicleColours(veh, vehcolorp, v.colorindex)
+                        end
+                        if isWheel then
+                            local vehcolorp, _ = GetVehicleColours(veh)
+                            SetVehicleExtraColours(veh, vehcolorp, v.colorindex)
+                        end
+                        if isDash then
+                            SetVehicleDashboardColor(veh, v.colorindex)
+                        end
+                        if isInt then
+                            SetVehicleInteriorColor(veh, v.colorindex)
+                        end
+                        if isPearlescent then
+                            local _, vehcolorwheel = GetVehicleExtraColours(veh)
+                            SetVehicleExtraColours(veh, v.colorindex, vehcolorwheel)
+                        end
+                    end
+                end
+            })
+        end
+        for _, v in ipairs(VehicleMods.tyrecolors) do
+            tyre_smoke_color_options:AddButton({
+                icon = '',
+                label = v.name,
+                value = 'tyr',
+                description = 'Apply ' .. v.name .. ' Color to Tyre Smoke',
+                select = function(i)
+                    ped = PlayerPedId()
+                    veh = GetVehiclePedIsIn(ped, false)
+                    if veh ~= 0 then
+                        ToggleVehicleMod(veh, 20, true)
+                        SetVehicleTyreSmokeColor(veh, v.r, v.g, v.b)
+                    end
+                end
+            })
+        end
+        for _, v in ipairs(VehicleMods.mattecolors) do
+            matte_color_options:AddButton({
+                icon = '',
+                label = v.name,
+                value = v.colorindex,
+                description = 'Apply ' .. v.name .. ' Color to vehicle',
+                select = function(i)
+                    ped = PlayerPedId()
+                    veh = GetVehiclePedIsIn(ped, false)
+                    if veh ~= 0 then
+                        local vehcolorp, vehcolors = GetVehicleColours(veh)
+                        if isPrimary and not isSecondary then
+                            SetVehicleColours(veh, v.colorindex, vehcolors)
+                        elseif isSecondary and not isPrimary then
+                            SetVehicleColours(veh, vehcolorp, v.colorindex)
+                        else
+                            SetVehicleColours(veh, v.colorindex, v.colorindex)
+                        end
+                    end
+                end
+            })
+        end
+        for _, v in ipairs(VehicleMods.metalcolors) do
+            metal_color_options:AddButton({
+                icon = '',
+                label = v.name,
+                value = v.colorindex,
+                description = 'Apply ' .. v.name .. ' Color to vehicle',
+                select = function(i)
+                    ped = PlayerPedId()
+                    veh = GetVehiclePedIsIn(ped, false)
+                    if veh ~= 0 then
+                        local vehcolorp, vehcolors = GetVehicleColours(veh)
+                        if isPrimary and not isSecondary then
+                            SetVehicleColours(veh, v.colorindex, vehcolors)
+                        elseif isSecondary and not isPrimary then
+                            SetVehicleColours(veh, vehcolorp, v.colorindex)
+                        else
+                            SetVehicleColours(veh, v.colorindex, v.colorindex)
+                        end
+                    end
+                end
+            })
+        end
+        for extraID = 0, 20 do
+            if DoesExtraExist(veh, extraID) then
+                modbuttons['extra' .. extraID] = vehicleoptions_mod_menu:AddCheckbox({
+                    icon = '',
+                    label = 'Extra ' .. extraID,
+                    description = 'Extra',
+                    value = 'n'
+                })
+                modbuttons['extra' .. extraID]:On('check', function(item)
+                    SetVehicleExtra(veh, extraID, 0)
+                end)
+
+                modbuttons['extra' .. extraID]:On('uncheck', function(item)
+                    SetVehicleExtra(veh, extraID, 1)
+                end)
+            end
+        end
+        MenuV:OpenMenu(vehicleoptions_mod_menu)
+    else
+        QBCore.Functions.Notify(Lang:t('error.no_vehicle'), 'error', 5000)
+    end
+end)
+
+--[[
+    Toggle Engine
+--]]
+local vehicleoptions_toggle_engine = vehicleoptions_menu:AddCheckbox({
+    icon = '🚧',
+    label = Lang:t('menu.vehicle.toggle_engine'),
+    description = Lang:t('desc.vehicle.toggle_engine'),
+    value = 'y'
+})
+
+vehicleoptions_toggle_engine:On('check', function(item)
+    local ped = PlayerPedId()
+    local veh = GetVehiclePedIsIn(ped, false)
+    SetVehicleEngineOn(veh, true, true, true)
+end)
+
+vehicleoptions_toggle_engine:On('uncheck', function(item)
+    local ped = PlayerPedId()
+    local veh = GetVehiclePedIsIn(ped, false)
+    SetVehicleEngineOn(veh, false, true, true)
+end)
+
+--[[
+    Change Numberplate
+--]]
+vehicleoptions_menu:AddButton({
+    icon = '⌨️',
+    label = Lang:t('menu.vehicle.change_numberplate'),
+    description = Lang:t('desc.vehicle.change_numberplate'),
+    value = "numbertext",
+    false,
+    select = function(i)
+        -- Open QBCore input dialog
+        local input = exports['qb-input']:ShowInput({
+            header = Lang:t('menu.vehicle.change_numberplate'),
+            submitText = Lang:t('menu.change'),
+            inputs = {
+                {
+                    text = Lang:t('menu.vehicle.enter_new_plate'), -- Label for input
+                    name = "plate",           -- Name used for input reference
+                    type = "text",            -- Input type
+                    isRequired = true,        -- Require the input to be filled
+                    min = 1,                  -- Minimum character limit
+                    max = 8                   -- Maximum character limit
+                }
+            }
+        })
+
+        -- Check if input exists and is valid
+        if input and input.plate then
+            local newPlate = input.plate:upper() -- Convert plate text to uppercase
+            local ped = PlayerPedId()
+            local vehicle = GetVehiclePedIsIn(ped, false)
+
+            if vehicle ~= 0 then
+                SetVehicleNumberPlateText(vehicle, newPlate)
+                TriggerEvent('QBCore:Notify', Lang:t('success.plate_changed_to', { plate = newPlate }), "success")
+            else
+                TriggerEvent('QBCore:Notify', Lang:t('error.no_vehicle'), "error")
+            end
+        else
+            TriggerEvent('QBCore:Notify', Lang:t('error.no_plate_text'), "error")
+        end
+    end
+})
+
+--[[
+    Toggle Doors
+--]]
+local vehicledoor = {}
+local vehicleoptions_toggledoor = vehicleoptions_menu:AddSlider({
+    icon = '🚗',
+    label = Lang:t('menu.vehicle.toggle_doors'),
+    description = Lang:t('desc.vehicle.toggle_doors'),
+    value = 0,
+    values = VehicleMods.vehicledoors
+})
+vehicleoptions_toggledoor:On('select', function(item, value)
+    local ped = PlayerPedId()
+    local veh = GetVehiclePedIsIn(ped, false)
+    if veh then
+        if vehicledoor[veh] and vehicledoor[veh][value] then
+            SetVehicleDoorShut(veh, value, false)
+            vehicledoor[veh][value] = false
+        else
+            SetVehicleDoorOpen(veh, value, false)
+            vehicledoor[veh] = { veh }
+            vehicledoor[veh][value] = true
+        end
+    end
+end)
+
+--[[
+    Flip Vehicle
+--]]
+vehicleoptions_menu:AddButton({
+    icon = '🚗',
+    label = Lang:t('menu.vehicle.flip_vehicle'),
+    value = 'n',
+    description = Lang:t('desc.vehicle.flip_vehicle'),
+    select = function(i)
+        local ped = PlayerPedId()
+        local veh = GetVehiclePedIsIn(ped, false)
+        SetVehicleOnGroundProperly(veh)
+    end
+})
+
+--[[
+    Delete Vehicle
+--]]
+vehicleoptions_menu:AddButton({
+    icon = '🚗',
+    label = Lang:t('menu.vehicle.delete_vehicle'),
+    value = 'n',
+    description = Lang:t('desc.vehicle.delete_vehicle'),
+    select = function(i)
+        ExecuteCommand('dv')
+    end
+})
+
+--[[
+    Repair Vehicle
+--]]
+vehicleoptions_menu:AddButton({
+    icon = '🛠',
+    label = Lang:t('menu.vehicle.repair_vehicle'),
+    description = Lang:t('desc.vehicle.repair_vehicle'),
+    value = "repairveh",
+    false,
+    select = function(i)
+        local veh = GetVehiclePedIsIn(PlayerPedId(), false)
+        if veh ~= 0 then
+            SetVehicleFixed(veh)
+            SetVehicleDeformationFixed(veh)
+        end
+    end
+})
+
+--[[
+    Wash Vehicle
+--]]
+vehicleoptions_menu:AddButton({
+    icon = '🚿',
+    label = Lang:t('menu.vehicle.wash_vehicle'),
+    description = Lang:t('desc.vehicle.wash_vehicle'),
+    value = "washveh",
+    false,
+    select = function(i)
+        local veh = GetVehiclePedIsIn(PlayerPedId(), false)
+        if veh ~= 0 then
+            SetVehicleDirtLevel(veh, 0.0)
+        end
+    end
 })
 
 -- Developer Options Menu Buttons
